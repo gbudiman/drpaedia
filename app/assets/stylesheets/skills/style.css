@@ -1,6 +1,27 @@
+.popover {
+  min-width: 200px !important;
+  width: auto;
+}
+
+.popover-content {
+  padding: 8px;
+}
+
+.skill {
+  cursor: pointer;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  padding: 2px 4px 2px 4px;
+}
+
 .skill-infancy {
   display: none;
-  color: #aaa;
+  color: #888;
+  background-color: #eee;
+}
+
+.skill-cost {
+  margin-top: 1px;
 }
 
 .badge-success {
@@ -9,4 +30,26 @@
 
 .badge-error {
   background-color: #d9534f;
+}
+
+.cond-disabled {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.cond-discounted {
+  color: blue;
+}
+
+.cond-cheapest {
+  color: green;
+  font-weight: bold;
+}
+
+.cond-ok {
+
+}
+
+.cond-error {
+  color: red;
 }

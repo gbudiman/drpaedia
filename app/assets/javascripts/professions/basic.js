@@ -58,6 +58,10 @@ var profession_basic = (function() {
     return selected;
   }
 
+  var is_profession = function(x) {
+    return all[x] != undefined;
+  }
+
   var reset_limit = function() {
     limit = 3;
   }
@@ -84,6 +88,7 @@ var profession_basic = (function() {
     unforget: unforget,
     all: get_all,
     build: build,
+    is_profession: is_profession,
     restricted: get_restricted,
     selected: get_selected,
     update_strain_change: update_strain_change

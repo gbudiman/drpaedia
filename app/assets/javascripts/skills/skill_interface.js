@@ -7,13 +7,13 @@ var skill_interface = (function() {
     var r = '';
     Object.keys(data).sort().forEach(function(k, i) {
       var shorthand = data[k].shorthand;
-      r += '<div class="skill-infancy" id="' + shorthand + '" '
+      r += '<div class="skill skill-infancy" id="' + shorthand + '" '
          +   'data-type="' + data[k].type + '" ' 
          +   'data-accessible=false '
-         +   'data-discounted=false'
+         +   'data-discounted=false '
          + '">'
          +   k
-         +   '<span class="badge badge-default pull-right" id="' + shorthand + '-cost" data-badge="skill-cost"></span>'
+         +   '<span class="badge badge-default skill-cost pull-right" id="' + shorthand + '-cost" data-badge="skill-cost"></span>'
          + '</div>';
     })
     
@@ -36,7 +36,12 @@ var skill_interface = (function() {
     }
 
     obj.removeClass('skill-infancy');
-    cost.text(Object.keys(costs).sort()[0]);
+
+    cost.text(Object.keys(costs).sort(numeric_sort)[0]);
+  }
+
+  var numeric_sort = function(a, b) {
+    return parseInt(a) - parseInt(b);
   }
 
   var reset_all = function() {
