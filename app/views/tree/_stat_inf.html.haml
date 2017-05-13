@@ -1,0 +1,14 @@
+%div{id: 'stats', class: 'container stat-block'}
+  %div{class: 'col-xs-4 stat-left'} 
+    %span{class: 'stat-title'} Inf
+    %span{class: 'pull-right'} &nbsp; + 
+    %span{class: 'pull-right stat-base', id: 'stat-base-inf'} 0
+  %div{class: 'col-xs-6 stat-control'}
+    %div{class: 'input-group'}
+      %span{class: 'input-group-btn'}
+        %button{class: 'btn btn-default', type: 'button'} -
+      %input{type: 'text', class: 'form-control', id: 'stat-purchased-inf', value: 0, size: 2}
+      %span{class: 'input-group-btn'}
+        %button{class: 'btn btn-default', type: 'button'} +
+  %div{class: 'col-xs-2 stat-right'} 
+    %span{class: 'stat-sum', id: 'stat-sum-inf'} 0

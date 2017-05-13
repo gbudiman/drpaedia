@@ -41,6 +41,10 @@
 %div{class: 'col-xs-6', id: 'main-left'}
   %div{id: 'skill-pool'}
 %div{class: 'col-xs-6', id: 'main-right'}
+  = render 'stat_hp'
+  = render 'stat_mp'
+  = render 'stat_inf'
+
 
 = stylesheet_link_tag 'style'
 = javascript_include_tag 'bootstrap-select.min'

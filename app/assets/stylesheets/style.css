@@ -3,6 +3,32 @@ hr {
   margin-bottom: 4px;
 }
 
-#main-left {
+#main-left, #main-right {
   padding-top: 5em;
+}
+
+.stat-left, .stat-right {
+  padding-top: 6px;
+}
+
+.stat-left {
+  padding-right: 2px;
+}
+
+.stat-right {
+  padding-right: 0px;
+}
+
+.stat-control {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.stat-block {
+  padding-bottom: 4px;
+}
+
+.form-control {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
