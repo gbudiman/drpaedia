@@ -2,7 +2,7 @@ var profession_basic_interface = (function() {
   var add = function(prof) {
     profession_basic.add(prof);
 
-    var s = '<div>'
+    var s = '<div class="purchased-profession">'
           +   '<span class="basic-prof-name">' + prof + '</span>'
           +   '<span class="forget-profession pull-right" data-prof="' + prof + '">F</span>'
           +   '<span class="pull-right">&nbsp|&nbsp</span>'

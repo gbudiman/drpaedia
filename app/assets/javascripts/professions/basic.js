@@ -9,24 +9,28 @@ var profession_basic = (function() {
     selected[x] = true;
     profession_basic_interface.update_profession_added(x);
     verify_count();
+    skills.update_availability(false);
   }
 
   var forget = function(x) {
     delete selected[x];
     forgotten[x] = true;
     verify_count();
+    skills.update_availability(true);
   }
 
   var remove = function(x) {
     delete selected[x];
     profession_basic_interface.update_profession_removed(x);
     verify_count();
+    skills.update_availability(true);
   }
 
   var unforget = function(x) {
     selected[x] = true;
     delete forgotten[x];
     verify_count();
+    skills.update_availability(false);
   }
 
   var adjust_limit = function(x) {

@@ -13,7 +13,7 @@ var skill_interface = (function() {
          +   'data-discounted=false'
          + '">'
          +   k
-         +   '<span class="pull-right" id="' + shorthand + '-cost"></span>'
+         +   '<span class="badge badge-default pull-right" id="' + shorthand + '-cost" data-badge="skill-cost"></span>'
          + '</div>';
     })
     
@@ -21,21 +21,37 @@ var skill_interface = (function() {
 
   }
 
-  var display = function(id, costs) {
+  var display = function(id, costs, is_open) {
     var obj = $('#' + id);
     var cost = $('#' + id + '-cost');
     obj.attr('data-accessible', true);
-    if (Object.keys(costs) > 1) {
+    if (Object.keys(costs).length > 1) {
       obj.attr('data-discounted', true);
+      cost.addClass('badge-success');
+    }
+
+    if (!is_open) {
+      obj.attr('data-discounted', true);
+      cost.addClass('badge-success');
     }
 
     obj.removeClass('skill-infancy');
-    cost.text(Object.keys(costs).sort());
+    cost.text(Object.keys(costs).sort()[0]);
+  }
+
+  var reset_all = function() {
+    $('div[data-accessible]')
+      .addClass('skill-infancy')
+      .attr('data-accessible', false)
+      .attr('data-discounted', false)
+
+    $('span[data-badge]').text('');
   }
 
   return {
     apply_filters: apply_filters,
     build: build,
-    display: display
+    display: display,
+    reset_all: reset_all
   }
 })()

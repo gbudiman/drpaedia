@@ -23,36 +23,25 @@ var filterview = (function() {
 
   var update = function(target, value) {
     filters[target] = value;
-    apply(target);
+    apply();
   }
 
-  var apply = function(target) {
-    if (target == 'filter_lore') {
-      if (filters[target]) {
-        $('div[data-type="lore"]').hide();
-      } else {
-        $('div[data-type="lore"]').show();
-      }
-    } else if (target == 'filter_psionics') {
-      if (filters[target]) {
-        $('div[data-type="psionics"]').hide();
-      } else {
-        $('div[data-type="psionics"]').show();
-      }
-    } else if (target == 'filter_accessible') {
-      if (filters[target]) {
-        $('div[data-accessible=false]').hide();
-      } else {
-        $('div[data-accessible=false]').show();
-      }
-    } else if (target == 'filter_discounted') {
-      if (filters[target]) {
-        // show only discounted skills
-        $('div[data-discounted=false]').hide();
-      } else {
-        $('div[data-discounted=false]').show();
-      }
-    }
+  var apply = function() {
+    $('div[data-accessible]').each(function() {
+      var show = true;
+      var is_accessible = $(this).attr('data-accessible') == 'true';
+      var is_discounted = $(this).attr('data-discounted') == 'true';
+      var is_lore = $(this).attr('data-type') == 'lore';
+      var is_psionics = $(this).attr('data-type') == 'psionics';
+
+      if (filters.filter_accessible && !is_accessible) { show = false; }
+      if (filters.filter_discounted && !is_discounted) { show = false; }
+      if (is_lore && filters.filter_lore) { show = false; }
+      if (is_psionics && filters.filter_psionics) { show = false; }
+
+      if (show) { $(this).show(); }
+      else { $(this).hide(); }
+    })
   }
 
   var apply_all = function() {
@@ -61,12 +50,8 @@ var filterview = (function() {
     filters.filter_lore = $('#filter-lore').prop('checked');
     filters.filter_psionics = $('#filter-psionics').prop('checked');
 
-    console.log(filters);
     $('div[data-accessible]').show();
-    apply('filter_lore');
-    apply('filter_psionics');
-    apply('filter_accessible');
-    apply('filter_discounted');
+    apply();
   }
 
   return {

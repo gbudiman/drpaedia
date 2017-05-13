@@ -2,3 +2,11 @@
   display: none;
   color: #aaa;
 }
+
+.badge-success {
+  background-color: #5cb83c;
+}
+
+.badge-error {
+  background-color: #d9534f;
+}

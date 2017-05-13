@@ -53,16 +53,18 @@ var skills = (function() {
     })
 
     skill_interface.build(data);
-    update_availability();
+    update_availability(false);
   }
 
   var constraint_satisfied = function(d) {
     var is_satisfied = false;
     var possible_costs = {};
+    var is_open = false;
 
     if (d.conditions.open != undefined) { 
       is_satisfied = true; 
       possible_costs[d.conditions.open] = true;
+      is_open = true;
     }
 
     if (strain_match(d.conditions.innate_disabled)) {
@@ -85,7 +87,8 @@ var skills = (function() {
 
     return {
       is_satisfied: is_satisfied,
-      possible_costs: possible_costs
+      possible_costs: possible_costs,
+      is_open: is_open
     }
   }
 
@@ -108,11 +111,13 @@ var skills = (function() {
 
   var get_data = function() { return data; }
 
-  var update_availability = function() {
+  var update_availability = function(reset_all) {
+    get_config();
+    if (reset_all) { skill_interface.reset_all(); }
     $.each(data, function(k, v) {
       var constraint = constraint_satisfied(v);
       if (constraint.is_satisfied) {
-        skill_interface.display(v.shorthand, constraint.possible_costs);
+        skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
       }
     })
 
@@ -121,6 +126,7 @@ var skills = (function() {
 
   return {
     build: build,
-    data: get_data
+    data: get_data,
+    update_availability: update_availability
   }
 })()

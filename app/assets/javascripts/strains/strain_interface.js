@@ -30,8 +30,9 @@ var strain_interface = (function() {
   }
 
   var set = function(x) {
-    selected_strain = strains.data()[x];
+    selected_strain = x;
     profession_basic.update_strain_change();
+    skills.update_availability(true);
   }
 
   return {
