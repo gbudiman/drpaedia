@@ -73,10 +73,6 @@ var profession_basic_interface = (function() {
     }
   }
 
-  var get_selected = function() {
-    return selected;
-  }
-
   var update_profession_added = function(x) {
     $('#basic-profession-list').find('li[data-prof="' + x + '"]').find('a')
       .addClass('selected-profession')
@@ -117,7 +113,6 @@ var profession_basic_interface = (function() {
   return {
     build: build,
     disable_limit_warning: disable_limit_warning,
-    selected: get_selected,
     update_profession_added: update_profession_added,
     update_profession_removed: update_profession_removed,
     update_strain_change: update_strain_change

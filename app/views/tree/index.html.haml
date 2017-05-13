@@ -29,12 +29,28 @@
   %hr
   Filters
   %hr
+  %div
+    %input{type: 'checkbox', checked: true, id: 'filter-accessible'} Only Accessible
+  %div
+    %input{type: 'checkbox', checked: false, id: 'filter-discounted'} Only Discounted
+  %div
+    %input{type: 'checkbox', checked: true, id: 'filter-lore'} Hide Lore
+  %div
+    %input{type: 'checkbox', checked: true, id: 'filter-psionics'} Hide Psionics
 
+%div{class: 'col-xs-6', id: 'main-left'}
+  %div{id: 'skill-pool'}
+%div{class: 'col-xs-6', id: 'main-right'}
+
+= stylesheet_link_tag 'style'
 = javascript_include_tag 'bootstrap-select.min'
 = stylesheet_link_tag 'bootstrap-select.min'
-
 = stylesheet_link_tag 'configbar/configbar'
 = stylesheet_link_tag 'professions/style'
+= stylesheet_link_tag 'skills/style'
+= javascript_include_tag 'filterview/filterview'
+= javascript_include_tag 'skills/skill_interface'
+= javascript_include_tag 'skills/skills'
 = javascript_include_tag 'professions/interface_basic'
 = javascript_include_tag 'professions/basic'
 = javascript_include_tag 'strains/strain_interface'
@@ -44,3 +60,4 @@
 
 :javascript
   dynaloader.load_remote();
+  filterview.attach();

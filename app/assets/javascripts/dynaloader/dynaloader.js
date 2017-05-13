@@ -23,6 +23,7 @@ var dynaloader = (function() {
            get_json('strains')).done(function() {
       strains.build();
       profession_basic.build();
+      skills.build();
     })
   }
 
