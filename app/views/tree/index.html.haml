@@ -7,8 +7,20 @@
   Profile
   %hr
   Strain
+  %select{class: 'selectpicker show-tick', id: 'strain-dd'}
   %hr
   Professions
   %hr
   Filters
   %hr
+
+= javascript_include_tag 'bootstrap-select.min'
+= stylesheet_link_tag 'bootstrap-select.min'
+
+= stylesheet_link_tag 'configbar/configbar'
+= javascript_include_tag 'strains/strain_interface'
+= javascript_include_tag 'strains/strains'
+= javascript_include_tag 'dynaloader/dynaloader'
+
+:javascript
+  dynaloader.load_remote();

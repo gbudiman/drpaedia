@@ -1,7 +1,8 @@
 var dynaloader = (function() {
   var raw_data = {};
+  var proc_data = {};
 
-  var load = function() {
+  var load_remote = function() {
     $.when(get_json('advanced_cat'),
            get_json('concentration_cat'),
            get_json('profession_advanced'),
@@ -19,13 +20,13 @@ var dynaloader = (function() {
            get_json('strain_restriction'),
            get_json('strain_specs'),
            get_json('strain_stats'),
-           get_json('strain')).done(function() {
-
+           get_json('strains')).done(function() {
+      strains.build();
     })
   }
 
   var get_json = function(path) {
-    $.getJSON('/' + path + '.json', function(d) {
+    return $.getJSON('/' + path + '.json', function(d) {
       raw_data[path] = d;
     })
   }
@@ -35,11 +36,7 @@ var dynaloader = (function() {
   }
 
   return {
-    load: load,
-    get_raw_data: get_raw_data
+    load_remote: load_remote,
+    raw: get_raw_data
   }
 })()
-
-$(function() {
-  dynaloader.load();
-})
