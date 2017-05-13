@@ -30,6 +30,7 @@ var strain_interface = (function() {
 
   var set = function(x) {
     selected_strain = strains.data()[x];
+    profession_basic_interface.update();
   }
 
   return {

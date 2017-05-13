@@ -10,6 +10,16 @@
   %select{class: 'selectpicker show-tick', id: 'strain-dd'}
   %hr
   Professions
+  %div{id: 'profession-basic-config'}
+    %div{class: 'dropdown'}
+      %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-basic-profession', 'data-toggle' => 'dropdown'}
+        %span{class: 'glyphicon glyphicon-plus'}
+        &nbsp
+        Add Profession
+        %span{class: 'caret'}
+      %ul{class: 'dropdown-menu', id: 'basic-profession-list'}
+  %div{id: 'profession-conc-config'}
+  %div{id: 'profession-adv-config'}
   %hr
   Filters
   %hr
@@ -18,8 +28,12 @@
 = stylesheet_link_tag 'bootstrap-select.min'
 
 = stylesheet_link_tag 'configbar/configbar'
+= stylesheet_link_tag 'professions/style'
+= javascript_include_tag 'professions/interface_basic'
+= javascript_include_tag 'professions/basic'
 = javascript_include_tag 'strains/strain_interface'
 = javascript_include_tag 'strains/strains'
+= javascript_include_tag 'professions/basic'
 = javascript_include_tag 'dynaloader/dynaloader'
 
 :javascript
