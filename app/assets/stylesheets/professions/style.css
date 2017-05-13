@@ -2,6 +2,16 @@
   cursor: pointer;
 }
 
+.forget-profession {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.forgotten-basic-prof {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
 .dropdown-menu li a.restricted-profession {
   color: #aaa;
   cursor: default;
@@ -16,4 +26,9 @@
 
 .dropdown-menu li a {
   padding: 1px 12px;
+}
+
+#basic-limit-warning {
+  color: red;
+  display: none;
 }

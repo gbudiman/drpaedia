@@ -1,10 +1,11 @@
 var profession_basic_interface = (function() {
-  var selected = new Array();
-
   var add = function(prof) {
     profession_basic.add(prof);
 
-    var s = '<div>' + prof
+    var s = '<div>'
+          +   '<span class="basic-prof-name">' + prof + '</span>'
+          +   '<span class="forget-profession pull-right" data-prof="' + prof + '">F</span>'
+          +   '<span class="pull-right">&nbsp|&nbsp</span>'
           +   '<span class="glyphicon glyphicon-remove pull-right remove-profession" data-prof="' + prof + '"></span>'
           + '</div>';
 
@@ -14,6 +15,25 @@ var profession_basic_interface = (function() {
       var target_prof = $(this).attr('data-prof');
       $(this).parent().remove();
       profession_basic.remove(target_prof);
+    })
+
+    $('#profession-basic-config')
+      .find('.forget-profession').off('click').on('click', function() {
+      var that = $(this);
+      var target_prof = $(this).attr('data-prof');
+      var anchor = $(this).parent().find('.basic-prof-name');
+
+      if (anchor.hasClass('forgotten-basic-prof')) {
+        anchor.removeClass('forgotten-basic-prof');
+        profession_basic.unforget(target_prof);
+        that.text('F');
+      } else {
+        anchor.addClass('forgotten-basic-prof');
+        profession_basic.forget(target_prof);
+        that.text('U');
+      }
+      
+      
     })
   }
 
@@ -42,6 +62,15 @@ var profession_basic_interface = (function() {
     })
 
     
+  }
+
+  var disable_limit_warning = function(x, overlimit) {
+    if (x) {
+      $('#basic-limit-warning').hide();
+    } else {
+      $('#basic-overlimit').text(overlimit);
+      $('#basic-limit-warning').show();
+    }
   }
 
   var get_selected = function() {
@@ -87,6 +116,7 @@ var profession_basic_interface = (function() {
 
   return {
     build: build,
+    disable_limit_warning: disable_limit_warning,
     selected: get_selected,
     update_profession_added: update_profession_added,
     update_profession_removed: update_profession_removed,

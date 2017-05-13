@@ -9,7 +9,7 @@
   Strain
   %select{class: 'selectpicker show-tick', id: 'strain-dd'}
   %hr
-  Professions
+  Purchased Professions
   %div{id: 'profession-basic-config'}
     %div{class: 'dropdown'}
       %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-basic-profession', 'data-toggle' => 'dropdown'}
@@ -18,6 +18,12 @@
         Add Profession
         %span{class: 'caret'}
       %ul{class: 'dropdown-menu', id: 'basic-profession-list'}
+
+    %div{id: 'basic-limit-warning'} 
+      Profession limit exceeded. Please remove or forget 
+      %span{id: 'basic-overlimit'}0
+      professions
+
   %div{id: 'profession-conc-config'}
   %div{id: 'profession-adv-config'}
   %hr
