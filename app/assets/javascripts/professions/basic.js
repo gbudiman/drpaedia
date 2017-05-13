@@ -5,10 +5,12 @@ var profession_basic = (function() {
 
   var add = function(x) {
     selected[x] = true;
+    profession_basic_interface.update_profession_added(x);
   }
 
   var remove = function(x) {
     delete selected[x];
+    profession_basic_interface.update_profession_removed(x);
   }
 
   var build = function() {
@@ -32,8 +34,13 @@ var profession_basic = (function() {
     return selected;
   }
 
-  var update = function() {
-    restricted = strain_interface.selected.restriction;
+  var update_strain_change = function() {
+    restricted = strain_interface.selected().restriction;
+    $.each(restricted, function(k, v) {
+      console.log('removing ' + k);
+      remove(k);
+    })
+    profession_basic_interface.update_strain_change();
   }
 
   return {
@@ -43,6 +50,6 @@ var profession_basic = (function() {
     build: build,
     selected: get_selected,
     restricted: get_restricted,
-    update: update
+    update_strain_change: update_strain_change
   }
 })()

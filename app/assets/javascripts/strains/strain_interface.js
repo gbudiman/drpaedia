@@ -4,6 +4,7 @@ var strain_interface = (function() {
   var attach = function() {
     $('#strain-dd').on('changed.bs.select', function() {
       var new_value = $('#strain-dd').val();
+      set(new_value);
     })
   }
 
@@ -30,7 +31,7 @@ var strain_interface = (function() {
 
   var set = function(x) {
     selected_strain = strains.data()[x];
-    profession_basic_interface.update();
+    profession_basic.update_strain_change();
   }
 
   return {
