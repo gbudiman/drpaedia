@@ -11,7 +11,7 @@ var skill_interface = (function() {
          +   'data-type="' + data[k].type + '" ' 
          +   'data-accessible=false '
          +   'data-discounted=false '
-         + '">'
+         + '>'
          +   k
          +   '<span class="badge badge-default skill-cost pull-right" id="' + shorthand + '-cost" data-badge="skill-cost"></span>'
          + '</div>';
