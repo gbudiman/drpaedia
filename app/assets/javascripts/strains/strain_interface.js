@@ -33,6 +33,9 @@ var strain_interface = (function() {
     selected_strain = x;
     profession_basic.update_strain_change();
     skills.update_availability(true);
+
+    var stats = strains.data()[x].stats;
+    stats_interface.update(stats.hp, stats.mp, stats.infection);
   }
 
   return {
