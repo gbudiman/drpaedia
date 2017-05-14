@@ -60,6 +60,7 @@ var skills = (function() {
     skill_interface.build(data);
     update_availability(false);
     skill_popup.attach();
+    dragdrop.attach();
   }
 
   var constraint_satisfied = function(d) {

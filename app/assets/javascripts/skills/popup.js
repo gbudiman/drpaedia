@@ -18,7 +18,8 @@ var skill_popup = function() {
       $('#' + id).popover({
         content: 'Loading...',
         trigger: 'manual',
-        html: true
+        html: true,
+        placement: 'auto bottom',
       })
 
       data[id] = true;

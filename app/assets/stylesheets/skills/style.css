@@ -9,7 +9,7 @@
 
 .skill {
   cursor: pointer;
-  background-color: white;
+  //background-color: white;
   border-bottom: 1px solid #ddd;
   padding: 2px 4px 2px 4px;
 }
@@ -52,4 +52,18 @@
 
 .cond-error {
   color: red;
+}
+
+.skill-selected {}
+
+.drop-highlight {
+  background-color: #dff0d8;
+  border-color: #3f5f38;
+  cursor: pointer;
+}
+
+.drop-highlight-group {
+  background-color: #3071a9;
+  color: white;
+  cursor: pointer;
 }

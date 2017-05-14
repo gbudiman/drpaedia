@@ -1,3 +1,19 @@
 .tool .glyphicon {
   cursor: pointer;
 }
+
+#tool-separator-base {
+  display: none;
+}
+
+#tool-stat-planner-base {
+  display: none;
+}
+
+#tool-checkin-marker-base {
+  display: none;
+}
+
+#tool-profession-planner-base {
+  display: none;
+}

@@ -10,6 +10,7 @@ var tooling = function() {
   var attach_dropdown_event = function() {
     $('button.dropdown-tool').on('click', function() {
       hide_popover();
+      skill_popup.hide();
     })
   }
 
@@ -70,6 +71,10 @@ var tooling = function() {
         popover_caller = $(this);
         popover_caller.popover('toggle');
       })
+    })
+
+    obj.on('click', function() {
+      dragdrop.drop($(this));
     })
   }
 
