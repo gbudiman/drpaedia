@@ -44,15 +44,74 @@
   = render 'stat_hp'
   = render 'stat_mp'
   = render 'stat_inf'
+  %div{class: 'col-xs-12'}
+    %hr
+  = render 'xp_summary'
 
+  %div{class: 'col-xs-12'}
+    %hr
+
+  %div{class: 'col-xs-12'} 
+    Acquired Skills
+    %div{class: 'drop-container', id: 'skills-acquired'}
+
+  %div{class: 'col-xs-12'} 
+    Planned Skills
+    %div{class: 'btn-group pull-right'}
+      %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
+        Add
+        %span{class: 'caret'}
+      %ul{class: 'dropdown-menu'}
+        %li
+          %a{href: '#', id: 'tool-separator'} Separator
+          %a{href: '#', id: 'tool-stat-planner'} Stat Planner
+          %a{href: '#', id: 'tool-checkin-marker'} Checkin Marker
+          %a{href: '#', id: 'tool-profession-planner'} Profession Planner
+    %div{class: 'row'}
+    %div{class: 'drop-container', id: 'skills-planned'}
+
+%div{id: 'tool-separator-base', class: 'tool'}
+  %span{class: 'glyphicon glyphicon-arrow-down'}
+  %span{class: 'tool-text tool-editable'} Separator
+  %span{class: 'glyphicon glyphicon-option-horizontal'}
+  %span{class: 'glyphicon glyphicon-arrow-up pull-right'}
+
+%div{id: 'tool-stat-planner-base', class: 'tool'}
+  %span{class: 'glyphicon glyphicon-arrow-down'}
+  %span{class: 'glyphicon glyphicon-refresh'}
+  %span{class: 'tool-option'} HP
+  %span{class: 'glyphicon glyphicon-minus'}
+  %span{class: 'tool-text badge'} 0
+  %span{class: 'glyphicon glyphicon-plus'}
+  %span{class: 'glyphicon glyphicon-option-horizontal'}
+  %span{class: 'glyphicon glyphicon-arrow-up pull-right'}
+
+%div{id: 'tool-checkin-marker-base', class: 'tool'}
+  %span{class: 'glyphicon glyphicon-arrow-down'}
+  %span{class: 'tool-text tool-editable'} Checkin XP
+  %span{class: 'glyphicon glyphicon-minus'}
+  %span{class: 'tool-text badge'} 0
+  %span{class: 'glyphicon glyphicon-plus'}
+  %span{class: 'glyphicon glyphicon-option-horizontal'}
+  %span{class: 'glyphicon glyphicon-arrow-up pull-right'}
+
+%div{id: 'tool-profession-planner-base', class: 'tool'}
+  %span{class: 'glyphicon glyphicon-arrow-down'}
+  %select{class: 'selectpicker'}
+  %span{class: 'glyphicon glyphicon-option-horizontal'}
+  %span{class: 'glyphicon glyphicon-arrow-up pull-right'}
 
 = stylesheet_link_tag 'style'
+= javascript_include_tag 'bootstrap-editable.min'
 = javascript_include_tag 'bootstrap-select.min'
+= stylesheet_link_tag 'bootstrap-editable'
 = stylesheet_link_tag 'bootstrap-select.min'
 = stylesheet_link_tag 'configbar/configbar'
 = stylesheet_link_tag 'professions/style'
 = stylesheet_link_tag 'skills/style'
+= stylesheet_link_tag 'tooling/style'
 = javascript_include_tag 'filterview/filterview'
+= javascript_include_tag 'tooling/tooling'
 = javascript_include_tag 'stats/stats_interface'
 = javascript_include_tag 'skills/popup'
 = javascript_include_tag 'skills/skill_interface'
@@ -68,3 +127,4 @@
   dynaloader.load_remote();
   filterview.attach();
   stats_interface.attach();
+  tooling.attach();

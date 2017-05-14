@@ -16,5 +16,7 @@ Rails.application.config.assets.precompile += %w( style.css
                                                   skills/*.js skills/*.css 
                                                   stats/*.js
                                                   strains/*.js strains/*.css 
+                                                  tooling/*.js tooling/*.css
                                                   professions/*.js professions/*.css 
-                                                  bootstrap-select.min.* )
+                                                  bootstrap-select.min.*
+                                                  bootstrap-editable.* )
