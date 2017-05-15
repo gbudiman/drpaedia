@@ -75,7 +75,6 @@ var dragdrop = (function() {
       }
     })
 
-    console.log(selected);
     deselect_all();
     highlight_drop_handle(false);
     skill_popup.hide();

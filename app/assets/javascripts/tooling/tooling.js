@@ -101,20 +101,92 @@ var tooling = function() {
     }
   }
 
+  var find_end_of_group_from = function(obj) {
+    console.log('running search from');
+    console.log(obj);
+    var current_obj = obj.next();
+    var prev_obj = obj;
+
+    while (current_obj.length > 0) {
+      console.log('iterating');
+      console.log(current_obj);
+      if (is_group(current_obj)) {
+        console.log('returning because found group');
+        return prev_obj;
+      }
+
+      prev_obj = current_obj;
+      current_obj = current_obj.next();
+    }
+
+    console.log('returning because no more siblings');
+    return prev_obj;
+  }
+
   var move = function(obj, direction) {
+    var objs = new Array();
     hide_popover();
     var anchor;
 
-    if (direction == 'up') {
-      anchor = obj.prev();
-    } else if (direction == 'down') {
-      anchor = obj.next();
+    if (is_group(obj)) {
+      var maybe_anchor;
+      if (direction == 'up') {
+        maybe_anchor = obj.prev();
+      } else if (direction == 'down') {
+        maybe_anchor = obj.next();
+      }
+
+      while (maybe_anchor.length > 0) {
+        if (is_group(maybe_anchor)) {
+          if (direction == 'down') {
+            anchor = find_end_of_group_from(maybe_anchor);
+          } else if (direction == 'up') {
+            anchor = maybe_anchor;
+          }
+          break;
+        }
+        if (direction == 'up') {
+          maybe_anchor = maybe_anchor.prev();
+        } else if (direction == 'down') {
+          maybe_anchor = maybe_anchor.next();
+        }
+      }
+    } else {
+      if (direction == 'up') {
+        anchor = obj.prev();
+      } else if (direction == 'down') {
+        anchor = obj.next();
+      }
     }
 
+    console.log(anchor);
     if (anchor == null) return;
 
-    if (direction == 'up') { obj.insertBefore(anchor); }
-    else if (direction == 'down') { obj.insertAfter(anchor); }
+    objs.push(obj);
+
+    if (is_group(obj)) {
+      var current_obj = obj.next();
+     
+      while (current_obj.length > 0) {
+        if (is_group(current_obj)) break;
+        objs.push(current_obj);
+        current_obj = current_obj.next();
+      } 
+    }
+
+    console.log('objects to move around: ');
+    console.log(objs);
+
+    var ordered = objs;
+
+    if (direction == 'down') {
+      ordered = ordered.reverse();
+    }
+
+    $.each(objs, function(i, x) {
+      if (direction == 'up') { x.insertBefore(anchor); }
+      else if (direction == 'down') { x.insertAfter(anchor); }
+    })
   }
 
   var more_options = function(obj) {
@@ -136,6 +208,10 @@ var tooling = function() {
   }
 
   var attach_more_options_apply = function(obj) {
+  }
+
+  var is_group = function(obj) {
+    return obj.hasClass('tool-separator');
   }
 
   var hide_popover = function() {
