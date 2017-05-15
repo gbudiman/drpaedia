@@ -83,6 +83,7 @@ var dragdrop = (function() {
 
   var select = function(id, is_selected) {
     var is_skill_pool = $('#' + id).parent().attr('id') == 'skill-pool';
+    tooling.hide_popover();
 
     if (right_side_selected && is_skill_pool) {
       drop_alphabetically();

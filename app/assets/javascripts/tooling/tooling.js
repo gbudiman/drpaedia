@@ -98,18 +98,20 @@ var tooling = function() {
       target.text('MP');
     } else if (target.text() == 'MP') {
       target.text('HP');
+    } else if (target.text() == 'Basic') {
+      target.text('Conc');
+      obj.find('.tool-prof-xp').text('30');
+    } else if (target.text() == 'Conc') {
+      target.text('Basic');
+      obj.find('.tool-prof-xp').text('10');
     }
   }
 
   var find_end_of_group_from = function(obj) {
-    console.log('running search from');
-    console.log(obj);
     var current_obj = obj.next();
     var prev_obj = obj;
 
     while (current_obj.length > 0) {
-      console.log('iterating');
-      console.log(current_obj);
       if (is_group(current_obj)) {
         console.log('returning because found group');
         return prev_obj;
@@ -119,7 +121,6 @@ var tooling = function() {
       current_obj = current_obj.next();
     }
 
-    console.log('returning because no more siblings');
     return prev_obj;
   }
 
@@ -146,9 +147,13 @@ var tooling = function() {
           break;
         }
         if (direction == 'up') {
+          anchor = maybe_anchor;
           maybe_anchor = maybe_anchor.prev();
+          
         } else if (direction == 'down') {
+          anchor = maybe_anchor;
           maybe_anchor = maybe_anchor.next();
+          
         }
       }
     } else {
@@ -174,9 +179,6 @@ var tooling = function() {
       } 
     }
 
-    console.log('objects to move around: ');
-    console.log(objs);
-
     var ordered = objs;
 
     if (direction == 'down') {
@@ -193,7 +195,7 @@ var tooling = function() {
     obj.popover({
       trigger: 'manual',
       html: true,
-      content: generate_more_options(obj),
+      content: generate_more_options(obj.parent()),
       placement: 'top'
     }).on('shown.bs.popover', function() {
       apply_popover_interactivity();
@@ -205,9 +207,43 @@ var tooling = function() {
     popover.find('.glyphicon').parent().css('cursor', 'pointer');
 
     attach_more_options_apply(popover.find('.glyphicon-ok'));
+    attach_more_options_remove(popover.find('.glyphicon-remove').parent());
+    attach_more_options_remove_group(popover.find('.glyphicon-remove-circle').parent());
+    attach_close_popover(popover.find('.glyphicon-menu-down').parent());
+  }
+
+  var attach_more_options_remove = function(obj) {
+    obj.on('click', function() {
+      popover_caller.parent().remove();
+    })
+  }
+
+  var attach_more_options_remove_group = function(obj) {
+    obj.on('click', function() {
+      var objs = new Array();
+      var current_obj = popover_caller.parent();
+      objs.push(current_obj);
+      current_obj = current_obj.next();
+      
+      while (current_obj.length > 0) {
+        if (is_group(current_obj)) break;
+        objs.push(current_obj);
+        current_obj = current_obj.next();
+      }
+
+      $.each(objs, function(i, x) {
+        x.remove();
+      })
+    })
   }
 
   var attach_more_options_apply = function(obj) {
+  }
+
+  var attach_close_popover = function(obj) {
+    obj.on('click', function() {
+      popover_caller.popover('hide');
+    });
   }
 
   var is_group = function(obj) {
@@ -220,14 +256,28 @@ var tooling = function() {
   }
 
   var generate_more_options = function(obj) {
+    console.log(obj);
     var s = '';
-    s += '<div><span class="glyphicon glyphicon-ok"></span> Apply</div>';
+    if (obj.hasClass('tool-applicable')) {
+      s += '<div><span class="glyphicon glyphicon-ok"></span> Apply</div>';
+    }
+
+
     s += '<div><span class="glyphicon glyphicon-remove"></span> Remove</div>';
+
+    if (obj.hasClass('tool-separator')) {
+      s += '<div><span class="glyphicon glyphicon-remove-circle"></span> Remove all in this group</div>';
+    }
+
+
+    s += '<div><hr/></div>';
+    s += '<div><span class="glyphicon glyphicon-menu-down"></span> Close</div>';
 
     return s;
   }
 
   return {
-    attach: attach
+    attach: attach,
+    hide_popover: hide_popover
   }
 }()
