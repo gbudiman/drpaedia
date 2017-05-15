@@ -30,13 +30,31 @@ var tooling = function() {
     })
   }
 
+  var attach_handles = function(obj, enable) {
+    if (enable) {
+      if (obj.find('.glyphicon-arrow-up').length > 0) return;
+
+      var down = ' <span class="glyphicon glyphicon-arrow-down"></span> ';
+      var up = '<span class="glyphicon glyphicon-arrow-up pull-right"></span>';
+
+      obj.prepend(down);
+      obj.children().last().before(up);
+      activate(obj);
+    } else {
+      obj.find('.glyphicon-arrow-up').remove();
+      obj.find('.glyphicon-arrow-down').remove();
+    }
+  }
+
   var activate = function(obj) {
     obj.find('.glyphicon-arrow-down').on('click', function() {
       move($(this).parent(), 'down');
+      return false;
     })
 
     obj.find('.glyphicon-arrow-up').on('click', function() {
       move($(this).parent(), 'up');
+      return false;
     })
 
     obj.find('.glyphicon-refresh').on('click', function() {
@@ -75,6 +93,7 @@ var tooling = function() {
 
     obj.on('click', function() {
       dragdrop.drop($(this));
+      return false;
     })
   }
 
@@ -163,6 +182,7 @@ var tooling = function() {
       }
     }
 
+    console.log(anchor);
     if (anchor == null) return;
 
     objs.push(obj);
@@ -184,17 +204,32 @@ var tooling = function() {
     }
 
     $.each(objs, function(i, x) {
-      if (direction == 'up') { x.insertBefore(anchor); }
-      else if (direction == 'down') { x.insertAfter(anchor); }
+      console.log('inserting');
+      console.log(x);
+      console.log('anchor = ');
+      console.log(anchor);
+      console.log('----');
+
+      if (direction == 'up') { 
+        x.insertBefore(anchor); 
+      }
+      else if (direction == 'down') { 
+        x.insertAfter(anchor); 
+      }
     })
 
     auto_indent(obj.parent());
   }
 
-  var auto_indent = function(obj) {
+  var auto_indent = function(_obj) {
+    var obj = _obj;
     if (obj.attr('id') != 'skills-acquired' && obj.attr('id') != 'skills-planned') {
-      alert('WARNING! Auto indent on unsupported container ' + obj.attr('id'));
-      return;
+      if (obj.hasClass('skill')) {
+        obj = obj.parent();
+      } else {
+        alert('WARNING! Auto indent on unsupported container ' + obj.attr('id'));
+        return;
+      }
     }
 
     var state = 'init';
@@ -354,7 +389,9 @@ var tooling = function() {
 
   return {
     attach: attach,
+    attach_handles: attach_handles,
     auto_indent: auto_indent,
-    hide_popover: hide_popover
+    hide_popover: hide_popover,
+    is_group: is_group
   }
 }()

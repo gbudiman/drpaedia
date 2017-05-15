@@ -1,3 +1,7 @@
+.tool {
+  padding: 2px 4px;
+}
+
 .tool .glyphicon {
   cursor: pointer;
 }

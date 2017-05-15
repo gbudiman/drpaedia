@@ -33,18 +33,31 @@ var dragdrop = (function() {
     }
   }
 
+  var rectify_drop_parent = function(obj) {
+    if (!tooling.is_group(obj) && !obj.hasClass('drop-container')) {
+      return obj.parent();
+    }
+
+    return obj;
+  }
+
   var drop = function(obj) {
+    console.log('drop called');
     if (Object.keys(selected).length == 0) return;
     if ($('#' + last_trigger).parent().attr('id') == obj.attr('id')) return;
 
     var parent_container = obj;
     $.each(selected, function(id, v) {
+      var to_append = $('#' + id);
       if (obj.hasClass('tool-separator')) {
         parent_container = obj.parent();
-        $('#' + id).insertAfter(obj);
+        to_append.insertAfter(obj);
       } else {
-        $('#' + id).appendTo(obj);
+        rectified_obj = rectify_drop_parent(obj);
+        to_append.appendTo(rectified_obj);
       }
+
+      tooling.attach_handles(to_append, true);
     })
 
     skill_popup.hide();
@@ -67,6 +80,7 @@ var dragdrop = (function() {
       var skill_name = skills.hash(id);
       var anchor;
 
+      tooling.attach_handles(obj, false);
       $.each($('#skill-pool').find('[data-accessible]'), function() {
         var current_search = $(this).text();
 
