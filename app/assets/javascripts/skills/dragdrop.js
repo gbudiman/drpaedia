@@ -50,19 +50,24 @@ var dragdrop = (function() {
     highlight_drop_handle(false);
   }
 
+  var drop_selective = function(id, obj) {
+    selected = {};
+    selected[id] = true;
+    last_trigger = null;
+
+    drop(obj);
+  }
+
   var drop_alphabetically = function() {
     $.each(selected, function(id, v) {
       var obj = $('#' + id);
       var skill_name = skills.hash(id);
       var anchor;
 
-      console.log('dropping ' + skill_name);
-
       $.each($('#skill-pool').find('[data-accessible]'), function() {
         var current_search = $(this).text();
 
         if (current_search > skill_name) {
-          console.log('found to insert before ' + current_search);
           anchor = $(this).attr('id');
           return false;
         }
@@ -120,6 +125,7 @@ var dragdrop = (function() {
     attach: attach,
     deselect_all: deselect_all,
     drop: drop,
+    drop_selective: drop_selective,
     selected: function() { return selected; }
   }
 })()

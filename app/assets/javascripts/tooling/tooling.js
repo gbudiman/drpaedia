@@ -113,7 +113,6 @@ var tooling = function() {
 
     while (current_obj.length > 0) {
       if (is_group(current_obj)) {
-        console.log('returning because found group');
         return prev_obj;
       }
 
@@ -245,12 +244,14 @@ var tooling = function() {
         var current_obj = target.next();
 
         while (current_obj.length > 0) {
-          
           if (is_group(current_obj)) break;
 
-          apply_plan(current_obj);
-          stacks.push(current_obj);
-          current_obj = current_obj.next();
+          var cached_next = current_obj.next();
+          if (apply_plan(current_obj)) {
+            stacks.push(current_obj);
+          }
+
+          current_obj = cached_next;
         }
 
         $.each(stacks, function(i, x) {
@@ -258,8 +259,9 @@ var tooling = function() {
         })
       } 
 
-      apply_plan(target);
-      target.remove();
+      if (apply_plan(target)) {
+        target.remove();
+      }
     })
   }
 
@@ -270,7 +272,14 @@ var tooling = function() {
         stats_interface.adjust(option.text().toLowerCase(), 
                                parseInt(obj.find('.tool-text').text()));
       }
+
+      return true;
+    } else if (obj.hasClass('skill')) {
+      dragdrop.drop_selective(obj.attr('id'), $('#skills-acquired'));
+      return false;
     }
+
+    return true;
   }
 
   var attach_close_popover = function(obj) {
