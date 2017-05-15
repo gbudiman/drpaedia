@@ -187,6 +187,41 @@ var tooling = function() {
       if (direction == 'up') { x.insertBefore(anchor); }
       else if (direction == 'down') { x.insertAfter(anchor); }
     })
+
+    auto_indent(obj.parent());
+  }
+
+  var auto_indent = function(obj) {
+    if (obj.attr('id') != 'skills-acquired' && obj.attr('id') != 'skills-planned') {
+      alert('WARNING! Auto indent on unsupported container ' + obj.attr('id'));
+      return;
+    }
+
+    var state = 'init';
+    obj.children().each(function() {
+      var curr = $(this);
+
+      indent(curr, false);
+      if (is_group(curr)) {
+        state = 'indent';
+      } else {
+        if (is_group(curr)) {
+          // do not indent leading group
+        } else if (state == 'indent') {
+          indent(curr, true);
+        }
+      }
+    })
+  }
+
+  var indent = function(obj, apply) {
+    var marker_class = 'glyphicon-option-vertical';
+    if (apply) {
+      var s = '<span class="glyphicon ' + marker_class + '"></span>';
+      obj.prepend(s);
+    } else {
+      obj.find('.' + marker_class).remove();
+    }
   }
 
   var more_options = function(obj) {
@@ -319,6 +354,7 @@ var tooling = function() {
 
   return {
     attach: attach,
+    auto_indent: auto_indent,
     hide_popover: hide_popover
   }
 }()

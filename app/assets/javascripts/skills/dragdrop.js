@@ -37,8 +37,10 @@ var dragdrop = (function() {
     if (Object.keys(selected).length == 0) return;
     if ($('#' + last_trigger).parent().attr('id') == obj.attr('id')) return;
 
+    var parent_container = obj;
     $.each(selected, function(id, v) {
       if (obj.hasClass('tool-separator')) {
+        parent_container = obj.parent();
         $('#' + id).insertAfter(obj);
       } else {
         $('#' + id).appendTo(obj);
@@ -48,6 +50,7 @@ var dragdrop = (function() {
     skill_popup.hide();
     deselect_all();
     highlight_drop_handle(false);
+    tooling.auto_indent(parent_container);
   }
 
   var drop_selective = function(id, obj) {
