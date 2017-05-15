@@ -164,7 +164,6 @@ var tooling = function() {
       }
     }
 
-    console.log(anchor);
     if (anchor == null) return;
 
     objs.push(obj);
@@ -206,7 +205,7 @@ var tooling = function() {
     var popover = $('.popover');
     popover.find('.glyphicon').parent().css('cursor', 'pointer');
 
-    attach_more_options_apply(popover.find('.glyphicon-ok'));
+    attach_more_options_apply(popover.find('.glyphicon-ok').parent());
     attach_more_options_remove(popover.find('.glyphicon-remove').parent());
     attach_more_options_remove_group(popover.find('.glyphicon-remove-circle').parent());
     attach_close_popover(popover.find('.glyphicon-menu-down').parent());
@@ -224,7 +223,7 @@ var tooling = function() {
       var current_obj = popover_caller.parent();
       objs.push(current_obj);
       current_obj = current_obj.next();
-      
+
       while (current_obj.length > 0) {
         if (is_group(current_obj)) break;
         objs.push(current_obj);
@@ -238,6 +237,40 @@ var tooling = function() {
   }
 
   var attach_more_options_apply = function(obj) {
+    obj.on('click', function() {
+      var target = popover_caller.parent();
+
+      if (target.hasClass('tool-separator')) {
+        var stacks = new Array();
+        var current_obj = target.next();
+
+        while (current_obj.length > 0) {
+          
+          if (is_group(current_obj)) break;
+
+          apply_plan(current_obj);
+          stacks.push(current_obj);
+          current_obj = current_obj.next();
+        }
+
+        $.each(stacks, function(i, x) {
+          x.remove();
+        })
+      } 
+
+      apply_plan(target);
+      target.remove();
+    })
+  }
+
+  var apply_plan = function(obj) {
+    if (obj.hasClass('tool-applicable')) {
+      var option = obj.find('.tool-stat');
+      if (option.length > 0) {
+        stats_interface.adjust(option.text().toLowerCase(), 
+                               parseInt(obj.find('.tool-text').text()));
+      }
+    }
   }
 
   var attach_close_popover = function(obj) {
@@ -256,7 +289,6 @@ var tooling = function() {
   }
 
   var generate_more_options = function(obj) {
-    console.log(obj);
     var s = '';
     if (obj.hasClass('tool-applicable')) {
       s += '<div><span class="glyphicon glyphicon-ok"></span> Apply</div>';

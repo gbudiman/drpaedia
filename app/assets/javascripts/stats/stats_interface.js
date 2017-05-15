@@ -66,6 +66,7 @@ var stats_interface = function() {
   }
 
   return {
+    adjust: adjust,
     attach: attach,
     update: update
   }
