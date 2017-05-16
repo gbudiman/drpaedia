@@ -43,6 +43,26 @@ var skill_popup = function() {
     current_click = id;
   }
 
+  var append_preqs = function(skill, key) {
+    if (skills.has_tier(skill)) return '';
+    var o = skill_preq.get_specific(skill, key);
+
+    var join_list = function(list, needle) {
+      var s = [];
+      $.each(list, function(k, v) {
+        s.push(k + ' (' + skills.get_cost(k, v) + ')');
+      })
+      return s.join(needle);
+    }
+    
+    if (o != undefined && o.list != undefined) {
+      var needle = o.predicate == 'and' ? ' & ' : ' | ';
+      return '&raquo; ' + join_list(o.list, needle);
+    }
+
+    return '';
+  }
+
   var get_details = function(id) {
     var s = '';
     var skill_name = skills.hash(id);
@@ -56,6 +76,9 @@ var skill_popup = function() {
     var has_strain = (cond.innate != undefined && cond.innate.length > 0)
                   || (cond.innate_disadvantage != undefined && cond.innate_disadvantage > 0)
                   || (cond.innate_disabled != undefined && cond.innate_disabled > 0)
+    var preqs = skill_preq.get(skill_name);
+
+    console.log(preqs);
 
     if (is_open) {
       s += '<div>Open: ' + cond.open + '</div><hr/>';
@@ -71,12 +94,14 @@ var skill_popup = function() {
     $.each(cond.innate, function(i, x) {
       if (strain == x) { innate_class = 'cond-cheapest'; }
       s += '<div class="' + innate_class + '">' + x + ': ' + 3 + '</div>';
+      s += append_preqs(skill_name, x);
     })
 
     innate_class = 'cond-disabled';
     $.each(cond.innate_disadvantage, function(i, x) {
       if (strain == x) { innate_class = 'cond-error'; }
       s += '<div class="' + innate_class + '">' + x + ': [x2]</div>';
+      s += append_preqs(skill_name, x);
     })
 
     innate_class = 'cond-disabled';
@@ -115,6 +140,7 @@ var skill_popup = function() {
         
 
         s += '<div class="' + profession_class + '">' + k + ': ' + v.cost + '</div>';
+        s += append_preqs(skill_name, k);
       }
     })
 

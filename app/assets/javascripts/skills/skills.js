@@ -137,6 +137,15 @@ var skills = (function() {
 
   var get_data = function() { return data; }
   var get_hash = function(id) { return skill_hash[id]; }
+  var get_cost = function(skill, key) {
+    var g = data[skill].conditions;
+
+    if (g[key] == null) {
+      if (g.innate != undefined) { return 3; }
+    }
+
+    return g[key].cost;
+  }
 
   var update_availability = function(reset_all) {
     get_config();
@@ -152,11 +161,17 @@ var skills = (function() {
     skill_interface.apply_filters();
   }
 
+  var has_tier = function(skill) {
+    return skill.match(/\s(I|II|III|IV|V)$/);
+  }
+
   return {
     build: build,
     constraint_satisfied: constraint_satisfied,
     data: get_data,
     get_config: get_config,
+    get_cost: get_cost,
+    has_tier: has_tier,
     hash: get_hash,
     update_availability: update_availability
   }

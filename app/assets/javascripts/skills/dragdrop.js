@@ -42,7 +42,6 @@ var dragdrop = (function() {
   }
 
   var drop = function(obj) {
-    console.log('drop called');
     if (Object.keys(selected).length == 0) return;
     if ($('#' + last_trigger).parent().attr('id') == obj.attr('id')) return;
 

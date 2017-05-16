@@ -182,7 +182,6 @@ var tooling = function() {
       }
     }
 
-    console.log(anchor);
     if (anchor == null) return;
 
     objs.push(obj);
@@ -204,12 +203,6 @@ var tooling = function() {
     }
 
     $.each(objs, function(i, x) {
-      console.log('inserting');
-      console.log(x);
-      console.log('anchor = ');
-      console.log(anchor);
-      console.log('----');
-
       if (direction == 'up') { 
         x.insertBefore(anchor); 
       }
