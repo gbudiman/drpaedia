@@ -43,6 +43,7 @@ var dragdrop = (function() {
 
   var drop = function(obj) {
     if (Object.keys(selected).length == 0) return;
+    if (last_trigger == obj.attr('id')) return;
     if ($('#' + last_trigger).parent().attr('id') == obj.attr('id')) return;
 
     var parent_container = obj;
@@ -111,15 +112,19 @@ var dragdrop = (function() {
       return false;
     }
 
+    var clicked = $('#' + id);
+    if (clicked.attr('data-accessible') == 'false') return;
+
     if (is_selected) {
       delete selected[id];
-      $('#' + id).removeClass('bg-warning');
+      clicked.removeClass('bg-warning');
       highlight_drop_handle(false);
     } else {
+      console.log(clicked);
       selected[id] = true;
-      $('#' + id).addClass('bg-warning');
+      clicked.addClass('bg-warning');
 
-      var parent_id = $('#' + id).parent().attr('id');
+      var parent_id = clicked.parent().attr('id');
       if (parent_id == 'skills-planned' || parent_id == 'skills-acquired') {
         right_side_selected = true;
       }
