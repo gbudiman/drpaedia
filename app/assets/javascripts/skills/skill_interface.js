@@ -49,6 +49,9 @@ var skill_interface = (function() {
       .addClass('skill-infancy')
       .attr('data-accessible', false)
       .attr('data-discounted', false)
+      .find('span.badge')
+        .removeClass('badge-success')
+
 
     $('span[data-badge]').text('');
   }

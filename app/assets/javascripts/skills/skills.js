@@ -69,6 +69,8 @@ var skills = (function() {
     var is_open = false;
     var is_disadvantaged = false;
 
+    get_config();
+
     if (d.conditions.open != undefined) { 
       is_satisfied = true; 
       possible_costs[d.conditions.open] = true;

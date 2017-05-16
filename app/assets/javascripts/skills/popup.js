@@ -20,6 +20,7 @@ var skill_popup = function() {
         trigger: 'manual',
         html: true,
         placement: 'auto bottom',
+        container: 'body'
       })
 
       data[id] = true;
@@ -78,7 +79,6 @@ var skill_popup = function() {
                   || (cond.innate_disabled != undefined && cond.innate_disabled > 0)
     var preqs = skill_preq.get(skill_name);
 
-    console.log(preqs);
 
     if (is_open) {
       s += '<div>Open: ' + cond.open + '</div><hr/>';
