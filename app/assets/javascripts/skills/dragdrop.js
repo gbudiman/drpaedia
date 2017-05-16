@@ -74,6 +74,14 @@ var dragdrop = (function() {
     drop(obj);
   }
 
+  var drop_to_pool = function(id) {
+    selected = {};
+    selected[id] = true;
+    last_trigger = null;
+
+    drop_alphabetically();
+  }
+
   var drop_alphabetically = function() {
     $.each(selected, function(id, v) {
       var obj = $('#' + id);
@@ -147,6 +155,7 @@ var dragdrop = (function() {
     deselect_all: deselect_all,
     drop: drop,
     drop_selective: drop_selective,
+    drop_to_pool: drop_to_pool,
     selected: function() { return selected; }
   }
 })()

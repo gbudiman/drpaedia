@@ -26,6 +26,7 @@ var skill_popup = function() {
       data[id] = true;
     }
 
+    $('#' + id).data('bs.popover').options.content = get_details(id);
     if (current_click == id) {
       if (state == 'shown') {
         $('#' + id).popover('hide');
@@ -35,7 +36,7 @@ var skill_popup = function() {
         state = 'shown';
       }
     } else {
-      $('#' + id).data('bs.popover').options.content = get_details(id)
+      
       $('#' + current_click).popover('hide');
       $('#' + id).popover('show');
       state = 'shown';

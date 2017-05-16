@@ -34,7 +34,7 @@ var strain_interface = (function() {
     profession_basic.update_strain_change();
     skills.update_availability(true);
 
-    if (stratins.data()[x]) {
+    if (strains.data()[x]) {
       var stats = strains.data()[x].stats;
       stats_interface.update(stats.hp, stats.mp, stats.infection);
     } else {

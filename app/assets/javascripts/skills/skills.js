@@ -69,8 +69,6 @@ var skills = (function() {
     var is_open = false;
     var is_disadvantaged = false;
 
-    get_config();
-
     if (d.conditions.open != undefined) { 
       is_satisfied = true; 
       possible_costs[d.conditions.open] = true;
@@ -157,6 +155,9 @@ var skills = (function() {
       var constraint = constraint_satisfied(v);
       if (constraint.is_satisfied) {
         skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
+      } else {
+        //console.log(k + ' is no longer satisfied');
+        skill_interface.remove(v.shorthand);
       }
     })
 

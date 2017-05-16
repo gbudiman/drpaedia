@@ -44,6 +44,18 @@ var skill_interface = (function() {
     return parseInt(a) - parseInt(b);
   }
 
+  var remove = function(id) {
+    var obj = $('#' + id);
+    var cost = $('#' + id + '-cost');
+    obj
+      .attr('data-accessible', false)
+      .attr('data-discounted', false);
+
+    cost.removeClass('badge-success');
+    cost.text('');
+    dragdrop.drop_to_pool(id);
+  }
+
   var reset_all = function() {
     $('div[data-accessible]')
       .addClass('skill-infancy')
@@ -60,6 +72,7 @@ var skill_interface = (function() {
     apply_filters: apply_filters,
     build: build,
     display: display,
+    remove: remove,
     reset_all: reset_all
   }
 })()
