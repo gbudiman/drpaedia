@@ -21,11 +21,13 @@ var tooling = function() {
     attach_object('tool-profession-planner', target);
   }
 
-  var attach_object = function(type, target) {
+  var attach_object = function(type, target_id) {
     $('#' + type).on('click', function(event) {
+      var target = $('#' + target_id);
       var cloned = $('#' + type + '-base').clone(true, true);
-      cloned.removeAttr('id').appendTo('#' + target);
+      cloned.removeAttr('id').appendTo(target);
       activate(cloned);
+      auto_indent(target);
       event.preventDefault();
     })
   }
@@ -218,12 +220,13 @@ var tooling = function() {
   var auto_indent = function(_obj) {
     var obj = _obj;
     if (obj.attr('id') != 'skills-acquired' && obj.attr('id') != 'skills-planned') {
-      if (obj.hasClass('skill')) {
+      obj = obj.parent();
+      /*if (obj.hasClass('skill')) {
         obj = obj.parent();
       } else {
         alert('WARNING! Auto indent on unsupported container ' + obj.attr('id'));
         return;
-      }
+      }*/
     }
 
     var state = 'init';

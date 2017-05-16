@@ -1,6 +1,6 @@
 var dragdrop = (function() {
   var selected = {};
-  var last_trigger;
+  var last_trigger = null;
   var right_side_selected = false;
 
   var attach = function() {
@@ -111,6 +111,24 @@ var dragdrop = (function() {
     return false;
   }
 
+  var get_parent_container = function(id) {
+    var current_id = null;
+    var current_obj = $('#' + id);
+
+    while (current_id != 'skill-pool' && current_id != 'skill-acquired' && current_id != 'skill-planned') {
+      current_obj = current_obj.parent();
+
+      if (current_obj.length == 0) {
+        //alert('Can\'t find parent countainer');
+        return null;
+      }
+
+      current_id = current_obj.attr('id');
+    }
+
+    return current_id;
+  }
+
   var select = function(id, is_selected) {
     var is_skill_pool = $('#' + id).parent().attr('id') == 'skill-pool';
     tooling.hide_popover();
@@ -120,7 +138,19 @@ var dragdrop = (function() {
       return false;
     }
 
+    var last_trigger_parent = get_parent_container(last_trigger);
+    var current_trigger_parent = get_parent_container(id);
+
+    console.log(last_trigger_parent + ' <> ' + current_trigger_parent + ' [' + is_selected + ']');
+    if (last_trigger_parent != null && (last_trigger_parent != current_trigger_parent)) {
+      drop(last_trigger_parent);
+      last_trigger = null;
+      return;
+    }
+
     var clicked = $('#' + id);
+
+    console.log(clicked);
     if (clicked.attr('data-accessible') == 'false') return;
 
     if (is_selected) {
@@ -128,7 +158,6 @@ var dragdrop = (function() {
       clicked.removeClass('bg-warning');
       highlight_drop_handle(false);
     } else {
-      console.log(clicked);
       selected[id] = true;
       clicked.addClass('bg-warning');
 
