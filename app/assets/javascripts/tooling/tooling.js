@@ -43,6 +43,7 @@ var tooling = function() {
     } else {
       obj.find('.glyphicon-arrow-up').remove();
       obj.find('.glyphicon-arrow-down').remove();
+      obj.find('.glyphicon-option-vertical').remove();
     }
   }
 
