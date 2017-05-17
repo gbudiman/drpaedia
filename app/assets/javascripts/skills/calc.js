@@ -19,11 +19,19 @@ var calc = function() {
     recalculate_tally();
   }
 
+  var recalculate_skills = function() {
+    recalculate('skills-planned');
+    recalculate('skills-acquired');
+    recalculate_top_level('skills');
+    recalculate_tally();
+  }
+
   var recalculate_purchased_stats = function() {
     data['stats-acquired'] = parseInt($('#stat-purchased-hp').val())
                            + parseInt($('#stat-purchased-mp').val());
 
-    $('#xp-stats-acquired').text(data['stats-acquired']);
+    //$('#xp-stats-acquired').text(data['stats-acquired']);
+    recalculate_top_level('stats');
     recalculate_tally();
   }
 
@@ -65,6 +73,7 @@ var calc = function() {
 
   return {
     recalculate_all: recalculate_all,
+    recalculate_skills: recalculate_skills,
     recalculate_planned_stats: recalculate_planned_stats,
     recalculate_purchased_stats: recalculate_purchased_stats
   }

@@ -78,7 +78,7 @@ var dragdrop = (function() {
     deselect_all();
     highlight_drop_handle(false);
     tooling.auto_indent(parent_container);
-    calc.recalculate_all();
+    calc.recalculate_skills();
   }
 
   var drop_selective = function(id, obj) {
@@ -118,7 +118,7 @@ var dragdrop = (function() {
     deselect_all();
     highlight_drop_handle(false);
     skill_popup.hide();
-    calc.recalculate_all();
+    calc.recalculate_skills();
     return false;
   }
 
