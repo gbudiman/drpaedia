@@ -53,15 +53,15 @@
 
   %div{class: 'col-xs-12'} 
     Acquired Skills
-    %span{class: 'badge', id: 'xp-acquired'} 0
+    %span{class: 'badge', id: 'skills-acquired-xp'} 0
     %div{class: 'drop-container', id: 'skills-acquired'}
 
   %div{class: 'col-xs-12'} 
     Planner 
     Stats
-    %span{class: 'badge', id: 'xp-planned-stats'} 0
+    %span{class: 'badge', id: 'skills-planned-stats'} 0
     Skills
-    %span{class: 'badge', id: 'xp-planned-skills'} 0
+    %span{class: 'badge', id: 'skills-planned-xp'} 0
     %div{class: 'btn-group pull-right'}
       %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
         Add
@@ -86,7 +86,7 @@
   %span{class: 'glyphicon glyphicon-refresh'}
   %span{class: 'tool-option tool-stat'} HP
   %span{class: 'glyphicon glyphicon-minus'}
-  %span{class: 'tool-text badge'} 0
+  %span{class: 'tool-text badge stat-cost'} 0
   %span{class: 'glyphicon glyphicon-plus'}
   %span{class: 'glyphicon glyphicon-option-horizontal'}
   %span{class: 'glyphicon glyphicon-arrow-up pull-right'}
@@ -119,6 +119,7 @@
 = stylesheet_link_tag 'skills/style'
 = stylesheet_link_tag 'tooling/style'
 = javascript_include_tag 'filterview/filterview'
+= javascript_include_tag 'calc/calc'
 = javascript_include_tag 'tooling/tooling'
 = javascript_include_tag 'stats/stats_interface'
 = javascript_include_tag 'skills/popup'

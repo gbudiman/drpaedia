@@ -11,6 +11,7 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( style.css 
                                                   configbar/configbar.css 
                                                   filterview/*.js 
+                                                  calc/*.js
                                                   configbar/*.js 
                                                   dynaloader/*.js 
                                                   skills/*.js skills/*.css 

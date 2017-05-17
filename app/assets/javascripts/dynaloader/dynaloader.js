@@ -1,6 +1,7 @@
 var dynaloader = (function() {
   var raw_data = {};
   var proc_data = {};
+  var delegate = {};
 
   var load_remote = function() {
     $.when(get_json('advanced_cat'),
@@ -37,8 +38,21 @@ var dynaloader = (function() {
     return raw_data;
   }
 
+  var set_delegate = function(name, after, x) {
+    delegate[name] = true;
+    x();
+    delete delegate[name];
+    after();
+  }
+
+  var has_delegations = function(x) {
+    return delegate[x] != undefined;
+  }
+
   return {
     load_remote: load_remote,
-    raw: get_raw_data
+    raw: get_raw_data,
+    has_delegations: has_delegations,
+    set_delegate: set_delegate
   }
 })()

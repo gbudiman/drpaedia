@@ -148,27 +148,29 @@ var skills = (function() {
   }
 
   var update_availability = function(reset_all) {
-    get_config();
-    skill_popup.hide();
-    var to_pool = new Array();
-    if (reset_all) { skill_interface.reset_all(); }
-    $.each(data, function(k, v) {
-      var constraint = constraint_satisfied(v);
-      if (constraint.is_satisfied) {
-        skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
-      } else {
-        //console.log(k + ' is no longer satisfied');
-        skill_interface.remove(v.shorthand);
-        to_pool.push(v.shorthand);
-      }
-    })
+    dynaloader.set_delegate('xp_calc', calc.recalculate_all, function() {
+      get_config();
+      skill_popup.hide();
+      var to_pool = new Array();
+      if (reset_all) { skill_interface.reset_all(); }
+      $.each(data, function(k, v) {
+        var constraint = constraint_satisfied(v);
+        if (constraint.is_satisfied) {
+          skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
+        } else {
+          //console.log(k + ' is no longer satisfied');
+          skill_interface.remove(v.shorthand);
+          to_pool.push(v.shorthand);
+        }
+      })
 
-    $.each(to_pool, function(i, x) {
-      dragdrop.drop_to_pool(x);
-    })
-    //skill_interface.sort_pool();
+      $.each(to_pool, function(i, x) {
+        dragdrop.drop_to_pool(x);
+      })
+      //skill_interface.sort_pool();
 
-    skill_interface.apply_filters();
+      skill_interface.apply_filters();
+    })
   }
 
   var has_tier = function(skill) {

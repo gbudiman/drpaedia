@@ -134,6 +134,7 @@ var tooling = function() {
     } 
 
     target.text(current_value + value);
+    calc.recalculate_planned_stats();
   }
 
   var alternate = function(obj) {

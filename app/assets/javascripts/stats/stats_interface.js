@@ -63,6 +63,7 @@ var stats_interface = function() {
     }
     target.text(sum);
     update_state(type);
+    calc.recalculate_purchased_stats();
   }
 
   return {
