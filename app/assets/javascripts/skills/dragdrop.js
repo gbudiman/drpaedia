@@ -47,6 +47,7 @@ var dragdrop = (function() {
 
   var drop = function(obj) {
     console.log('dropping to ' + obj.attr('id'));
+
     //console.log(last_trigger + ' <> ' + obj.attr('id'));
     /*if (Object.keys(selected).length == 0) return;
     if (last_trigger == obj.attr('id')) return;
@@ -83,6 +84,7 @@ var dragdrop = (function() {
 
   var drop_selective = function(id, obj) {
     deselect_all();
+    selected[id] = true;
     drop(obj);
   }
 

@@ -21,6 +21,7 @@ var profession_basic = (function() {
 
   var remove = function(x) {
     delete selected[x];
+    delete forgotten[x];
     profession_basic_interface.update_profession_removed(x);
     verify_count();
     skills.update_availability(true);
@@ -79,6 +80,7 @@ var profession_basic = (function() {
     var overlimit = Object.keys(selected).length - limit;
 
     profession_basic_interface.disable_limit_warning(within_limit, overlimit);
+    calc.recalculate_purchased_profession();
   }
 
   return {
@@ -91,6 +93,7 @@ var profession_basic = (function() {
     is_profession: is_profession,
     restricted: get_restricted,
     selected: get_selected,
+    forgotten: function() { return forgotten; },
     update_strain_change: update_strain_change
     
   }

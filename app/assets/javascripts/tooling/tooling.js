@@ -117,11 +117,12 @@ var tooling = function() {
 
     if (!obj.hasClass('skill')) {
       obj.on('click', function() {
-        //dragdrop.drop($(this));
         dragdrop.select_tool($(this));
         return false;
       })
     }
+
+    calc.recalculate_all();
   }
 
   var adjust = function(obj, value) {
@@ -148,9 +149,11 @@ var tooling = function() {
     } else if (target.text() == 'Basic') {
       target.text('Conc');
       obj.find('.tool-prof-xp').text('30');
+      calc.recalculate_planned_profession();
     } else if (target.text() == 'Conc') {
       target.text('Basic');
       obj.find('.tool-prof-xp').text('10');
+      calc.recalculate_planned_profession();
     }
   }
 
@@ -304,7 +307,10 @@ var tooling = function() {
 
   var attach_more_options_remove = function(obj) {
     obj.on('click', function() {
+      var cached = popover_caller.parent();
       popover_caller.parent().remove();
+
+      calc.recalculate_all();
     })
   }
 
@@ -324,6 +330,8 @@ var tooling = function() {
       $.each(objs, function(i, x) {
         x.remove();
       })
+
+      calc.recalculate_all();
     })
   }
 
@@ -354,6 +362,9 @@ var tooling = function() {
       if (apply_plan(target)) {
         target.remove();
       }
+
+      calc.recalculate_all();
+      return false;
     })
   }
 
