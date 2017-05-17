@@ -78,9 +78,30 @@ var tooling = function() {
 
     obj.find('.tool-editable').editable({
       type: 'text',
-      unsavedclass: null
+      unsavedclass: null,
+      placeholder: 'Enter new name...',
+      value: ''
     }).on('shown', function() {
-      hide_popover();
+      //hide_popover();
+      var that = $(this);
+      var input = $('.editable-popup').find('input');
+
+      if (that.text() == '<Unnamed>') {
+        input.val('');
+      } else {
+        input.val(that.text());
+      }
+
+      $('.editable-popup').find('.editable-submit').off('click').on('click', function() {
+        var caller = that;
+        var new_value = $(this).parent().parent().find('input').val();
+        if (new_value.trim().length == 0) {
+          new_value = '<Unnamed>';
+        }
+
+        caller.editable('hide');
+        caller.text(new_value);
+      })
     })
 
     $.each(obj.find('.glyphicon-option-horizontal'), function() {
@@ -94,10 +115,13 @@ var tooling = function() {
       })
     })
 
-    obj.on('click', function() {
-      dragdrop.drop($(this));
-      return false;
-    })
+    if (!obj.hasClass('skill')) {
+      obj.on('click', function() {
+        //dragdrop.drop($(this));
+        dragdrop.select_tool($(this));
+        return false;
+      })
+    }
   }
 
   var adjust = function(obj, value) {

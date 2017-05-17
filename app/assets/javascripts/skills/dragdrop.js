@@ -6,6 +6,7 @@ var dragdrop = (function() {
   var attach = function() {
     $('div[data-accessible]').on('click', function() {
       handle_drag($(this).attr('id'));
+      return false;
     })
 
     $('#skills-acquired').on('click', function() { drop($(this)); });
@@ -17,14 +18,17 @@ var dragdrop = (function() {
     select(id, selected[id] != undefined);
   }
 
-  var highlight_drop_handle = function(enable) {
+  var highlight_drop_handle = function(mask) {
+    enable = Object.keys(selected).length > 0;
     if (enable) {
       $('#skill-pool').addClass('drop-highlight');
       $('#skills-acquired').addClass('drop-highlight');
       $('#skills-planned').addClass('drop-highlight');
       $('.tool-separator').addClass('drop-highlight-group');
 
-      $('#' + last_trigger).parent().removeClass('drop-highlight');
+      mask.removeClass('drop-highlight drop-highlight-group');
+
+      //$('#' + last_trigger).parent().removeClass('drop-highlight');
     } else {
       $('#skill-pool').removeClass('drop-highlight');
       $('#skills-acquired').removeClass('drop-highlight');
@@ -42,9 +46,14 @@ var dragdrop = (function() {
   }
 
   var drop = function(obj) {
-    if (Object.keys(selected).length == 0) return;
+    console.log('dropping to ' + obj.attr('id'));
+    //console.log(last_trigger + ' <> ' + obj.attr('id'));
+    /*if (Object.keys(selected).length == 0) return;
     if (last_trigger == obj.attr('id')) return;
     if ($('#' + last_trigger).parent().attr('id') == obj.attr('id')) return;
+*/
+
+    var drop_to_pool = obj.attr('id') == 'skill-pool';
 
     var parent_container = obj;
     $.each(selected, function(id, v) {
@@ -52,12 +61,17 @@ var dragdrop = (function() {
       if (obj.hasClass('tool-separator')) {
         parent_container = obj.parent();
         to_append.insertAfter(obj);
+        tooling.attach_handles(to_append, true);
+      } else if (drop_to_pool) {
+        drop_alphabetically();
+        tooling.attach_handles(to_append, false);
       } else {
         rectified_obj = rectify_drop_parent(obj);
         to_append.appendTo(rectified_obj);
+        tooling.attach_handles(to_append, true);
       }
 
-      tooling.attach_handles(to_append, true);
+      
     })
 
     skill_popup.hide();
@@ -111,11 +125,11 @@ var dragdrop = (function() {
     return false;
   }
 
-  var get_parent_container = function(id) {
+  var get_parent_container = function(obj) {
     var current_id = null;
-    var current_obj = $('#' + id);
+    var current_obj = obj
 
-    while (current_id != 'skill-pool' && current_id != 'skill-acquired' && current_id != 'skill-planned') {
+    while (current_id != 'skill-pool' && current_id != 'skills-acquired' && current_id != 'skills-planned') {
       current_obj = current_obj.parent();
 
       if (current_obj.length == 0) {
@@ -126,11 +140,72 @@ var dragdrop = (function() {
       current_id = current_obj.attr('id');
     }
 
-    return current_id;
+    return current_obj;
+  }
+
+  var get_parent_group_or_container = function(obj) {
+    var current_id = null;
+    var current_obj = obj;
+
+    while (current_id != 'skills-acquired' && current_id != 'skills-planned' && !current_obj.hasClass('tool-separator')) {
+      current_obj = current_obj.prev();
+
+      if (current_obj.length == 0) {
+        return null;
+      }
+
+      current_id = current_obj.attr('id');
+    }
+
+    return current_obj;
+  }
+
+  var select_tool = function(obj) {
+    if (has_selected()) {
+      drop(get_parent_group_or_container(obj));
+    }
+  }
+
+  var _select = function(obj, id, value) {
+    var mask = get_parent_container(obj);
+    if (value) {
+      delete selected[id];
+      obj.removeClass('bg-warning');
+    } else {
+      selected[id] = true;
+      obj.addClass('bg-warning');
+    }
+
+    highlight_drop_handle(mask);
+  }
+
+  var has_selected = function() {
+    return Object.keys(selected).length > 0;
   }
 
   var select = function(id, is_selected) {
-    var is_skill_pool = $('#' + id).parent().attr('id') == 'skill-pool';
+    var obj = $('#' + id);
+    var current_trigger = get_parent_container(obj).attr('id');
+
+    console.log('Select triggered on skill ID ' + id + ' [' + is_selected + ']');
+    console.log('Last <> Curr: ' + last_trigger + ' <> ' + current_trigger);
+    console.log('Has selected: ' + has_selected());
+    // if (is_selected) {
+    //   _select(obj, id, false);
+    // } else {
+    //   _select(obj, )
+    // }
+
+    if (last_trigger == null
+        || (!has_selected())
+        || ( has_selected() && current_trigger == last_trigger)) {
+      last_trigger = get_parent_container(obj).attr('id');
+      _select(obj, id, is_selected);
+    } else {
+      drop(get_parent_container(obj));
+    }
+    
+    /*var is_skill_pool = $('#' + id).parent().attr('id') == 'skill-pool';
     tooling.hide_popover();
 
     if (right_side_selected && is_skill_pool) {
@@ -149,14 +224,19 @@ var dragdrop = (function() {
     }
 
     var clicked = $('#' + id);
-
-    console.log(clicked);
     if (clicked.attr('data-accessible') == 'false') return;
 
     if (is_selected) {
       delete selected[id];
       clicked.removeClass('bg-warning');
       highlight_drop_handle(false);
+
+      var parent_id = clicked.parent().attr('id');
+      if (Object.keys(selected).length == 0 &&
+          (parent_id == 'skills-planned' || parent_id == 'skills-acquired')) {
+        right_side_selected = false;
+      } 
+      //last_trigger = null;
     } else {
       selected[id] = true;
       clicked.addClass('bg-warning');
@@ -164,10 +244,10 @@ var dragdrop = (function() {
       var parent_id = clicked.parent().attr('id');
       if (parent_id == 'skills-planned' || parent_id == 'skills-acquired') {
         right_side_selected = true;
-      }
+      } 
       last_trigger = id;
       highlight_drop_handle(Object.keys(selected).length > 0);
-    }
+    }*/
   }
 
   var deselect_all = function() {
@@ -176,15 +256,17 @@ var dragdrop = (function() {
     })
 
     selected = {};
-    right_side_selected = false;
+    last_trigger = null;
+    //right_side_selected = false;
   }
 
   return {
     attach: attach,
     deselect_all: deselect_all,
-    drop: drop,
+    //drop: drop,
     drop_selective: drop_selective,
     drop_to_pool: drop_to_pool,
-    selected: function() { return selected; }
+    selected: function() { return selected; },
+    select_tool: select_tool
   }
 })()
