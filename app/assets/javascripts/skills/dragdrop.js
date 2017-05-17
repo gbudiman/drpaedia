@@ -81,18 +81,13 @@ var dragdrop = (function() {
   }
 
   var drop_selective = function(id, obj) {
-    selected = {};
-    selected[id] = true;
-    last_trigger = null;
-
+    deselect_all();
     drop(obj);
   }
 
   var drop_to_pool = function(id) {
-    selected = {};
+    deselect_all();
     selected[id] = true;
-    last_trigger = null;
-
     drop_alphabetically();
   }
 

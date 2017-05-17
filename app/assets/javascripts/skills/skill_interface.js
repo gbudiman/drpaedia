@@ -53,7 +53,7 @@ var skill_interface = (function() {
 
     cost.removeClass('badge-success');
     cost.text('');
-    dragdrop.drop_to_pool(id);
+    //dragdrop.drop_to_pool(id);
   }
 
   var reset_all = function() {
@@ -66,6 +66,10 @@ var skill_interface = (function() {
 
 
     $('span[data-badge]').text('');
+  }
+
+  var sort_pool = function() {
+
   }
 
   return {
