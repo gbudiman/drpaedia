@@ -148,7 +148,7 @@ var skills = (function() {
   }
 
   var update_availability = function(reset_all) {
-    dynaloader.set_delegate('xp_calc', calc.recalculate_all, function() {
+    dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
       get_config();
       skill_popup.hide();
       var to_pool = new Array();

@@ -200,6 +200,7 @@ var dragdrop = (function() {
         || ( has_selected() && current_trigger == last_trigger)) {
       last_trigger = get_parent_container(obj).attr('id');
       _select(obj, id, is_selected);
+      notifier.select(Object.keys(selected).length);
     } else {
       drop(get_parent_container(obj));
     }
@@ -257,6 +258,8 @@ var dragdrop = (function() {
     selected = {};
     last_trigger = null;
     //right_side_selected = false;
+    notifier.select(0);
+    skill_popup.hide();
   }
 
   return {
@@ -266,6 +269,7 @@ var dragdrop = (function() {
     drop_selective: drop_selective,
     drop_to_pool: drop_to_pool,
     selected: function() { return selected; },
-    select_tool: select_tool
+    select_tool: select_tool,
+    deselect_all: deselect_all
   }
 })()

@@ -14,6 +14,7 @@ Rails.application.config.assets.precompile += %w( style.css
                                                   calc/*.js
                                                   configbar/*.js 
                                                   dynaloader/*.js 
+                                                  notifier/*.js
                                                   skills/*.js skills/*.css 
                                                   stats/*.js
                                                   strains/*.js strains/*.css 
@@ -21,4 +22,5 @@ Rails.application.config.assets.precompile += %w( style.css
                                                   professions/*.js professions/*.css 
                                                   bootstrap-select.min.*
                                                   bootstrap-editable.*
-                                                  select2.* )
+                                                  bootstrap-notify.*
+                                                  animate.css)
