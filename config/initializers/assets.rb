@@ -20,4 +20,5 @@ Rails.application.config.assets.precompile += %w( style.css
                                                   tooling/*.js tooling/*.css
                                                   professions/*.js professions/*.css 
                                                   bootstrap-select.min.*
-                                                  bootstrap-editable.* )
+                                                  bootstrap-editable.*
+                                                  select2.* )

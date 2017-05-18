@@ -68,11 +68,18 @@ var profession_basic = (function() {
   }
 
   var update_strain_change = function() {
-    restricted = strain_interface.selected().restriction;
+    var new_strain = strain_interface.selected();
+    if (new_strain == 'No Selection') {
+      restricted = {};
+    } else {
+      restricted = strains.data()[strain_interface.selected()].restriction; //strain_interface.selected().restriction;
+    }
+
     $.each(restricted, function(k, v) {
       remove(k);
     })
     profession_basic_interface.update_strain_change();
+    tooling.update_planned_prof_list();
   }
 
   var verify_count = function() {
@@ -81,6 +88,21 @@ var profession_basic = (function() {
 
     profession_basic_interface.disable_limit_warning(within_limit, overlimit);
     calc.recalculate_purchased_profession();
+    tooling.update_planned_prof_list();
+  }
+
+  var get_purchaseable = function() {
+    var s = {};
+
+    $.each(all, function(k, v) {
+      s[k] = true;
+    })
+
+    $.each(Object.assign({}, selected, forgotten, restricted), function(k, v) {
+      delete s[k];
+    })
+
+    return s;
   }
 
   return {
@@ -94,7 +116,7 @@ var profession_basic = (function() {
     restricted: get_restricted,
     selected: get_selected,
     forgotten: function() { return forgotten; },
-    update_strain_change: update_strain_change
-    
+    update_strain_change: update_strain_change,
+    get_purchaseable: get_purchaseable
   }
 })()

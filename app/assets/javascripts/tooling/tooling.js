@@ -104,6 +104,8 @@ var tooling = function() {
       })
     })
 
+    rebuild_prof_list(obj);
+
     $.each(obj.find('.glyphicon-option-horizontal'), function() {
       more_options($(this));
       $(this).on('click', function() {
@@ -123,6 +125,50 @@ var tooling = function() {
     }
 
     calc.recalculate_all();
+  }
+
+  var rebuild_prof_list = function(_obj) {
+    var is_prof_sel = _obj.hasClass('tool-prof-planner');
+
+    if (!is_prof_sel) return;
+    _obj.find('.tool-prof-select').remove();
+    var anchor = _obj.find('.tool-option');
+    var pclass = anchor.text();
+
+    console.log(pclass);
+    //obj.empty();
+    
+    var s = ' <select class="tool-prof-select"><option>No selection</option>';
+    var p;
+
+    switch(pclass) {
+      case 'Conc': break;
+      case 'Basic': p = profession_basic.get_purchaseable(); break;
+    }
+    $.each(p, function(k, _junk) {
+      s += '<option>' + k + '</option>';
+    })
+    s += '</select>';
+
+    $(s).insertAfter(anchor);
+    //anchor.next().selectpicker();
+  }
+
+  var update_planned_prof_list = function() {
+    $('#skills-planned').find('.tool-option').each(function() {
+      var obj = $(this).next();
+      var parent = $(this).parent();
+
+      var current_selection = obj.find('option:selected').text();
+      console.log(current_selection);
+
+      rebuild_prof_list(parent);
+      var sel = parent.find('.tool-prof-select');
+      var sel2 = sel.find('option:contains("' + current_selection + '")');
+      sel2.prop('selected', true);
+      //.prop('selected', true);
+      // $('.tool-prof-select option:contains("Distiller")').prop('selected', true)
+    })
   }
 
   var adjust = function(obj, value) {
@@ -149,10 +195,12 @@ var tooling = function() {
     } else if (target.text() == 'Basic') {
       target.text('Conc');
       obj.find('.tool-prof-xp').text('30');
+      rebuild_prof_list(obj);
       calc.recalculate_planned_profession();
     } else if (target.text() == 'Conc') {
       target.text('Basic');
       obj.find('.tool-prof-xp').text('10');
+      rebuild_prof_list(obj);
       calc.recalculate_planned_profession();
     }
   }
@@ -425,6 +473,7 @@ var tooling = function() {
     attach_handles: attach_handles,
     auto_indent: auto_indent,
     hide_popover: hide_popover,
-    is_group: is_group
+    is_group: is_group,
+    update_planned_prof_list: update_planned_prof_list
   }
 }()
