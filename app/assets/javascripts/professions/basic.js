@@ -105,6 +105,10 @@ var profession_basic = (function() {
     return s;
   }
 
+  var get_forgettable = function() {
+    return selected;
+  }
+
   return {
     add: add,
     forget: forget,
@@ -117,6 +121,7 @@ var profession_basic = (function() {
     selected: get_selected,
     forgotten: function() { return forgotten; },
     update_strain_change: update_strain_change,
-    get_purchaseable: get_purchaseable
+    get_purchaseable: get_purchaseable,
+    get_forgettable: get_forgettable
   }
 })()

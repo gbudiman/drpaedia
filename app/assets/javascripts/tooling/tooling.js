@@ -144,6 +144,7 @@ var tooling = function() {
     switch(pclass) {
       case 'Conc': break;
       case 'Basic': p = profession_basic.get_purchaseable(); break;
+      case 'Forget': p = profession_basic.get_forgettable(); break;
     }
     $.each(p, function(k, _junk) {
       s += '<option>' + k + '</option>';
@@ -198,6 +199,11 @@ var tooling = function() {
       rebuild_prof_list(obj);
       calc.recalculate_planned_profession();
     } else if (target.text() == 'Conc') {
+      target.text('Forget');
+      obj.find('.tool-prof-xp').text('10');
+      rebuild_prof_list(obj);
+      calc.recalculate_planned_profession();
+    } else if (target.text() == 'Forget') {
       target.text('Basic');
       obj.find('.tool-prof-xp').text('10');
       rebuild_prof_list(obj);
@@ -417,7 +423,7 @@ var tooling = function() {
   }
 
   var apply_plan = function(obj) {
-    if (obj.hasClass('tool-applicable')) {
+    if (obj.hasClass('tool-stat-planner')) {
       var option = obj.find('.tool-stat');
       if (option.length > 0) {
         stats_interface.adjust(option.text().toLowerCase(), 
@@ -428,6 +434,20 @@ var tooling = function() {
     } else if (obj.hasClass('skill')) {
       dragdrop.drop_selective(obj.attr('id'), $('#skills-acquired'));
       return false;
+    } else if (obj.hasClass('tool-prof-planner')) {
+      var sel = obj.find('select option:selected').text();
+      var is_forget = obj.find('.tool-option').text() == 'Forget';
+
+      if (is_forget) {
+        console.log(sel);
+        $('.purchased-profession')
+          .find('.forget-profession[data-prof="' + sel + '"]')
+          .trigger('click');
+      } else {
+        $('[data-prof="' + sel + '"').trigger('click');
+      }
+
+      return true;
     }
 
     return true;
