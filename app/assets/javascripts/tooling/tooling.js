@@ -393,31 +393,32 @@ var tooling = function() {
     obj.on('click', function() {
       var target = popover_caller.parent();
 
-      if (target.hasClass('tool-separator')) {
-        var stacks = new Array();
-        var current_obj = target.next();
+      dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
+        if (target.hasClass('tool-separator')) {
+          var stacks = new Array();
+          var current_obj = target.next();
 
-        while (current_obj.length > 0) {
-          if (is_group(current_obj)) break;
+          while (current_obj.length > 0) {
+            if (is_group(current_obj)) break;
 
-          var cached_next = current_obj.next();
-          if (apply_plan(current_obj)) {
-            stacks.push(current_obj);
+            var cached_next = current_obj.next();
+            if (apply_plan(current_obj)) {
+              stacks.push(current_obj);
+            }
+
+            current_obj = cached_next;
           }
 
-          current_obj = cached_next;
+          $.each(stacks, function(i, x) {
+            x.remove();
+          })
+        } 
+
+        if (apply_plan(target)) {
+          target.remove();
         }
+      })
 
-        $.each(stacks, function(i, x) {
-          x.remove();
-        })
-      } 
-
-      if (apply_plan(target)) {
-        target.remove();
-      }
-
-      calc.recalculate_all();
       return false;
     })
   }

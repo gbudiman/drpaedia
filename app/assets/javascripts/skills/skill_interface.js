@@ -12,7 +12,7 @@ var skill_interface = (function() {
          +   'data-accessible=false '
          +   'data-discounted=false '
          + '>'
-         +   k
+         +   '<span class="skill-name">' + k + '</span>'
          +   '<span class="badge badge-default skill-cost pull-right" id="' + shorthand + '-cost" data-badge="skill-cost"></span>'
          + '</div>';
     })
@@ -72,9 +72,27 @@ var skill_interface = (function() {
 
   }
 
+  var get_all_unselected = function() {
+    var a = get_skills_in('skills-planned');
+    var b = get_skills_in('skills-acquired');
+
+    return Object.assign({}, a, b);
+  }
+
+  var get_skills_in = function(id) {
+    var s = {};
+
+    $('#' + id).find('.skill-name').each(function() {
+      s[$(this).text()] = true;
+    })
+
+    return s;
+  }
+
   return {
     apply_filters: apply_filters,
     build: build,
+    get_all_unselected: get_all_unselected,
     display: display,
     remove: remove,
     reset_all: reset_all

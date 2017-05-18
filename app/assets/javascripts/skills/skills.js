@@ -177,14 +177,80 @@ var skills = (function() {
     return skill.match(/\s(I|II|III|IV|V)$/);
   }
 
+  var is_open = function(skill) {
+    return data[skill].conditions.open != undefined;
+  }
+
+  var validate = function() {
+
+    if (dynaloader.has_delegations('initial_load')) { return; }
+    console.log('validate triggered');
+    var all = skill_interface.get_all_unselected();
+    var invalid = {};
+
+    $.each(all, function(k, _junk) {
+      var valid_prof_t = validate_by_profession(data[k].conditions, all);
+
+      if (!valid_prof_t.cond) {
+        if (!is_open(k)) {
+          invalid[k] = valid_prof_t.message;
+        }
+      }
+    })
+
+    notifier.skill_preq_missing(invalid);
+  }
+
+  var validate_by_profession = function(obj, all) {
+    var cond = false;
+    var message = {};
+    $.each(professions, function(p, _junk) {
+      if (obj[p] != undefined) {
+        var eval = validate_condition(obj[p].preq, all);
+        cond = cond || eval.cond;
+        message = eval.missing;
+      }
+    });
+
+    return {
+      cond: cond,
+      message: message
+    }
+  }
+
+  var validate_condition = function(preq, all) {
+    if (preq == null) { return {cond: true, missing: {} }; }
+    var cond = preq.predicate == 'and' ? true : false;
+    var missing = {};
+
+    $.each(preq.list, function(k, _junk) {
+      if (all[k] == undefined) {
+        if (preq.predicate == 'and') { cond = cond && false; }
+        else if (preq.predicate == 'or') { cond = cond || false; }
+
+        missing[k] = true;
+      } else {
+        if (preq.predicate == 'and') { cond = cond && true; }
+        else if (preq.predicate == 'or') { cond = cond || true; }
+      }
+    })
+
+    return {
+      cond: cond,
+      missing: missing
+    }
+  }
+
   return {
     build: build,
     constraint_satisfied: constraint_satisfied,
     data: get_data,
     get_config: get_config,
     get_cost: get_cost,
+    get_code: function(x) { return data[x].shorthand; },
     has_tier: has_tier,
     hash: get_hash,
-    update_availability: update_availability
+    update_availability: update_availability,
+    validate: validate
   }
 })()

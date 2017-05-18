@@ -15,6 +15,7 @@ Rails.application.config.assets.precompile += %w( style.css
                                                   configbar/*.js 
                                                   dynaloader/*.js 
                                                   notifier/*.js
+                                                  notifier/*.css
                                                   skills/*.js skills/*.css 
                                                   stats/*.js
                                                   strains/*.js strains/*.css 
