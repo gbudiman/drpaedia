@@ -146,6 +146,9 @@ var skills = (function() {
 
     return g[key].cost;
   }
+  var get_all_possible_costs = function(skill) {
+    return constraint_satisfied(data[skill]).possible_costs;
+  }
 
   var update_availability = function(reset_all) {
     dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
@@ -184,7 +187,6 @@ var skills = (function() {
   var validate = function() {
 
     if (dynaloader.has_delegations('initial_load')) { return; }
-    console.log('validate triggered');
     var all = skill_interface.get_all_unselected();
     var invalid = {};
 
@@ -247,6 +249,7 @@ var skills = (function() {
     data: get_data,
     get_config: get_config,
     get_cost: get_cost,
+    get_all_possible_costs: get_all_possible_costs,
     get_code: function(x) { return data[x].shorthand; },
     has_tier: has_tier,
     hash: get_hash,

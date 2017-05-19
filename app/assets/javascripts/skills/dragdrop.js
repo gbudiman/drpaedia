@@ -200,9 +200,11 @@ var dragdrop = (function() {
     if (last_trigger == null
         || (!has_selected())
         || ( has_selected() && current_trigger == last_trigger)) {
-      last_trigger = get_parent_container(obj).attr('id');
-      _select(obj, id, is_selected);
-      notifier.select(Object.keys(selected).length);
+      if (obj.attr('data-accessible') == 'true') {
+        last_trigger = get_parent_container(obj).attr('id');
+        _select(obj, id, is_selected);
+        notifier.select(Object.keys(selected).length);
+      }
     } else {
       drop(get_parent_container(obj));
     }

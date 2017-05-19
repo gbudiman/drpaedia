@@ -174,12 +174,14 @@ var tooling = function() {
 
   var adjust = function(obj, value) {
     hide_popover();
-    var target = obj.find('.tool-text');
+    var target = obj.find('.tool-value');
     var current_value = parseInt(target.text());
 
     if (value == -1) {
       if (current_value == 0) return;
     } 
+
+    if (isNaN(current_value)) current_value = 0;
 
     target.text(current_value + value);
     calc.recalculate_planned_stats();

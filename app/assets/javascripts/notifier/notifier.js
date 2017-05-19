@@ -36,6 +36,8 @@ var notifier = function() {
     var p = build_missing_preq();
     var len = Object.keys(h).length;
 
+    console.log(h);
+    
     if (len > 0) {
       p.update('message', generate_skill_preq_message(h));
       attach_skills();

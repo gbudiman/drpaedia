@@ -3,6 +3,48 @@ var skill_interface = (function() {
     filterview.apply_all();
   }
 
+  var attach_alternator = function() {
+    $('span.skill-cost').on('click', function() {
+      alternate($(this));
+      return false;
+    })
+  }
+
+  var alternate = function(obj) {
+    var parent = obj.parent();
+    var is_open = parent.find('.btn-alternator').length > 0;
+
+    if (is_open) {
+      parent.find('.btn-alternator').remove();
+      return;
+    }
+
+    var skill_name = parent.find('.skill-name').text();
+    var possible_costs = skills.get_all_possible_costs(skill_name);
+    var current_cost = parseInt(obj.text());
+    var anchor = obj;
+
+    var min_cost = Object.keys(possible_costs).sort()[0];
+
+    $.each(Object.keys(possible_costs).sort().reverse(), function(_junk, val) {
+      if (val != current_cost) {
+        var button = '<button type="button" class="pull-right btn btn-sm btn-primary btn-alternator">' + val + '</button>';
+        anchor.before(button);
+      }
+    })
+
+    parent.find('.btn-alternator').each(function() {
+      var val = parseInt($(this).text());
+      $(this).on('click', function() {
+        parent.find('.btn-alternator').remove();
+        var marker = (val == min_cost) ? '' : '<sup>+</sup>'; 
+        obj.html(val + marker);
+        return false;
+      })
+    })
+
+  }
+
   var build = function(data) {
     var r = '';
     Object.keys(data).sort().forEach(function(k, i) {
@@ -18,7 +60,11 @@ var skill_interface = (function() {
     })
     
     $('#skill-pool').append(r);
+    attach_alternator();
+  }
 
+  var clear_alternator = function() {
+    $('.btn-alternator').remove();
   }
 
   var display = function(id, costs, is_open) {
@@ -95,6 +141,7 @@ var skill_interface = (function() {
     get_all_unselected: get_all_unselected,
     display: display,
     remove: remove,
-    reset_all: reset_all
+    reset_all: reset_all,
+    clear_alternator: clear_alternator
   }
 })()
