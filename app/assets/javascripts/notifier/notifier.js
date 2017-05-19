@@ -32,13 +32,14 @@ var notifier = function() {
     }
   }
 
-  var skill_preq_missing = function(h) {
+  var skill_preq_missing = function(all_valid, h) {
+    if (all_valid) { return; }
+
     var p = build_missing_preq();
-    var len = Object.keys(h).length;
 
     console.log(h);
-    
-    if (len > 0) {
+
+    if (!all_valid) {
       p.update('message', generate_skill_preq_message(h));
       attach_skills();
     } else {
