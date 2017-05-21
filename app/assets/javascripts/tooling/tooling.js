@@ -3,7 +3,13 @@ var tooling = function() {
   var state;
 
   var attach = function() {
-    attach_to('skills-planned');
+    // attach_to('skills-acquired');
+    // attach_to('skills-planned');
+    attach_object('tool-acq-group', 'skills-acquired');
+    attach_object('tool-separator', 'skills-planned');
+    attach_object('tool-stat-planner', 'skills-planned');
+    attach_object('tool-checkin-marker', 'skills-planned');
+    attach_object('tool-profession-planner', 'skills-planned');
     attach_dropdown_event();
   }
 
@@ -14,15 +20,9 @@ var tooling = function() {
     })
   }
 
-  var attach_to = function(target) {
-    attach_object('tool-separator', target);
-    attach_object('tool-stat-planner', target);
-    attach_object('tool-checkin-marker', target);
-    attach_object('tool-profession-planner', target);
-  }
-
   var attach_object = function(type, target_id) {
     $('#' + type).on('click', function(event) {
+      console.log('clicked' + type);
       var target = $('#' + target_id);
       var cloned = $('#' + type + '-base').clone(true, true);
       cloned.removeAttr('id').appendTo(target);
@@ -348,7 +348,24 @@ var tooling = function() {
       placement: 'top'
     }).on('shown.bs.popover', function() {
       apply_popover_interactivity();
+      highlight_children(obj.parent(), true);
+    }).on('hide.bs.popover', function() {
+      highlight_children(obj.parent(), false);
     })
+  }
+
+  var highlight_children = function(obj, val) {
+    if (val) { obj.addClass('bg-primary'); }
+    else { obj.removeClass('bg-primary'); }
+    var current_obj = obj.next();
+
+    while (current_obj.length > 0) {
+      if (is_group(current_obj)) break;
+      if (val) { current_obj.addClass('tool-highlight'); }
+      else { current_obj.removeClass('tool-highlight'); }
+      current_obj = current_obj.next();
+    }
+
   }
 
   var apply_popover_interactivity = function() {
@@ -442,7 +459,6 @@ var tooling = function() {
       var is_forget = obj.find('.tool-option').text() == 'Forget';
 
       if (is_forget) {
-        console.log(sel);
         $('.purchased-profession')
           .find('.forget-profession[data-prof="' + sel + '"]')
           .trigger('click');

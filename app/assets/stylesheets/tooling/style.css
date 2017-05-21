@@ -6,6 +6,10 @@
   cursor: pointer;
 }
 
+#tool-acq-group-base {
+  display: none;
+}
+
 #tool-separator-base {
   display: none;
 }
@@ -20,4 +24,17 @@
 
 #tool-profession-planner-base {
   display: none;
+}
+
+.tool-highlight {
+  background-color: #f9f9de;
+}
+
+.tool-highlight-header {
+  background-color: #428bca;
+  color: #f9f9f9;
+}
+
+.bg-primary .popover-content {
+  color: #333;
 }
