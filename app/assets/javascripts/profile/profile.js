@@ -87,17 +87,29 @@ var profile = function() {
     $.each(d.acq, function(i, x) {
       apply_rightside(x, 'skills-acquired');
     })
+
+    $.each(d.plan, function(i, x) {
+      apply_rightside(x, 'skills-planned');
+    })
   }
 
   var apply_rightside = function(entry, target) {
     if (entry.group != undefined) {
       if (target == 'skills-acquired') {
         tooling.copy_programmatically('tool-acq-group', target, { title: entry.group })
+      } else if (target == 'skills-planned') {
+        tooling.copy_programmatically('tool-separator', target, { title: entry.group })
       }
     } else if (entry.skill != undefined) {
       dragdrop.drop_selective(entry.skill, $('#' + target));
       var alt = entry.alt ? '<sup>+</sup>' : '';
       $('#' + entry.skill + '-cost').html(entry.cost + alt);
+    } else if (entry.stat != undefined) {
+      tooling.copy_programmatically('tool-stat-planner', target, { option: entry.stat, nominal: entry.nominal })
+    } else if (entry.checkin != undefined) {
+      tooling.copy_programmatically('tool-checkin-marker', target, { title: entry.checkin, nominal: entry.nominal })
+    } else if (entry.prof != undefined) {
+      tooling.copy_programmatically('tool-profession-planner', target, { option: entry.prof, nominal: entry.nominal, selected: entry.selected })
     }
   }
 
@@ -127,10 +139,29 @@ var profile = function() {
   }
 
   var pack_acq = function() {
+    return pack_rightside($('#skills-acquired'));
+  }
+
+  var pack_plan = function() {
+    return pack_rightside($('#skills-planned'));
+  }
+
+  var pack_rightside = function(obj) {
     var a = new Array();
-    $('#skills-acquired').children().each(function() {
+
+    obj.children().each(function() {
       if ($(this).hasClass('tool-separator')) {
-        a.push({group: $(this).find('.tool-text').text()})
+        a.push({group: $(this).find('.tool-text').text()});
+      } else if ($(this).hasClass('tool-stat-planner')) {
+        a.push({stat: $(this).find('.tool-stat').text(), 
+                nominal: parseInt($(this).find('.stat-cost').text())});
+      } else if ($(this).hasClass('tool-checkin-planner')) {
+        a.push({checkin: $(this).find('.tool-text').text(),
+                nominal: parseInt($(this).find('.tool-value').text())});
+      } else if ($(this).hasClass('tool-prof-planner')) {
+        a.push({prof: $(this).find('.tool-option').text(),
+                selected: $(this).find('.tool-prof-select').find(':selected').text(),
+                nominal: parseInt($(this).find('.tool-prof-xp').text())});
       } else {
         a.push({skill: $(this).attr('id'),
                 cost: parseInt($(this).find('.skill-cost').text()),
@@ -139,10 +170,6 @@ var profile = function() {
     })
 
     return a;
-  }
-
-  var pack_plan = function() {
-    return null;
   }
 
   var set_pref = function(key, value) {

@@ -1,4 +1,5 @@
 var tooling = function() {
+  var delay_interval = setTimeout(null, 0);
   var popover_caller;
   var state;
 
@@ -22,12 +23,12 @@ var tooling = function() {
 
   var attach_object = function(type, target_id) {
     $('#' + type).on('click', function(event) {
-      console.log('clicked' + type);
       var target = $('#' + target_id);
       var cloned = $('#' + type + '-base').clone(true, true);
       cloned.removeAttr('id').appendTo(target);
       activate(cloned);
       auto_indent(target);
+      profile.save_all();
       event.preventDefault();
     })
   }
@@ -38,7 +39,28 @@ var tooling = function() {
     cloned.removeAttr('id').appendTo(target);
     activate(cloned);
     auto_indent(target);
-    cloned.find('.tool-editable').text(args.title);
+
+    if (args.title != undefined) { 
+      cloned.find('.tool-editable').text(args.title);
+    }
+
+    if (args.option != undefined) {
+      cloned.find('.tool-option').text(args.option);
+    }
+
+    if (args.nominal != undefined) {
+      cloned.find('.tool-value').text(args.nominal);
+    }
+
+    if (args.selected != undefined) {
+      rebuild_prof_list(cloned);
+      cloned
+        .find('.tool-prof-select')
+          .find('option:contains("' + args.selected + '")')
+            .attr('selected', true);
+    }
+
+    profile.save_all();
   }
 
   var attach_handles = function(obj, enable) {
@@ -162,6 +184,10 @@ var tooling = function() {
     s += '</select>';
 
     $(s).insertAfter(anchor);
+
+    _obj.find('.tool-prof-select').on('change', function() {
+      profile.save_all();
+    })
     //anchor.next().selectpicker();
   }
 
@@ -195,6 +221,11 @@ var tooling = function() {
 
     target.text(current_value + value);
     calc.recalculate_planned_stats();
+
+    clearTimeout(delay_interval);
+    delay_interval = setTimeout(function() {
+      profile.save_all()
+    }, 500);
   }
 
   var alternate = function(obj) {
@@ -425,7 +456,8 @@ var tooling = function() {
     obj.on('click', function() {
       var target = popover_caller.parent();
 
-      dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
+      //dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
+      dynaloader.set_gil(['ok_to_update_gui', 'ok_to_save'], false, function() {
         if (target.hasClass('tool-separator')) {
           var stacks = new Array();
           var current_obj = target.next();
@@ -451,6 +483,8 @@ var tooling = function() {
         }
       })
 
+      profile.save_all();
+
       return false;
     })
   }
@@ -460,12 +494,13 @@ var tooling = function() {
       var option = obj.find('.tool-stat');
       if (option.length > 0) {
         stats_interface.adjust(option.text().toLowerCase(), 
-                               parseInt(obj.find('.tool-text').text()));
+                               parseInt(obj.find('.tool-value').text()));
       }
 
       return true;
     } else if (obj.hasClass('skill')) {
       dragdrop.drop_selective(obj.attr('id'), $('#skills-acquired'));
+      obj.css('background-color', '#fff');
       return false;
     } else if (obj.hasClass('tool-prof-planner')) {
       var sel = obj.find('select option:selected').text();
