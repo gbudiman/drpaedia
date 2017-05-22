@@ -2,7 +2,8 @@ var notifier = function() {
   var data = {};
 
   var select = function(i) {
-    if (dynaloader.has_delegations('initial_load')) { return; }
+    // if (dynaloader.has_delegations('initial_load')) { return; }
+    if (!dynaloader.get_gil('ok_to_update_gui')) return;
 
     if (data['select'] == undefined) {
       data['select'] = $.notify({

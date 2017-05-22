@@ -9,7 +9,8 @@ var calc = function() {
   }
 
   var recalculate_all = function() {
-    if (dynaloader.has_delegations('initial_load')) { return; }
+    //if (dynaloader.has_delegations('initial_load')) { return; }
+    if (!dynaloader.get_gil('ok_to_update_gui')) return;
     
     recalculate('skills-planned');
     recalculate('skills-acquired');

@@ -2,6 +2,37 @@ var dynaloader = (function() {
   var raw_data = {};
   var proc_data = {};
   var delegate = {};
+  var global_interlock = {
+    ok_to_save: false,
+    ok_to_update_gui: false,
+    ok_to_animate: false
+  }
+
+  var set_gil = function(key, value, func) {
+    if (!Array.isArray(key)) {
+      keys = [key];
+    } else {
+      keys = key;
+    }
+
+    $.each(keys, function(i, x) {
+      global_interlock[x] = value;
+    })
+    
+
+    if (func != undefined) {
+      var negated = !value;
+      func();
+
+      $.each(keys, function(i, x) {
+        global_interlock[x] = negated;
+      })
+    }
+  }
+
+  var get_gil = function(key) {
+    return global_interlock[key];
+  }
 
   var load_remote = function() {
     $.when(get_json('advanced_cat'),
@@ -22,13 +53,17 @@ var dynaloader = (function() {
            get_json('strain_specs'),
            get_json('strain_stats'),
            get_json('strains')).done(function() {
+      dynaloader.set_gil('ok_to_save', false)
       strains.build();
       profession_basic.build();
       skills.build();
       filterview.attach();
       stats_interface.attach();
-      tooling.attach();
+      tooling.attach();  
       profile.load();
+
+      dynaloader.set_gil('ok_to_save', true);
+      dynaloader.set_gil('ok_to_animate', true);
     })
   }
 
@@ -42,22 +77,11 @@ var dynaloader = (function() {
     return raw_data;
   }
 
-  var set_delegate = function(name, after, x) {
-    //console.log(arguments.callee.caller.toString());
-    delegate[name] = true;
-    x();
-    delete delegate[name];
-    after();
-  }
-
-  var has_delegations = function(x) {
-    return delegate[x] != undefined;
-  }
-
   return {
     load_remote: load_remote,
     raw: get_raw_data,
-    has_delegations: has_delegations,
-    set_delegate: set_delegate
+    set_gil: set_gil,
+    get_gil: get_gil,
+    get_all_gil: function() { return global_interlock; }
   }
 })()

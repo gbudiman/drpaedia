@@ -20,11 +20,15 @@ var profession_basic = (function() {
   }
 
   var remove = function(x) {
+    remove_delegate_update(x);
+    verify_count();
+    skills.update_availability(true);
+  }
+
+  var remove_delegate_update = function(x) {
     delete selected[x];
     delete forgotten[x];
     profession_basic_interface.update_profession_removed(x);
-    verify_count();
-    skills.update_availability(true);
   }
 
   var unforget = function(x) {
@@ -84,8 +88,11 @@ var profession_basic = (function() {
     }
 
     $.each(restricted, function(k, v) {
-      remove(k);
+      remove_delegate_update(k);  
     })
+    verify_count();
+    skills.update_availability(true);
+
     profession_basic_interface.update_strain_change();
     tooling.update_planned_prof_list();
   }

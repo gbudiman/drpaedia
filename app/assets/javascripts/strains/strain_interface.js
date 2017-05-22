@@ -19,6 +19,7 @@ var strain_interface = (function() {
     $('#strain-dd').append(raw);
     $('#strain-dd').selectpicker('refresh');
     attach();
+    console.log('build complete');
   }
 
   var get_selected_strain = function() {
@@ -31,21 +32,21 @@ var strain_interface = (function() {
 
   var set = function(x) {
     selected_strain = x;
-    dynaloader.set_delegate('mass_update', profile.save_all, function() {
-      profession_basic.update_strain_change();
-      skills.update_availability(true);
 
-      if (strains.data()[x]) {
-        var stats = strains.data()[x].stats;
-        stats_interface.update(stats.hp, stats.mp, stats.infection);
-      } else {
-        stats_interface.update(0, 0, 0);
-      }
-    });
+    profession_basic.update_strain_change();
+    skills.update_availability(true);
+
+    if (strains.data()[x]) {
+      var stats = strains.data()[x].stats;
+      stats_interface.update(stats.hp, stats.mp, stats.infection);
+    } else {
+      stats_interface.update(0, 0, 0);
+    }
   }
 
   var set_gui = function(_x) {
-    var x = _x == null ? 'No Selection' : x;
+    console.log('set gui to ' + _x);
+    var x = _x == null ? 'No Selection' : _x;
     $('#strain-dd').selectpicker('val', x);
     set(x);
   }

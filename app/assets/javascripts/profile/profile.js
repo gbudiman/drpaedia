@@ -31,20 +31,19 @@ var profile = function() {
   }
 
   var save_all = function() {
-    if (dynaloader.has_delegations('profile_apply')) { return; }
-    if (dynaloader.has_delegations('mass_update')) { return; }
-
-    store();
-    $.jStorage.set('all', { profiles: profiles, config: config });
-    if (debug) {
-      console.log('Saving all...');
-      console.log($.jStorage.get('all'));
+    if (dynaloader.get_gil('ok_to_save')) {
+      store();
+      $.jStorage.set('all', { profiles: profiles, config: config });
+      if (debug) {
+        console.log('Saving all...');
+        console.log($.jStorage.get('all'));
+      }
     }
   }
 
   var load = function() {
     var v = $.jStorage.get('all') || empty_default;
-    reset();
+    dynaloader.set_gil('ok_to_save', false, reset);
 
     profiles = v.profiles;
     config = v.config;
@@ -53,7 +52,7 @@ var profile = function() {
     apply();
 
     if (debug) {
-      console.log('Loaded');
+      console.log('Loaded:');
       console.log(v);
     }
 
@@ -66,21 +65,21 @@ var profile = function() {
   }
 
   var apply = function() {
-    dynaloader.set_delegate('profile_apply', calc.recalculate_all, function() {
-      var d = profiles[selected];
-      strain_interface.set_gui(d.strain);
+    //dynaloader.set_delegate('profile_apply', calc.recalculate_all, function() {
+    var d = profiles[selected];
+    if (d == undefined) return;
+    strain_interface.set_gui(d.strain);
 
-      if (d.professions != undefined) {
-        $.each(d.professions.selected, function(x, _junk) {
-          profession_basic_interface.add(x);
-        })
+    if (d.professions != undefined) {
+      $.each(d.professions.selected, function(x, _junk) {
+        profession_basic_interface.add(x);
+      })
 
-        $.each(d.professions.forgotten, function(x, _junk) {
-          profession_basic_interface.add(x);
-          profession_basic_interface.forget(x);
-        })
-      }
-    })
+      $.each(d.professions.forgotten, function(x, _junk) {
+        profession_basic_interface.add(x);
+        profession_basic_interface.forget(x);
+      })
+    }
   }
 
   var wipe = function() {

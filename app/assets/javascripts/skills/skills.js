@@ -150,29 +150,47 @@ var skills = (function() {
     return constraint_satisfied(data[skill]).possible_costs;
   }
 
+  var animate_pool_loading = function(func) {
+    if (!dynaloader.get_gil('ok_to_animate')) {
+      func();
+    } else {
+
+      $('#skill-pool').animate({
+        opacity: 0.5
+      }, 50, function() { 
+        func();
+        $('#skill-pool').css('opacity', 1);
+      });
+    }
+    
+  }
+
   var update_availability = function(reset_all) {
-    dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
-      get_config();
-      skill_popup.hide();
-      var to_pool = new Array();
-      if (reset_all) { skill_interface.reset_all(); }
-      $.each(data, function(k, v) {
-        var constraint = constraint_satisfied(v);
-        if (constraint.is_satisfied) {
-          skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
-        } else {
-          //console.log(k + ' is no longer satisfied');
-          skill_interface.remove(v.shorthand);
-          to_pool.push(v.shorthand);
-        }
-      })
+    //dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
+    animate_pool_loading(function() {
+      dynaloader.set_gil('ok_to_update_gui', false, function() {
+        get_config();
+        skill_popup.hide();
+        var to_pool = new Array();
+        if (reset_all) { skill_interface.reset_all(); }
+        $.each(data, function(k, v) {
+          var constraint = constraint_satisfied(v);
+          if (constraint.is_satisfied) {
+            skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
+          } else {
+            //console.log(k + ' is no longer satisfied');
+            skill_interface.remove(v.shorthand);
+            to_pool.push(v.shorthand);
+          }
+        })
 
-      $.each(to_pool, function(i, x) {
-        dragdrop.drop_to_pool(x);
-      })
-      //skill_interface.sort_pool();
+        $.each(to_pool, function(i, x) {
+          dragdrop.drop_to_pool(x);
+        })
+        //skill_interface.sort_pool();
 
-      skill_interface.apply_filters();
+        skill_interface.apply_filters();
+      })
     })
   }
 
@@ -186,7 +204,8 @@ var skills = (function() {
 
   var validate = function() {
 
-    if (dynaloader.has_delegations('initial_load')) { return; }
+    //if (dynaloader.has_delegations('initial_load')) { return; }
+    if (!dynaloader.get_gil('ok_to_update_gui')) return;
     var all = skill_interface.get_all_unselected();
     var all_valid = true
     var messages = {};

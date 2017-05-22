@@ -35,6 +35,8 @@ var stats_interface = function() {
     update_base('hp', hp);
     update_base('mp', mp);
     update_base('inf', inf);
+
+    profile.save_all();
   }
 
   var update_base = function(type, value) {
