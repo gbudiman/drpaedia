@@ -32,9 +32,12 @@ var profession_basic_interface = (function() {
         profession_basic.forget(target_prof);
         that.text('U');
       }
-      
-      
     })
+  }
+
+  var forget = function(prof) {
+    $('#profession-basic-config')
+      .find('.forget-profession[data-prof="' + prof + '"]').trigger('click');
   }
 
   var build = function(type) {
@@ -111,8 +114,10 @@ var profession_basic_interface = (function() {
   }
 
   return {
+    add: add,
     build: build,
     disable_limit_warning: disable_limit_warning,
+    forget: forget,
     update_profession_added: update_profession_added,
     update_profession_removed: update_profession_removed,
     update_strain_change: update_strain_change

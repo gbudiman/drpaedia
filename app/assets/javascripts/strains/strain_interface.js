@@ -33,6 +33,7 @@ var strain_interface = (function() {
     selected_strain = x;
     profession_basic.update_strain_change();
     skills.update_availability(true);
+    profile.save_all();
 
     if (strains.data()[x]) {
       var stats = strains.data()[x].stats;
@@ -42,11 +43,17 @@ var strain_interface = (function() {
     }
   }
 
+  var set_gui = function(x) {
+    $('#strain-dd').selectpicker('val', x);
+    set(x);
+  }
+
   return {
     attach: attach,
     build: build,
     reset: reset,
     selected: get_selected_strain,
-    set: set
+    set: set,
+    set_gui: set_gui
   }
 })()

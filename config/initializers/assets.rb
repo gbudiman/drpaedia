@@ -24,4 +24,5 @@ Rails.application.config.assets.precompile += %w( style.css
                                                   bootstrap-select.min.*
                                                   bootstrap-editable.*
                                                   bootstrap-notify.*
+                                                  jstorage.*
                                                   animate.css)

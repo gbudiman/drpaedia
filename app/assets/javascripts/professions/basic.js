@@ -69,7 +69,8 @@ var profession_basic = (function() {
 
   var update_strain_change = function() {
     var new_strain = strain_interface.selected();
-    if (new_strain == 'No Selection') {
+    //if (new_strain == 'No Selection') {
+    if (strains.data()[new_strain] == undefined) {
       restricted = {};
     } else {
       restricted = strains.data()[strain_interface.selected()].restriction; //strain_interface.selected().restriction;
@@ -89,6 +90,7 @@ var profession_basic = (function() {
     profession_basic_interface.disable_limit_warning(within_limit, overlimit);
     calc.recalculate_purchased_profession();
     tooling.update_planned_prof_list();
+    profile.save_all();
   }
 
   var get_purchaseable = function() {

@@ -124,6 +124,7 @@
   %span{class: 'badge tool-prof-xp pull-right'} 10
 
 = stylesheet_link_tag 'style'
+= javascript_include_tag 'jstorage.min'
 = javascript_include_tag 'bootstrap-editable.min'
 = javascript_include_tag 'bootstrap-select.min'
 = javascript_include_tag 'bootstrap-notify.min'
@@ -152,6 +153,3 @@
 
 :javascript
   dynaloader.load_remote();
-  filterview.attach();
-  stats_interface.attach();
-  tooling.attach();

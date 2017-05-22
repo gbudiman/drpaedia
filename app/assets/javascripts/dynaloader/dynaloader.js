@@ -25,6 +25,11 @@ var dynaloader = (function() {
       strains.build();
       profession_basic.build();
       skills.build();
+      filterview.attach();
+      stats_interface.attach();
+      tooling.attach();
+      var p = profile.load();
+      console.log(p);
     })
   }
 
@@ -39,6 +44,7 @@ var dynaloader = (function() {
   }
 
   var set_delegate = function(name, after, x) {
+    //console.log(arguments.callee.caller.toString());
     delegate[name] = true;
     x();
     delete delegate[name];
