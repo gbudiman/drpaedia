@@ -80,6 +80,8 @@ var profile = function() {
         profession_basic_interface.forget(x);
       })
     }
+
+    stats_interface.set(d.stats);
   }
 
   var wipe = function() {
@@ -100,7 +102,11 @@ var profile = function() {
   }
 
   var pack_stats = function() {
-    return null;
+    return {
+      hp: parseInt($('#stat-purchased-hp').val()),
+      mp: parseInt($('#stat-purchased-mp').val()),
+      inf: parseInt($('#stat-purchased-inf').val()),
+    }
   }
 
   var pack_acq = function() {

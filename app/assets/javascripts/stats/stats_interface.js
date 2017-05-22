@@ -1,4 +1,7 @@
 var stats_interface = function() {
+  var delay_interval = setTimeout(null, 0);
+  var base = { hp: 0, mp: 0, inf: 0 };
+
   var attach = function() {
     _attach('hp'); _attach('mp'); _attach('inf');
   }
@@ -13,6 +16,14 @@ var stats_interface = function() {
     })
 
     $('#stat-purchased-' + x).on('keyup', function() {
+      if ($(this).attr('id') == 'stat-purchased-inf') {
+        var current_val = parseInt($(this).val());
+        if (current_val > base.inf) {
+          $(this).val(base.inf);
+          $('#btn-inf-add').prop('disabled', true);
+        }
+      }
+
       evaluate_sum(x);
     }).on('keydown', function(e) {
       if (e.keyCode == 8 || e.keyCode == 46 || e.keyCode == 37 || e.keyCode == 39) { return true; }
@@ -26,9 +37,27 @@ var stats_interface = function() {
   }
 
   var adjust = function(x, val) {
-    var new_value = parseInt($('#stat-purchased-' + x).val()) + val;
+    var current_value = parseInt($('#stat-purchased-' + x).val());
+    var new_value = current_value + val;
+
+    if (x == 'inf') {
+      var button = $('#btn-inf-add');
+      button.prop('disabled', new_value == base.inf);
+    }
+
     $('#stat-purchased-' + x).val(new_value);
     evaluate_sum(x);
+  }
+
+  var set = function(d) {
+    if (d == undefined) {
+      d = { hp: 0, mp: 0, inf: 0 };
+    }
+
+    $.each(d, function(key, value) {
+      $('#stat-purchased-' + key).val(value);
+      evaluate_sum(key);
+    })
   }
 
   var update = function(hp, mp, inf) {
@@ -42,6 +71,7 @@ var stats_interface = function() {
   var update_base = function(type, value) {
     var obj = $('#stat-base-' + type);
     obj.text(value);
+    base[type] = value;
 
     evaluate_sum(type);
   }
@@ -66,11 +96,18 @@ var stats_interface = function() {
     target.text(sum);
     update_state(type);
     calc.recalculate_purchased_stats();
+
+    clearTimeout(delay_interval);
+    delay_interval = setTimeout(function() {
+      profile.save_all();
+    }, 500);
+
   }
 
   return {
     adjust: adjust,
     attach: attach,
+    set: set,
     update: update
   }
 }()
