@@ -62,6 +62,8 @@ var profile = function() {
   var reset = function() {
     strain_interface.set_gui(null);
     profession_basic_interface.reset();
+    $('#skills-acquired').empty();
+    $('#skills-planned').empty();
   }
 
   var apply = function() {
@@ -82,6 +84,21 @@ var profile = function() {
     }
 
     stats_interface.set(d.stats);
+    $.each(d.acq, function(i, x) {
+      apply_rightside(x, 'skills-acquired');
+    })
+  }
+
+  var apply_rightside = function(entry, target) {
+    if (entry.group != undefined) {
+      if (target == 'skills-acquired') {
+        tooling.copy_programmatically('tool-acq-group', target, { title: entry.group })
+      }
+    } else if (entry.skill != undefined) {
+      dragdrop.drop_selective(entry.skill, $('#' + target));
+      var alt = entry.alt ? '<sup>+</sup>' : '';
+      $('#' + entry.skill + '-cost').html(entry.cost + alt);
+    }
   }
 
   var wipe = function() {
@@ -110,7 +127,18 @@ var profile = function() {
   }
 
   var pack_acq = function() {
-    return null;
+    var a = new Array();
+    $('#skills-acquired').children().each(function() {
+      if ($(this).hasClass('tool-separator')) {
+        a.push({group: $(this).find('.tool-text').text()})
+      } else {
+        a.push({skill: $(this).attr('id'),
+                cost: parseInt($(this).find('.skill-cost').text()),
+                alt: $(this).find('sup').length > 0});
+      }
+    })
+
+    return a;
   }
 
   var pack_plan = function() {

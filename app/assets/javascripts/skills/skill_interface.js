@@ -39,6 +39,8 @@ var skill_interface = (function() {
         parent.find('.btn-alternator').remove();
         var marker = (val == min_cost) ? '' : '<sup>+</sup>'; 
         obj.html(val + marker);
+
+        profile.save_all();
         return false;
       })
     })

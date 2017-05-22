@@ -32,6 +32,15 @@ var tooling = function() {
     })
   }
 
+  var copy_programmatically = function(type, target_id, args) {
+    var target = $('#' + target_id);
+    var cloned = $('#' + type + '-base').clone(true, true);
+    cloned.removeAttr('id').appendTo(target);
+    activate(cloned);
+    auto_indent(target);
+    cloned.find('.tool-editable').text(args.title);
+  }
+
   var attach_handles = function(obj, enable) {
     if (enable) {
       if (obj.find('.glyphicon-arrow-up').length > 0) return;
@@ -101,6 +110,7 @@ var tooling = function() {
 
         caller.editable('hide');
         caller.text(new_value);
+        profile.save_all();
       })
     })
 
@@ -211,6 +221,8 @@ var tooling = function() {
       rebuild_prof_list(obj);
       calc.recalculate_planned_profession();
     }
+
+    profile.save_all();
   }
 
   var find_end_of_group_from = function(obj) {
@@ -299,6 +311,7 @@ var tooling = function() {
     })
 
     auto_indent(obj.parent());
+    profile.save_all();
   }
 
   var auto_indent = function(_obj) {
@@ -513,6 +526,7 @@ var tooling = function() {
     auto_indent: auto_indent,
     hide_popover: hide_popover,
     is_group: is_group,
-    update_planned_prof_list: update_planned_prof_list
+    update_planned_prof_list: update_planned_prof_list,
+    copy_programmatically: copy_programmatically
   }
 }()

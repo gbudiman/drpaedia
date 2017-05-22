@@ -71,8 +71,6 @@ var dragdrop = (function() {
         to_append.appendTo(rectified_obj);
         tooling.attach_handles(to_append, true);
       }
-
-      
     })
 
     skill_popup.hide();
@@ -81,6 +79,7 @@ var dragdrop = (function() {
     tooling.auto_indent(parent_container);
     calc.recalculate_skills();
     skills.validate();
+    profile.save_all();
   }
 
   var drop_selective = function(id, obj) {
