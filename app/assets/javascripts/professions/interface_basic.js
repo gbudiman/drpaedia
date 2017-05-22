@@ -113,11 +113,18 @@ var profession_basic_interface = (function() {
     })
   }
 
+  var reset = function() {
+    profession_basic.reset();
+    console.log('prof reset triggered');
+    $('#profession-basic-config').find('.purchased-profession').remove();
+  }
+
   return {
     add: add,
     build: build,
     disable_limit_warning: disable_limit_warning,
     forget: forget,
+    reset: reset,
     update_profession_added: update_profession_added,
     update_profession_removed: update_profession_removed,
     update_strain_change: update_strain_change

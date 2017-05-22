@@ -1,6 +1,21 @@
 var profile = function() {
   debug = true;
   selected = 'default';
+  profiles = {};
+  config = {};
+
+  var empty_default = {
+    profiles: {
+      default: {
+        prefs: { advanced_acknowledged: false }
+      }
+    },
+    config: { primary: 'default' }
+  }
+
+  var default_prefs = {
+    prefs: { advanced_acknowledged: false }
+  }
 
   var store = function() {
     data = {
@@ -9,7 +24,7 @@ var profile = function() {
       stats: pack_stats(),
       acq: pack_acq(),
       plan: pack_plan(),
-      prefs: profiles[selected].prefs
+      prefs: profiles[selected] == undefined ? default_prefs : profiles[selected].prefs
     }
 
     profiles[selected] = data;
@@ -17,32 +32,37 @@ var profile = function() {
 
   var save_all = function() {
     if (dynaloader.has_delegations('profile_apply')) { return; }
+    if (dynaloader.has_delegations('mass_update')) { return; }
 
     store();
     $.jStorage.set('all', { profiles: profiles, config: config });
-    if (debug) console.log($.jStorage.get('all'));
+    if (debug) {
+      console.log('Saving all...');
+      console.log($.jStorage.get('all'));
+    }
   }
 
   var load = function() {
-    var v = $.jStorage.get('all', {
-      profiles: {
-        default: {
-          prefs: {
-            advanced_acknowledged: false
-          }
-        }
-      },
-      config: {
-        primary: 'default'
-      }
-    })
+    var v = $.jStorage.get('all') || empty_default;
+    reset();
 
     profiles = v.profiles;
     config = v.config;
-    selected = config.primary;
+    selected = v.config.primary;
+    
     apply();
 
+    if (debug) {
+      console.log('Loaded');
+      console.log(v);
+    }
+
     return { profiles: profiles, config: config }
+  }
+
+  var reset = function() {
+    strain_interface.set_gui(null);
+    profession_basic_interface.reset();
   }
 
   var apply = function() {
@@ -64,7 +84,9 @@ var profile = function() {
   }
 
   var wipe = function() {
-    $.jStorage.deleteKey('all');
+    $.jStorage.set('all', null);
+    load();
+    save_all();
   }
 
   var pack_strain = function() {

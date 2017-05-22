@@ -28,8 +28,7 @@ var dynaloader = (function() {
       filterview.attach();
       stats_interface.attach();
       tooling.attach();
-      var p = profile.load();
-      console.log(p);
+      profile.load();
     })
   }
 

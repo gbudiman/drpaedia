@@ -31,19 +31,21 @@ var strain_interface = (function() {
 
   var set = function(x) {
     selected_strain = x;
-    profession_basic.update_strain_change();
-    skills.update_availability(true);
-    profile.save_all();
+    dynaloader.set_delegate('mass_update', profile.save_all, function() {
+      profession_basic.update_strain_change();
+      skills.update_availability(true);
 
-    if (strains.data()[x]) {
-      var stats = strains.data()[x].stats;
-      stats_interface.update(stats.hp, stats.mp, stats.infection);
-    } else {
-      stats_interface.update(0, 0, 0);
-    }
+      if (strains.data()[x]) {
+        var stats = strains.data()[x].stats;
+        stats_interface.update(stats.hp, stats.mp, stats.infection);
+      } else {
+        stats_interface.update(0, 0, 0);
+      }
+    });
   }
 
-  var set_gui = function(x) {
+  var set_gui = function(_x) {
+    var x = _x == null ? 'No Selection' : x;
     $('#strain-dd').selectpicker('val', x);
     set(x);
   }

@@ -34,6 +34,13 @@ var profession_basic = (function() {
     skills.update_availability(false);
   }
 
+  var reset = function() {
+    restricted = {};
+    selected = {};
+    forgotten = {};
+    limit = 3;
+  }
+
   var adjust_limit = function(x) {
     limit = x;
   }
@@ -118,6 +125,7 @@ var profession_basic = (function() {
     unforget: unforget,
     all: get_all,
     build: build,
+    reset: reset,
     is_profession: is_profession,
     restricted: get_restricted,
     selected: get_selected,
