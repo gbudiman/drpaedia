@@ -43,13 +43,13 @@ var profile = function() {
 
   var load = function() {
     var v = $.jStorage.get('all') || empty_default;
-    dynaloader.set_gil('ok_to_save', false, reset);
-
     profiles = v.profiles;
     config = v.config;
     selected = v.config.primary;
-    
-    apply();
+
+    dynaloader.set_gil('ok_to_save', false, reset);
+    dynaloader.set_gil('ok_to_update_gui', false, apply);
+    console.log('gil cleared');
 
     if (debug) {
       console.log('Loaded:');

@@ -5,6 +5,10 @@ var notifier = function() {
     // if (dynaloader.has_delegations('initial_load')) { return; }
     if (!dynaloader.get_gil('ok_to_update_gui')) return;
 
+    if (i == null) {
+      return;
+    }
+    
     if (data['select'] == undefined) {
       data['select'] = $.notify({
         message: ''
@@ -27,21 +31,29 @@ var notifier = function() {
     }
 
     var n = data['select'];
-    n.update('message', i + ' skills selected. ');
-    if (i == 0) {
+    
+    if (i == null || i == 0) {
       n.close();
+      return;
     }
+    n.update('message', i + ' skills selected. ');  
   }
 
   var skill_preq_missing = function(all_valid, h) {
+    console.log(all_valid);
+    console.log(h);
     if (all_valid) { return; }
 
     var p = build_missing_preq();
 
-    console.log(h);
-
     if (!all_valid) {
-      p.update('message', generate_skill_preq_message(h));
+      var message = generate_skill_preq_message(h)
+      p.update('message', message);
+
+      if (message.length == 0) {
+        p.close();
+      }
+
       attach_skills();
     } else {
       p.update('message', '');
@@ -53,11 +65,15 @@ var notifier = function() {
     var s = '';
 
     $.each(h, function(k, v) {
+      if (v.length == 0) return true;
+
       s += k + ' requires the following:<br />';
       
-      $.each(v, function(p, _junk) {
-        s += p;
-        s += ' <a class="skill-add" data-name="' + p + '">Add?</a><br />';
+      $.each(v, function(i, p) {
+        $.each(p, function(key, _junk) {
+          s += key;
+          s += ' <a class="skill-add" data-name="' + key + '">Add?</a><br />';
+        })
       })
     })
 

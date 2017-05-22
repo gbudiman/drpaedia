@@ -261,7 +261,7 @@ var dragdrop = (function() {
     selected = {};
     last_trigger = null;
     //right_side_selected = false;
-    notifier.select(0);
+    notifier.select(null);
     skill_popup.hide();
   }
 

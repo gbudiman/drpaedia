@@ -214,20 +214,23 @@ var skills = (function() {
       var valid_prof_t = validate_by_profession(data[k].conditions, all);
       var valid_strain_t = validate_by_strain(data[k].conditions, all);
 
+      messages[k] = new Array();
       if (!valid_prof_t.cond) {
         if (!is_open(k)) {
-          messages[k] = valid_prof_t.message;
+          messages[k].push(valid_prof_t.message);
         }
       }
 
       if (!valid_strain_t.cond) {
-        messages[k] = Object.assign(messages[k], valid_strain_t.message);
+        //messages[k] = Object.assign(messages[k] || '', valid_strain_t.message);
+        if (valid_strain_t.message.length > 0) {
+          messages[k].push(valid_strain_t.message);
+        }
       }
 
-      all_valid &= (valid_strain_t.cond || valid_prof_t.cond);  
+      console.log(k + ' -> ' + valid_strain_t.cond + ' || ' + valid_prof_t.cond);
+      all_valid = all_valid && (valid_strain_t.cond || valid_prof_t.cond);  
     })
-
-
 
     notifier.skill_preq_missing(all_valid, messages);
   }
@@ -251,7 +254,17 @@ var skills = (function() {
 
   var validate_by_strain = function(obj, all) {
     var cond = false;
-    if (obj.innate_preq == undefined) { return { cond: true, message: {} }};
+    var strain_found = false;
+
+    $.each(obj.innate, function(i, x) {
+      if (x == strain) {
+        strain_found = true;
+        return false;
+      }
+    })
+
+    if (!strain_found) { return { cond: false, message: '' }}
+    if (obj.innate_preq == undefined) { return { cond: true, message: '' }};
     $.each(obj.innate_preq, function(s, v) {
       var eval = validate_condition(v, all);
       cond = cond || eval.cond;
