@@ -86,6 +86,7 @@ var profile = function() {
     selected = new_value;
     $.jStorage.set('all', { profiles: profiles, config: config });
     if (debug) console.log($.jStorage.get('all'));
+    profile_interface.update_selected(new_value);
   }
 
   var load = function() {
@@ -103,7 +104,6 @@ var profile = function() {
       console.log(v);
     }
 
-    profile_interface.update_selected(selected);
     return { profiles: profiles, config: config }
   }
 
@@ -121,7 +121,7 @@ var profile = function() {
     dynaloader.set_gil('ok_to_save', false, reset);
     dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
     old_profile = selected;
-    console.log('switched to '+ selected);
+    profile_interface.update_selected(selected);
   }
 
   var apply = function() {
