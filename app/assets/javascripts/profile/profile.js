@@ -4,6 +4,7 @@ var profile = function() {
   selected = 'default';
   profiles = {};
   config = {};
+  deleted = {};
 
   var empty_default = {
     profiles: {
@@ -27,6 +28,19 @@ var profile = function() {
   var create_empty = function(new_value) {
     profiles[new_value] = default_prefs;
     switch_to(new_value);
+    save_all();
+  }
+
+  var soft_delete = function(name) {
+    deleted[name] = profiles[name];
+    delete profiles[name];
+    save_all();
+  }
+
+  var undelete = function(name) {
+    profiles[name] = deleted[name];
+    delete deleted[name];
+    save_all();
   }
 
   var store = function() {
@@ -80,8 +94,9 @@ var profile = function() {
     config = v.config;
     selected = v.config.primary;
 
-    dynaloader.set_gil('ok_to_save', false, reset);
-    dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
+    switch_to(selected);
+    //dynaloader.set_gil('ok_to_save', false, reset);
+    //dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
 
     if (debug) {
       console.log('Loaded:');
@@ -101,10 +116,12 @@ var profile = function() {
   }
 
   var switch_to = function(new_value) {
-    old_value = selected;
+    old_profile = selected;
     selected = new_value;
     dynaloader.set_gil('ok_to_save', false, reset);
     dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
+    old_profile = selected;
+    console.log('switched to '+ selected);
   }
 
   var apply = function() {
@@ -229,10 +246,13 @@ var profile = function() {
     get_current_name: function() { return selected; },
     get_old_name: function() { return old_profile; },
     get_master: function() { return $.jStorage.get('all'); },
+    get_deleted: function() { return deleted; },
     rename: rename,
     save_all: save_all,
     save_all_delayed: save_all_delayed,
     set_pref: set_pref,
+    soft_delete: soft_delete,
+    undelete: undelete,
     switch_to: switch_to,
     wipe: wipe
   }

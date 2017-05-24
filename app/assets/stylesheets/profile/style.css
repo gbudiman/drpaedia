@@ -1,0 +1,15 @@
+.profile-delete {
+  cursor: pointer;
+}
+
+.profile-deleted, .profile-deleted:hover {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.anchor-active {
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: default;
+  color: #333;
+}

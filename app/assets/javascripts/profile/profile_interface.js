@@ -11,6 +11,7 @@ var profile_interface = function() {
       validate: validate_profile_name
     }).on('save', function(e, params) {
       profile.rename(params.newValue);
+      update_list();
     })
 
     attach_copy_button();
@@ -18,7 +19,6 @@ var profile_interface = function() {
     attach_copy_close();
     attach_copy_execute();
     attach_scratch_button();
-    
 
     $('#modal-copy').modal({
       show: false
@@ -59,6 +59,7 @@ var profile_interface = function() {
   var update_list = function() {
     var anchor = $('#existing-profile');
     var master_data = profile.get_master();
+    var deleted_profiles = profile.get_deleted();
     var current_selected = profile.get_current_name();
     var s = '';
     var active_class;
@@ -66,16 +67,28 @@ var profile_interface = function() {
     anchor.nextAll().remove();
 
     $.each(master_data.profiles, function(x, _junk) {
+      if (deleted_profiles[x] != undefined) return true;
+
       if (x == current_selected) {
-        active_class = 'active';
+        active_class = 'anchor-active';
       } else {
         active_class = '';
       }
 
-      s += '<li class="' + active_class + '">'
-         +   '<a href="#" data-name="' + x + '">'
+      s += '<li>'
+         +   '<span><a href="#" data-name="' + x + '" class="' + active_class + '">'
          +     x
-         +   '</a>'
+         +   '</a></span>'
+         +   '<span class="glyphicon glyphicon-remove pull-right text-danger profile-delete" data-deleted=false></span>'
+         + '</li>';
+    })
+
+    $.each(deleted_profiles, function(x, _junk) {
+      s += '<li>'
+         +   '<span><a href="#" data-name="' + x + '" class="profile-deleted">'
+         +     x
+         +   '</a></span>'
+         +   '<span class="glyphicon glyphicon-repeat pull-right profile-delete" data-deleted=true></span>'
          + '</li>';
     })
 
@@ -85,11 +98,51 @@ var profile_interface = function() {
 
   var attach_profile_load = function() {
     $('#profile-dropdown').find('[data-name]').each(function() {
+      $(this).on('mouseover', function(event) {
+        if ($(this).hasClass('profile-deleted')) {
+          return false;
+        }
+      });
+
       $(this).on('click', function(event) {
+        if ($(this).hasClass('anchor-active') || $(this).hasClass('profile-deleted')) {
+          return false;
+        }
+
         var profile_name = $(this).attr('data-name');
         profile.switch_to(profile_name);
         update_list();
         update_selected(profile_name);
+        return false;
+      })
+
+      $(this).parent().parent().find('.profile-delete').on('click', function(event) {
+        var is_deleted = !($(this).attr('data-deleted') == 'true' ? true : false);
+        var text = $(this).parent().find('[data-name]');
+        var profile_name = text.attr('data-name');
+
+        if (is_deleted) {
+          text.addClass('profile-deleted');
+          $(this)
+            .removeClass('glyphicon-remove')
+            .addClass('glyphicon-repeat')
+            .removeClass('text-danger');
+
+          profile.soft_delete(profile_name);
+          text.removeAttr('href');
+        } else {
+          text.removeClass('profile-deleted');
+          $(this)
+            .addClass('glyphicon-remove')
+            .removeClass('glyphicon-repeat')
+            .addClass('text-danger');
+
+          profile.undelete(profile_name);
+          text.attr('href', '#');
+        }
+
+        $(this).attr('data-deleted', is_deleted);
+        text.removeClass('anchor-active');
         return false;
       })
     })
