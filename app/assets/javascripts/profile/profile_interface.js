@@ -17,6 +17,8 @@ var profile_interface = function() {
     attach_copy_validation();
     attach_copy_close();
     attach_copy_execute();
+    attach_scratch_button();
+    
 
     $('#modal-copy').modal({
       show: false
@@ -28,6 +30,28 @@ var profile_interface = function() {
   var attach_copy_button = function() {
     $('#profile-copy').on('click', function(event) {
       $('#modal-copy').modal('show');
+      event.preventDefault();
+    })
+  }
+
+  var attach_scratch_button = function() {
+    $('#profile-new').on('click', function(event) {
+      var profiles = profile.get_all();
+      var new_name = 'new';
+      var counter = 0;
+      var exist = profiles[new_name + counter.toString()] != undefined;
+
+      while (exist) {
+        counter++;
+        exist = profiles[new_name + counter.toString()] != undefined;
+      }
+
+      var final_profile_name = new_name + counter.toString();
+
+      profile.create_empty(final_profile_name);
+      update_list();
+      update_selected(final_profile_name);
+
       event.preventDefault();
     })
   }

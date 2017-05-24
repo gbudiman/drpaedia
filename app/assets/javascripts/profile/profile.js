@@ -24,6 +24,11 @@ var profile = function() {
     if (debug) console.log($.jStorage.get('all'));
   }
 
+  var create_empty = function(new_value) {
+    profiles[new_value] = default_prefs;
+    switch_to(new_value);
+  }
+
   var store = function() {
     data = {
       strain: pack_strain(),
@@ -216,6 +221,7 @@ var profile = function() {
   return {
     apply: apply,
     copy_current_to: copy_current_to,
+    create_empty: create_empty,
     load: load,
     store: store,
     get_all: function() { return profiles; },
