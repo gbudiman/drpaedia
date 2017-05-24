@@ -8,7 +8,8 @@ var profile_interface = function() {
     $('#profile-rename').editable({
       placement: 'bottom',
       unsavedclass: null,
-      validate: validate_profile_name
+      validate: validate_profile_name,
+      container: 'body'
     }).on('save', function(e, params) {
       profile.rename(params.newValue);
       update_list();
