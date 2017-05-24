@@ -1,0 +1,13 @@
+%div{class: 'modal fade', id: 'modal-copy'}
+  %div{class: 'modal-dialog'}
+    %div{class: 'modal-content'}
+      %div{class: 'modal-body'}
+        %div{class: 'col-xs-12'}
+          Copy to new profile
+        %div{class: 'col-xs-12'}
+          %input{type: 'text', class: 'form-control', placeholder: 'Enter new profile name', id: 'modal-copy-input'}
+        %div{class: 'col-xs-12 text-danger', id: 'modal-copy-error'}
+        %div{class: 'row'}
+      %div{class: 'modal-footer'}
+        %button{class: 'btn btn-primary pull-right', id: 'modal-copy-execute'} Copy
+        %button{class: 'btn btn-default pull-right', id: 'modal-copy-cancel'} Cancel

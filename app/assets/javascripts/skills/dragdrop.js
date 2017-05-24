@@ -90,7 +90,15 @@ var dragdrop = (function() {
 
   var drop_to_pool = function(id) {
     deselect_all();
-    selected[id] = true;
+
+    if (Array.isArray(id)) {
+      $.each(id, function(_junk, x) {
+        selected[x] = true;
+      })
+    } else {
+      selected[id] = true;
+    }
+
     drop_alphabetically();
   }
 

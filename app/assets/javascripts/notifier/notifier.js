@@ -5,10 +5,10 @@ var notifier = function() {
     // if (dynaloader.has_delegations('initial_load')) { return; }
     if (!dynaloader.get_gil('ok_to_update_gui')) return;
 
-    if (i == null) {
+    /*if (i == null) {
       return;
-    }
-    
+    }*/
+
     if (data['select'] == undefined) {
       data['select'] = $.notify({
         message: ''
@@ -40,8 +40,6 @@ var notifier = function() {
   }
 
   var skill_preq_missing = function(all_valid, h) {
-    console.log(all_valid);
-    console.log(h);
     if (all_valid) { return; }
 
     var p = build_missing_preq();

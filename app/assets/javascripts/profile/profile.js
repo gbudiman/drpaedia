@@ -1,4 +1,5 @@
 var profile = function() {
+  old_profile = '';
   debug = true;
   selected = 'default';
   profiles = {};
@@ -17,6 +18,12 @@ var profile = function() {
     prefs: { advanced_acknowledged: false }
   }
 
+  var copy_current_to = function(new_value) {
+    profiles[new_value] = profiles[selected];
+    $.jStorage.set('all', { profiles: profiles, config: config });
+    if (debug) console.log($.jStorage.get('all'));
+  }
+
   var store = function() {
     data = {
       strain: pack_strain(),
@@ -31,7 +38,9 @@ var profile = function() {
   }
 
   var save_all = function() {
+    var caller = arguments.callee.caller.toString();
     if (dynaloader.get_gil('ok_to_save')) {
+      // console.log(caller);
       store();
       $.jStorage.set('all', { profiles: profiles, config: config });
       if (debug) {
@@ -41,6 +50,25 @@ var profile = function() {
     }
   }
 
+  var save_all_delayed = function(expected) {
+    console.log(expected + ' <> ' + selected);
+    if (expected == selected) {
+      save_all();
+    }
+  }
+
+  var rename = function(new_value) {
+    profiles[new_value] = profiles[selected];
+    delete profiles[selected];
+    if (config.primary == selected) {
+      config.primary = new_value;
+    }
+
+    selected = new_value;
+    $.jStorage.set('all', { profiles: profiles, config: config });
+    if (debug) console.log($.jStorage.get('all'));
+  }
+
   var load = function() {
     var v = $.jStorage.get('all') || empty_default;
     profiles = v.profiles;
@@ -48,22 +76,30 @@ var profile = function() {
     selected = v.config.primary;
 
     dynaloader.set_gil('ok_to_save', false, reset);
-    dynaloader.set_gil('ok_to_update_gui', false, apply);
-    console.log('gil cleared');
+    dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
 
     if (debug) {
       console.log('Loaded:');
       console.log(v);
     }
 
+    profile_interface.update_selected(selected);
     return { profiles: profiles, config: config }
   }
 
   var reset = function() {
     strain_interface.set_gui(null);
     profession_basic_interface.reset();
+    skill_interface.reset_to_pool();
     $('#skills-acquired').empty();
     $('#skills-planned').empty();
+  }
+
+  var switch_to = function(new_value) {
+    old_value = selected;
+    selected = new_value;
+    dynaloader.set_gil('ok_to_save', false, reset);
+    dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
   }
 
   var apply = function() {
@@ -94,6 +130,7 @@ var profile = function() {
   }
 
   var apply_rightside = function(entry, target) {
+    console.log(entry);
     if (entry.group != undefined) {
       if (target == 'skills-acquired') {
         tooling.copy_programmatically('tool-acq-group', target, { title: entry.group })
@@ -177,12 +214,20 @@ var profile = function() {
   }
 
   return {
+    apply: apply,
+    copy_current_to: copy_current_to,
     load: load,
     store: store,
     get_all: function() { return profiles; },
     get_current: function() { return data; },
+    get_current_name: function() { return selected; },
+    get_old_name: function() { return old_profile; },
+    get_master: function() { return $.jStorage.get('all'); },
+    rename: rename,
     save_all: save_all,
+    save_all_delayed: save_all_delayed,
     set_pref: set_pref,
+    switch_to: switch_to,
     wipe: wipe
   }
 }()

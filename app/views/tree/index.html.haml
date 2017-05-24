@@ -1,10 +1,26 @@
+= render 'profile_modals'
+
 %nav{class: 'navbar navbar-inverse navbar-fixed-top'}
   %div{class: 'container-fluid'}
     %div{class: 'navbar-header'}
       %a{class: 'navbar-brand', href: '#', id: 'config-button'} Profile: None
 
 %div{id: 'config-bar'}
-  Profile
+  Current Profile
+  %br
+  %div{class: 'btn-group container'}
+    %button{type: 'button', class: 'btn btn-primary', id: 'profile-rename'} Default
+    %button{type: 'button', class: 'btn btn-primary dropdown-toggle', 'data-toggle': 'dropdown'}
+      %span{class: 'caret'}
+    %ul{class: 'dropdown-menu', id: 'profile-dropdown'}
+      %li
+        %a{href: '#', id: 'profile-copy'} Copy Profile...
+      %li
+        %a{href: '#', id: 'profile-new'} Create From Scratch...
+      %li
+        %a{href: '#', id: 'profile-delete'} Delete Profile...
+      %li{role: 'separator', class: 'divider', id: 'existing-profile'}
+
   %hr
   Strain
   %select{class: 'selectpicker show-tick', id: 'strain-dd'}
@@ -136,6 +152,8 @@
 = stylesheet_link_tag 'tooling/style'
 = stylesheet_link_tag 'notifier/style'
 = stylesheet_link_tag 'animate'
+= javascript_include_tag 'profile/profile_interface'
+= javascript_include_tag 'profile/profile'
 = javascript_include_tag 'notifier/notifier'
 = javascript_include_tag 'filterview/filterview'
 = javascript_include_tag 'skills/calc'

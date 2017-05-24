@@ -223,8 +223,10 @@ var tooling = function() {
     calc.recalculate_planned_stats();
 
     clearTimeout(delay_interval);
+
+    var current_profile = profile.get_old_name();
     delay_interval = setTimeout(function() {
-      profile.save_all()
+      profile.save_all_delayed(current_profile);
     }, 500);
   }
 

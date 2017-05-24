@@ -116,6 +116,20 @@ var skill_interface = (function() {
     $('span[data-badge]').text('');
   }
 
+  var reset_to_pool = function() {
+    reset_all();
+
+    var ids = new Array();
+    $('#skills-acquired').find('.skill').each(function() {
+      ids.push($(this).attr('id'));
+    })
+
+    $('#skills-planned').find('.skill').each(function() {
+      ids.push($(this).attr('id'));
+    })
+    dragdrop.drop_to_pool(ids);
+  }
+
   var sort_pool = function() {
 
   }
@@ -144,6 +158,7 @@ var skill_interface = (function() {
     display: display,
     remove: remove,
     reset_all: reset_all,
+    reset_to_pool: reset_to_pool,
     clear_alternator: clear_alternator
   }
 })()
