@@ -228,6 +228,14 @@ var tooling = function() {
     delay_interval = setTimeout(function() {
       profile.save_all_delayed(current_profile);
     }, 500);
+
+    update_compute_group(obj);
+  }
+
+  var update_compute_group = function(obj) {
+    compute_group(obj.parent());
+    //if (obj.find('.glyphicon-option-vertical').length == 0) return;
+    //var anchor
   }
 
   var alternate = function(obj) {
@@ -359,6 +367,7 @@ var tooling = function() {
       }*/
     }
 
+    compute_group(obj);
     var state = 'init';
     obj.children().each(function() {
       var curr = $(this);
@@ -374,6 +383,48 @@ var tooling = function() {
         }
       }
     })
+  }
+
+  var compute_group = function(obj) {
+    var state = 'out';
+    var anchor = null;
+    var checkin = 0;
+    var expense = 0;
+
+    var update_and_reset_anchor = function(anchor) {
+      anchor.find('.tool-compute-expend').text(expense);
+      anchor.find('.tool-compute-checkin').text(checkin);
+      checkin = 0;
+      expense = 0;
+    }
+
+    $.each(obj.children(), function() {
+      var that = $(this);
+      if (state == 'out') {
+        if (that.hasClass('tool-separator')) {
+          anchor = that;
+          state = 'in';
+        }
+      } else if (state == 'in') {
+        if (that.hasClass('tool-separator')) {
+          update_and_reset_anchor(anchor);
+          anchor = that;
+          state = 'in;'
+        } else if (that.hasClass('tool-stat-planner')) {
+          expense += parseInt(that.find('.tool-value').text());
+        } else if (that.hasClass('tool-prof-planner')) {
+          expense += parseInt(that.find('.tool-prof-xp').text());
+        } else if (that.hasClass('skill')) {
+          expense += parseInt(that.find('.skill-cost').text());
+        } else if (that.hasClass('tool-checkin-planner')) {
+          checkin += parseInt(that.find('.tool-value').text());
+        }
+      }
+    })
+
+    if (anchor != null) {
+      update_and_reset_anchor(anchor);
+    }
   }
 
   var indent = function(obj, apply) {
