@@ -2,6 +2,7 @@ var skill_popup = function() {
   var data = {};
   var current_click;
   var state;
+  var timeout = setTimeout(null, 0);
 
   var attach = function() {
     $('div[data-accessible]').on('click', function() {
@@ -13,36 +14,72 @@ var skill_popup = function() {
 
   }
 
-  var handle = function(id) {
-    if (data[id] == undefined) {
-      $('#' + id).popover({
-        content: 'Loading...',
-        trigger: 'manual',
-        html: true,
-        placement: 'auto bottom',
-        container: 'body'
-      })
+  var traverse_to_parent = function(id) {
+    var obj = $('#' + id).parent();
+    var id = obj.attr('id');
 
-      data[id] = true;
+    while(id != 'skill-pool' && id != 'skills-acquired' && id != 'skills-planned') {
+      obj = obj.parent();
+      id = obj.attr('id');
     }
 
-    $('#' + id).data('bs.popover').options.content = get_details(id);
-    if (current_click == id) {
-      if (state == 'shown') {
-        $('#' + id).popover('hide');
-        state = 'hidden';
+    console.log('traversing returned ' + id);
+    return '#' + id;
+  }
+
+  var handle = function(id) {
+    var smart_trigger = function() {
+      console.log('smart trigger = ' + id + ' | ' + current_click);
+      if (current_click == id) {
+        if (state == 'shown') {
+          $('#' + id).popover('hide');
+          state = 'hidden';
+        } else {
+          $('#' + id).popover('show');
+          state = 'shown';
+        }
       } else {
+        $('#' + current_click).popover('hide');
         $('#' + id).popover('show');
         state = 'shown';
       }
-    } else {
-      
-      $('#' + current_click).popover('hide');
-      $('#' + id).popover('show');
-      state = 'shown';
+
+      current_click = id;
     }
 
-    current_click = id;
+    console.log('>>> handle called on ' + id);
+
+    clearTimeout(timeout);
+    if (data[id] == undefined) {
+      timeout = setTimeout(function() {
+        console.log(' >>> reinstantiating');
+        $('#' + id).popover({
+          content: get_details(id),
+          trigger: 'manual',
+          html: true,
+          placement: 'auto bottom',
+          viewport: traverse_to_parent(id)
+          //container: 'body',
+          //viewport: '#skill-pool'
+        })
+
+        data[id] = true;
+
+        smart_trigger();
+      }, 50);
+    } else {
+      console.log('>>> data exists, bypassing timeout');
+      smart_trigger();
+    }
+
+    //var op = $('#' + id).data('bs.popover').options;
+    //op.content = get_details(id);
+    //op.viewport = traverse_to_parent(id);
+    //op.container = traverse_to_parent(id);
+
+    //console.log(op);
+
+
   }
 
   var append_preqs = function(skill, key) {
@@ -167,8 +204,20 @@ var skill_popup = function() {
     state = 'hidden';
   }
 
+  var destroy = function() {
+    if (current_click == null) return;
+
+    var obj = $('#' + current_click);
+    obj.popover('destroy');
+    state = 'hidden';
+    delete data[current_click];
+    clearTimeout(timeout);   
+    //console.log(' >>> destroyed ' + current_click); 
+  }
+
   return {
     attach: attach,
-    hide: hide
+    hide: destroy,
+    destroy: destroy
   }
 }()

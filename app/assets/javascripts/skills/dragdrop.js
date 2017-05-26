@@ -73,7 +73,7 @@ var dragdrop = (function() {
       }
     })
 
-    skill_popup.hide();
+    skill_popup.destroy();
     deselect_all();
     highlight_drop_handle(false);
     tooling.auto_indent(parent_container);
@@ -127,7 +127,7 @@ var dragdrop = (function() {
 
     deselect_all();
     highlight_drop_handle(false);
-    skill_popup.hide();
+    skill_popup.destroy();
     calc.recalculate_skills();
     skills.validate();
     return false;
