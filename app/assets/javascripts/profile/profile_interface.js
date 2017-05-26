@@ -187,7 +187,8 @@ var profile_interface = function() {
 
   var update_selected = function(new_value) {
     $('#profile-rename').text(new_value);
-    $('#config-button').text('Profile: ' + new_value);
+    $('#config-button').find('.profile-name').text('Profile: ' + new_value);
+    configbar.initialize_arrow();
   }
 
   var validate_profile_name = function(_new_value) {

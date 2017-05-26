@@ -4,6 +4,7 @@ var configbar = (function() {
   var attach = function() {
     $('#config-button').on('click', function(event) {
       toggle();
+      initialize_arrow();
       event.preventDefault();
     });
   }
@@ -23,8 +24,18 @@ var configbar = (function() {
     state = 'closed';
   }
 
+  var initialize_arrow = function() {
+    var target = $('#config-button').find('.profile-arrow');
+    if (state == 'opened') {
+      target.text(' >> ');
+    } else {
+      target.text(' << ');
+    }
+  }
+
   return {
-    attach: attach
+    attach: attach,
+    initialize_arrow: initialize_arrow
   }
 })()
 
