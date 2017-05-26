@@ -149,10 +149,12 @@ var profile = function() {
     $.each(d.plan, function(i, x) {
       apply_rightside(x, 'skills-planned');
     })
+
+    tooling.compute_group($('#skills-acquired'));
+    tooling.compute_group($('#skills-planned'));
   }
 
   var apply_rightside = function(entry, target) {
-    console.log(entry);
     if (entry.group != undefined) {
       if (target == 'skills-acquired') {
         tooling.copy_programmatically('tool-acq-group', target, { title: entry.group })
@@ -166,7 +168,7 @@ var profile = function() {
     } else if (entry.stat != undefined) {
       tooling.copy_programmatically('tool-stat-planner', target, { option: entry.stat, nominal: entry.nominal })
     } else if (entry.checkin != undefined) {
-      tooling.copy_programmatically('tool-checkin-marker', target, { title: entry.checkin, nominal: entry.nominal })
+      tooling.copy_programmatically('tool-checkin-planner', target, { title: entry.checkin, nominal: entry.nominal })
     } else if (entry.prof != undefined) {
       tooling.copy_programmatically('tool-profession-planner', target, { option: entry.prof, nominal: entry.nominal, selected: entry.selected })
     }

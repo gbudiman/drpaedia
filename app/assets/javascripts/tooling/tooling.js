@@ -9,7 +9,7 @@ var tooling = function() {
     attach_object('tool-acq-group', 'skills-acquired');
     attach_object('tool-separator', 'skills-planned');
     attach_object('tool-stat-planner', 'skills-planned');
-    attach_object('tool-checkin-marker', 'skills-planned');
+    attach_object('tool-checkin-planner', 'skills-planned');
     attach_object('tool-profession-planner', 'skills-planned');
     attach_dropdown_event();
   }
@@ -167,7 +167,6 @@ var tooling = function() {
     var anchor = _obj.find('.tool-option');
     var pclass = anchor.text();
 
-    console.log(pclass);
     //obj.empty();
     
     var s = ' <select class="tool-prof-select"><option>No selection</option>';
@@ -197,7 +196,6 @@ var tooling = function() {
       var parent = $(this).parent();
 
       var current_selection = obj.find('option:selected').text();
-      console.log(current_selection);
 
       rebuild_prof_list(parent);
       var sel = parent.find('.tool-prof-select');
@@ -425,6 +423,8 @@ var tooling = function() {
     if (anchor != null) {
       update_and_reset_anchor(anchor);
     }
+
+    console.log(' >>> compute group completed');
   }
 
   var indent = function(obj, apply) {
@@ -615,6 +615,7 @@ var tooling = function() {
     hide_popover: hide_popover,
     is_group: is_group,
     update_planned_prof_list: update_planned_prof_list,
-    copy_programmatically: copy_programmatically
+    copy_programmatically: copy_programmatically,
+    compute_group: compute_group
   }
 }()
