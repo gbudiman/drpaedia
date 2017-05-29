@@ -1,5 +1,6 @@
 var tooling = function() {
   var delay_interval = setTimeout(null, 0);
+  var group_interval = setTimeout(null, 0);
   var popover_caller;
   var state;
 
@@ -60,6 +61,10 @@ var tooling = function() {
             .attr('selected', true);
     }
 
+    if (args.is_collapsed != undefined) {
+      cloned.attr('data-group-is-collapsed', args.is_collapsed);
+    }
+
     profile.save_all();
   }
 
@@ -101,6 +106,10 @@ var tooling = function() {
 
     obj.find('.glyphicon-plus').on('click', function() {
       adjust($(this).parent(), 1);
+    })
+
+    obj.find('.group-collapsible').on('click', function() {
+      toggle_group_visibility($(this).parent(), true);
     })
 
     // $('.tool').find('.glyphicon-option-horizontal').on('click', function() {
@@ -157,6 +166,72 @@ var tooling = function() {
     }
 
     calc.recalculate_all();
+  }
+
+  var toggle_group_visibility = function(obj, exec) {
+    var attr = obj.attr('data-group-is-collapsed') || 'false';
+    var is_collapsed = attr == 'false' ? false : true;
+    var target = new Array();
+    var arrow = obj.find('.group-collapsible');
+    var member_count = obj.find('.tool-compute-children');
+
+    clearTimeout(group_interval);
+
+
+    console.log('isc = ' + is_collapsed);
+    var get_children = function() {
+      var el = obj.next();
+
+      while(el.length > 0) {
+        if (el.hasClass('tool-separator')) break;
+        target.push(el);
+        el = el.next();
+      }
+    }
+
+    var adjust_orientation = function(exec) {
+      console.log('orientation adjusted ' + is_collapsed + ' exec ' + exec + ' (' + target.length + ')');
+      if (target.length == 0) {
+        arrow.removeClass('glyphicon-menu-up glyphicon-menu-down');
+        member_count.text('');
+        obj.attr('data-group-is-collapsed', false);
+
+        return;
+      }
+
+      if ((is_collapsed && exec) || (!is_collapsed && !exec)) {
+        arrow
+          .removeClass('glyphicon-menu-down')
+          .addClass('glyphicon-menu-up')
+        member_count.text('');
+        
+      } else {
+        arrow
+          .removeClass('glyphicon-menu-up')
+          .addClass('glyphicon-menu-down')
+        member_count.text(' +' + target.length);
+      }
+    }
+
+    get_children();
+    adjust_orientation(exec);
+    if (exec != undefined && exec) {
+      if (is_collapsed) {
+        console.log('expanding');
+        obj.attr('data-group-is-collapsed', false);
+        $.each(target, function(i, x) { x.show(); })
+      } else {
+        console.log('collapsing');
+        obj.attr('data-group-is-collapsed', true);
+        $.each(target, function(i, x) { x.hide(); })
+      }
+
+      var current_profile = profile.get_current_name();
+      group_interval = setTimeout(function() {
+        profile.save_all_delayed(current_profile);
+      }, 250)
+    }
+    
   }
 
   var rebuild_prof_list = function(_obj) {
@@ -353,6 +428,16 @@ var tooling = function() {
     profile.save_all();
   }
 
+  var auto_collapse = function(obj) {
+    $.each(obj.children(), function() {
+      var that = $(this);
+      if (is_group(that)) {
+        toggle_group_visibility(that);
+      }
+    })
+    
+  }
+
   var auto_indent = function(_obj) {
     var obj = _obj;
     if (obj.attr('id') != 'skills-acquired' && obj.attr('id') != 'skills-planned') {
@@ -365,6 +450,7 @@ var tooling = function() {
       }*/
     }
 
+    auto_collapse(obj);
     compute_group(obj);
     var state = 'init';
     obj.children().each(function() {
@@ -498,7 +584,12 @@ var tooling = function() {
       }
 
       $.each(objs, function(i, x) {
-        x.remove();
+        if (x.hasClass('skill')) {
+          dragdrop.drop_to_pool(x.attr('id'));
+          x.removeClass('tool-highlight');
+        } else {
+          x.remove();
+        }
       })
 
       calc.recalculate_all();
@@ -611,11 +702,12 @@ var tooling = function() {
   return {
     attach: attach,
     attach_handles: attach_handles,
+    auto_collapse: auto_collapse,
     auto_indent: auto_indent,
     hide_popover: hide_popover,
     is_group: is_group,
     update_planned_prof_list: update_planned_prof_list,
     copy_programmatically: copy_programmatically,
-    compute_group: compute_group
+    compute_group: compute_group,
   }
 }()

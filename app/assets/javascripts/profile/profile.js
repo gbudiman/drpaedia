@@ -157,9 +157,9 @@ var profile = function() {
   var apply_rightside = function(entry, target) {
     if (entry.group != undefined) {
       if (target == 'skills-acquired') {
-        tooling.copy_programmatically('tool-acq-group', target, { title: entry.group })
+        tooling.copy_programmatically('tool-acq-group', target, { title: entry.group, is_collapsed: entry.is_collapsed })
       } else if (target == 'skills-planned') {
-        tooling.copy_programmatically('tool-separator', target, { title: entry.group })
+        tooling.copy_programmatically('tool-separator', target, { title: entry.group, is_collapsed: entry.is_collapsed })
       }
     } else if (entry.skill != undefined) {
       dragdrop.drop_selective(entry.skill, $('#' + target));
@@ -212,7 +212,11 @@ var profile = function() {
 
     obj.children().each(function() {
       if ($(this).hasClass('tool-separator')) {
-        a.push({group: $(this).find('.tool-text').text()});
+        //console.log($(this));
+        var attr = $(this).attr('data-group-is-collapsed') || 'false';
+        var is_collapsed = attr == 'false' ? false : true;
+        a.push({group: $(this).find('.tool-text').text(),
+                is_collapsed: is_collapsed});
       } else if ($(this).hasClass('tool-stat-planner')) {
         a.push({stat: $(this).find('.tool-stat').text(), 
                 nominal: parseInt($(this).find('.stat-cost').text())});
