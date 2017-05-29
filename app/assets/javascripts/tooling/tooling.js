@@ -215,17 +215,18 @@ var tooling = function() {
 
     get_children();
     adjust_orientation(exec);
-    if (exec != undefined && exec) {
-      if (is_collapsed) {
-        console.log('expanding');
-        obj.attr('data-group-is-collapsed', false);
-        $.each(target, function(i, x) { x.show(); })
-      } else {
-        console.log('collapsing');
-        obj.attr('data-group-is-collapsed', true);
-        $.each(target, function(i, x) { x.hide(); })
-      }
 
+    if ((is_collapsed && exec) || (!is_collapsed && !exec)) {
+      console.log('expanding');
+      obj.attr('data-group-is-collapsed', false);
+      $.each(target, function(i, x) { x.show(); })
+    } else {
+      console.log('collapsing');
+      obj.attr('data-group-is-collapsed', true);
+      $.each(target, function(i, x) { x.hide(); })
+    }
+   
+    if (exec != undefined && exec) {
       var current_profile = profile.get_current_name();
       group_interval = setTimeout(function() {
         profile.save_all_delayed(current_profile);
@@ -564,7 +565,16 @@ var tooling = function() {
   var attach_more_options_remove = function(obj) {
     obj.on('click', function() {
       var cached = popover_caller.parent();
+      var next = cached.next();
+
       popover_caller.parent().remove();
+
+      console.log(next);
+      while (next.length > 0) {
+        if (!next.hasClass('tool-highlight')) break;
+        next.removeClass('tool-highlight');
+        next = next.next();
+      }
 
       calc.recalculate_all();
     })
