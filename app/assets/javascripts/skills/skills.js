@@ -191,6 +191,10 @@ var skills = (function() {
 
         skill_interface.apply_filters();
       })
+
+      console.log(' !!! update completed');
+      tooling.auto_indent($('#skills-acquired'));
+      tooling.auto_indent($('#skills-planned'));
     })
   }
 

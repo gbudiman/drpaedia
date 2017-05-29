@@ -225,7 +225,7 @@ var tooling = function() {
       obj.attr('data-group-is-collapsed', true);
       $.each(target, function(i, x) { x.hide(); })
     }
-   
+
     if (exec != undefined && exec) {
       var current_profile = profile.get_current_name();
       group_interval = setTimeout(function() {
@@ -477,6 +477,8 @@ var tooling = function() {
     var expense = 0;
 
     var update_and_reset_anchor = function(anchor) {
+      console.log(checkin + ' | ' + expense);
+      //console.log(anchor);
       anchor.find('.tool-compute-expend').text(expense);
       anchor.find('.tool-compute-checkin').text(checkin);
       checkin = 0;
@@ -491,15 +493,17 @@ var tooling = function() {
           state = 'in';
         }
       } else if (state == 'in') {
+
         if (that.hasClass('tool-separator')) {
           update_and_reset_anchor(anchor);
           anchor = that;
-          state = 'in;'
+          state = 'in';
         } else if (that.hasClass('tool-stat-planner')) {
           expense += parseInt(that.find('.tool-value').text());
         } else if (that.hasClass('tool-prof-planner')) {
           expense += parseInt(that.find('.tool-prof-xp').text());
         } else if (that.hasClass('skill')) {
+          console.log(that.find('.skill-cost').text());
           expense += parseInt(that.find('.skill-cost').text());
         } else if (that.hasClass('tool-checkin-planner')) {
           checkin += parseInt(that.find('.tool-value').text());
