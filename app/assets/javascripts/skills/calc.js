@@ -42,10 +42,13 @@ var calc = function() {
   }
 
   var recalculate_purchased_profession = function() {
-    var norm = Object.keys(profession_basic.selected()).length;
+    var norm = Object.keys(profession_basic.selected()).length - 1;
     var forgotten = Object.keys(profession_basic.forgotten()).length;
+    var conc = Object.keys(profession_conc.selected()).length;
 
-    data['profs-acquired'] = 10 * (norm + forgotten * 2);
+    norm = norm < 0 ? 0 : norm;
+    
+    data['profs-acquired'] = 10 * (norm + forgotten * 2) + 30 * conc;
     $('#xp-prof-acquired').text(data['profs-acquired']);
     recalculate_top_level('prof');
     recalculate_tally();

@@ -56,6 +56,7 @@ var dynaloader = (function() {
       dynaloader.set_gil('ok_to_save', false);
       strains.build();
       profession_basic.build();
+      profession_conc.build();
       skills.build();
       filterview.attach();
       stats_interface.attach();

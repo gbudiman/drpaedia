@@ -23,13 +23,11 @@ var skill_popup = function() {
       id = obj.attr('id');
     }
 
-    console.log('traversing returned ' + id);
     return '#' + id;
   }
 
   var handle = function(id) {
     var smart_trigger = function() {
-      console.log('smart trigger = ' + id + ' | ' + current_click);
       if (current_click == id) {
         if (state == 'shown') {
           $('#' + id).popover('hide');
@@ -47,12 +45,9 @@ var skill_popup = function() {
       current_click = id;
     }
 
-    console.log('>>> handle called on ' + id);
-
     clearTimeout(timeout);
     if (data[id] == undefined) {
       timeout = setTimeout(function() {
-        console.log(' >>> reinstantiating');
         $('#' + id).popover({
           content: get_details(id),
           trigger: 'manual',
@@ -68,7 +63,6 @@ var skill_popup = function() {
         smart_trigger();
       }, 50);
     } else {
-      console.log('>>> data exists, bypassing timeout');
       smart_trigger();
     }
 
@@ -176,7 +170,7 @@ var skill_popup = function() {
 
     $.each(cond, function(k, v) {
       profession_class = 'cond-disabled';
-      if (profession_basic.is_profession(k)) {
+      if (profession_basic.is_profession(k) || profession_conc.is_profession(k)) {
         if (is_purchased_profession(k)) {
           profession_class = 'cond-discounted';
 
@@ -193,7 +187,11 @@ var skill_popup = function() {
           s += '<div class="' + preq_class + '">' + append_preqs(skill_name, k) + '</div>';
         }
       }
+      // } else if (profession_conc.is_profession(k)) {
+      //   s += '<div>' + k + '</div>';
+      // }
     })
+
 
     return s;
   }

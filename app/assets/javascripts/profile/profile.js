@@ -177,6 +177,10 @@ var profile = function() {
         profession_basic_interface.add(x);
         profession_basic_interface.forget(x);
       })
+
+      $.each(d.professions.concentration, function(x, _junk) {
+        profession_conc_interface.add(x);
+      })
     }
 
     stats_interface.set(d.stats);
@@ -225,7 +229,8 @@ var profile = function() {
   var pack_professions = function() {
     return {
       selected: profession_basic.selected(),
-      forgotten: profession_basic.forgotten()
+      forgotten: profession_basic.forgotten(),
+      concentration: profession_conc.selected()
     }
   }
 

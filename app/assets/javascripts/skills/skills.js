@@ -127,7 +127,7 @@ var skills = (function() {
 
   var get_config = function() {
     strain = strain_interface.selected();
-    professions = Object.assign({}, profession_basic.selected());
+    professions = Object.assign({}, profession_basic.selected(), profession_conc.selected());
 
     return {
       strain: strain,

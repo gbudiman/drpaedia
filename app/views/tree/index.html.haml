@@ -41,6 +41,23 @@
       Profession limit exceeded. Please remove or forget 
       %span{id: 'basic-overlimit'}0
       professions
+  %hr
+
+  Profession Concentrations
+  %div{id: 'profession-conc-error'} You must have at least 200 XP, 50 HP, and 50 MP
+  %div{id: 'profession-conc-config', class: 'container'}
+    %div{class: 'dropdown'}
+      %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-prof-conc', 'data-toggle' => 'dropdown'}
+        %span{class: 'glyphicon glyphicon-plus'}
+        &nbsp
+        Add Concentration
+        %span{class: 'caret'}
+      %ul{class: 'dropdown-menu', id: 'conc-profession-list'}
+
+    %div{id: 'conc-limit-warning'}
+      Profession limit exceeded. Please remove
+      %span{id: 'conc-overlimit'}0
+      profession concentration
 
   %div{id: 'profession-conc-config'}
   %div{id: 'profession-adv-config'}
@@ -175,7 +192,9 @@
 = javascript_include_tag 'skills/skill_interface'
 = javascript_include_tag 'skills/skills'
 = javascript_include_tag 'professions/interface_basic'
+= javascript_include_tag 'professions/interface_conc'
 = javascript_include_tag 'professions/basic'
+= javascript_include_tag 'professions/conc'
 = javascript_include_tag 'strains/strain_interface'
 = javascript_include_tag 'strains/strains'
 = javascript_include_tag 'professions/basic'
