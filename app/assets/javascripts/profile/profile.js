@@ -5,6 +5,7 @@ var profile = function() {
   profiles = {};
   config = {};
   deleted = {};
+  previous_primary = null;
 
   var empty_default = {
     profiles: {
@@ -27,19 +28,56 @@ var profile = function() {
 
   var create_empty = function(new_value) {
     profiles[new_value] = default_prefs;
+    if (config.primary == undefined) config.primary = new_value;
     switch_to(new_value);
+    save_all();
+  }
+
+  var get_first_available = function() {
+    var f = Object.keys(profiles)[0];
+    return f;
+  }
+
+  var get_primary = function() {
+    return config.primary;
+  }
+
+  var set_primary = function(x) {
+
+    config.primary = x;
+    console.log(x);
+    console.log(config);
     save_all();
   }
 
   var soft_delete = function(name) {
     deleted[name] = profiles[name];
     delete profiles[name];
+
+    if (Object.keys(profiles).length == 0) {
+      create_empty('default');
+    }
+
+    if (name == config.primary) {
+      config.primary = get_first_available() || 'default';
+      previous_primary = name;
+    }
+
+    if (name == selected) {
+      switch_to(config.primary);
+    }
+
+
     save_all();
   }
 
   var undelete = function(name) {
     profiles[name] = deleted[name];
     delete deleted[name];
+    if (previous_primary != null) {
+      config.primary = previous_primary;
+    }
+
     save_all();
   }
 
@@ -253,6 +291,8 @@ var profile = function() {
     get_old_name: function() { return old_profile; },
     get_master: function() { return $.jStorage.get('all'); },
     get_deleted: function() { return deleted; },
+    get_primary: get_primary,
+    set_primary: set_primary,
     rename: rename,
     save_all: save_all,
     save_all_delayed: save_all_delayed,

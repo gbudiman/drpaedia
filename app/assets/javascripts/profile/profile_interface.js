@@ -9,10 +9,14 @@ var profile_interface = function() {
       placement: 'bottom',
       unsavedclass: null,
       validate: validate_profile_name,
-      container: 'body'
+      container: 'body',
     }).on('save', function(e, params) {
       profile.rename(params.newValue);
       update_list();
+    }).on('shown', function(e, params) {
+      var that = $(this);
+      var input = $('.editable-popup').find('input');
+      input.val(that.text());
     })
 
     attach_copy_button();
@@ -62,8 +66,23 @@ var profile_interface = function() {
     var master_data = profile.get_master();
     var deleted_profiles = profile.get_deleted();
     var current_selected = profile.get_current_name();
+    var primary = profile.get_primary();
     var s = '';
     var active_class;
+    var more_than_one_profile = Object.keys(master_data.profiles).length > 1;
+
+    var set_primary_option = function(x, primary) {
+      var is_primary = x == primary;
+
+      return '<span class="glyphicon set-primary glyphicon-' 
+           + (is_primary ? 'star' : 'star-empty') 
+           + '" data-set-primary="' + x + '"></span>';
+    }
+
+    var can_delete = function(x) {
+      if (more_than_one_profile) return true;
+      if (x == 'default') return false;
+    }
 
     anchor.nextAll().remove();
 
@@ -77,10 +96,13 @@ var profile_interface = function() {
       }
 
       s += '<li>'
+         +   set_primary_option(x, primary)
          +   '<span><a href="#" data-name="' + x + '" class="' + active_class + '">'
          +     x
          +   '</a></span>'
-         +   '<span class="glyphicon glyphicon-remove pull-right text-danger profile-delete" data-deleted=false></span>'
+         +   (can_delete
+               ? '<span class="glyphicon glyphicon-remove pull-right text-danger profile-delete" data-deleted=false></span>'
+               : '')
          + '</li>';
     })
 
@@ -95,6 +117,17 @@ var profile_interface = function() {
 
     $(s).insertAfter(anchor);
     attach_profile_load();
+    attach_profile_set_primary();
+  }
+
+  var attach_profile_set_primary = function() {
+    $('#profile-dropdown').find('[data-set-primary]').each(function() {
+      $(this).on('click', function(event) {
+        profile.set_primary($(this).attr('data-set-primary'));
+        update_list();
+        return false;
+      })
+    })
   }
 
   var attach_profile_load = function() {
@@ -130,6 +163,7 @@ var profile_interface = function() {
             .removeClass('text-danger');
 
           profile.soft_delete(profile_name);
+          update_list();
           text.removeAttr('href');
         } else {
           text.removeClass('profile-deleted');
@@ -140,6 +174,7 @@ var profile_interface = function() {
 
           profile.undelete(profile_name);
           text.attr('href', '#');
+          update_list();
         }
 
         $(this).attr('data-deleted', is_deleted);
@@ -207,6 +242,7 @@ var profile_interface = function() {
 
   return {
     build: build,
-    update_selected: update_selected
+    update_list: update_list,
+    update_selected: update_selected,
   }
 }()

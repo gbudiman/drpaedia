@@ -477,8 +477,6 @@ var tooling = function() {
     var expense = 0;
 
     var update_and_reset_anchor = function(anchor) {
-      console.log(checkin + ' | ' + expense);
-      //console.log(anchor);
       anchor.find('.tool-compute-expend').text(expense);
       anchor.find('.tool-compute-checkin').text(checkin);
       checkin = 0;
@@ -493,7 +491,6 @@ var tooling = function() {
           state = 'in';
         }
       } else if (state == 'in') {
-
         if (that.hasClass('tool-separator')) {
           update_and_reset_anchor(anchor);
           anchor = that;
@@ -503,7 +500,6 @@ var tooling = function() {
         } else if (that.hasClass('tool-prof-planner')) {
           expense += parseInt(that.find('.tool-prof-xp').text());
         } else if (that.hasClass('skill')) {
-          console.log(that.find('.skill-cost').text());
           expense += parseInt(that.find('.skill-cost').text());
         } else if (that.hasClass('tool-checkin-planner')) {
           checkin += parseInt(that.find('.tool-value').text());

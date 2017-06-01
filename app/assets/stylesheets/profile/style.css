@@ -13,3 +13,7 @@
   cursor: default;
   color: #333;
 }
+
+.set-primary.glyphicon-star-empty {
+  cursor: pointer;
+}
