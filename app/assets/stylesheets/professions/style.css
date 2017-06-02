@@ -28,7 +28,17 @@
   padding: 1px 12px;
 }
 
+.pc-badge {
+  position: absolute;
+  right: 8px;
+}
+
 #basic-limit-warning {
+  color: red;
+  display: none;
+}
+
+#conc-limit-warning {
   color: red;
   display: none;
 }

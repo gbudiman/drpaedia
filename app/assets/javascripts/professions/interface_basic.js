@@ -49,8 +49,24 @@ var profession_basic_interface = (function() {
 
   var build_add_basic_profession = function() {
     var raw = '';
+    var group = dynaloader.raw()['profession_concentration_hierarchy'];
+    var label_class = {
+      'S': 'progress-bar-warning',
+      'C': 'progress-bar-danger',
+      'P': 'progress-bar-info'
+    }
+
     $.each(profession_basic.all(), function(k, v) {
-      raw += '<li class="list-basic" data-prof="' + k + '"><a href="#">' + k + '</a></li>';
+      var label = group[k] == undefined ? '' : group[k][0];
+      var pc_class = label_class[label];
+      raw += '<li class="list-basic" data-prof="' + k + '">'
+           +   '<a href="#">' 
+           +     k 
+           +     '<span class="badge pc-badge ' + pc_class + ' pull-right">' 
+           +       label 
+           +     '</span>'
+           +   '</a>'
+           + '</li>';
     })
 
     $('#basic-profession-list').append(raw);
