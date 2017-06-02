@@ -33,6 +33,11 @@
   right: 8px;
 }
 
+.conc-disabled {
+  text-decoration: line-through;
+  cursor: default;
+}
+
 #basic-limit-warning {
   color: red;
   display: none;

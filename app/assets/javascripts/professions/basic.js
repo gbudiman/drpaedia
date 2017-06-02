@@ -125,6 +125,17 @@ var profession_basic = (function() {
     return selected;
   }
 
+  var get_valid_conc = function() {
+    var h = {};
+    var d = dynaloader.raw()['profession_concentration_hierarchy'];
+
+    $.each(selected, function(basic, _junk) {
+      h[d[basic]] = true;
+    })
+
+    return h;
+  }
+
   return {
     add: add,
     forget: forget,
@@ -139,6 +150,7 @@ var profession_basic = (function() {
     forgotten: function() { return forgotten; },
     update_strain_change: update_strain_change,
     get_purchaseable: get_purchaseable,
-    get_forgettable: get_forgettable
+    get_forgettable: get_forgettable,
+    get_valid_conc: get_valid_conc
   }
 })()

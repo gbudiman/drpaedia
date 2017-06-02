@@ -32,6 +32,8 @@ var profession_basic_interface = (function() {
         profession_basic.forget(target_prof);
         that.text('U');
       }
+
+      profession_conc_interface.validate_existing();
     })
   }
 
@@ -50,21 +52,15 @@ var profession_basic_interface = (function() {
   var build_add_basic_profession = function() {
     var raw = '';
     var group = dynaloader.raw()['profession_concentration_hierarchy'];
-    var label_class = {
-      'S': 'progress-bar-warning',
-      'C': 'progress-bar-danger',
-      'P': 'progress-bar-info'
-    }
 
     $.each(profession_basic.all(), function(k, v) {
-      var label = group[k] == undefined ? '' : group[k][0];
-      var pc_class = label_class[label];
       raw += '<li class="list-basic" data-prof="' + k + '">'
            +   '<a href="#">' 
            +     k 
-           +     '<span class="badge pc-badge ' + pc_class + ' pull-right">' 
-           +       label 
-           +     '</span>'
+           //+     '<span class="badge pc-badge ' + pc_class + ' pull-right">' 
+           //+       label 
+           //+     '</span>'
+           +     profession_conc_interface.label_conc(group[k])
            +   '</a>'
            + '</li>';
     })
@@ -73,7 +69,7 @@ var profession_basic_interface = (function() {
     $('#basic-profession-list').find('li.list-basic').each(function() {
       $(this).on('click', function(event) {
         var that = $(this);
-        var prof = that.text();
+        var prof = that.attr('data-prof');
 
         add(prof);
         event.preventDefault();
@@ -98,6 +94,7 @@ var profession_basic_interface = (function() {
       .on('click', function(event) {
         return false;
       })
+    profession_conc_interface.validate_existing();
   }
 
   var update_profession_removed = function(x) {
@@ -106,6 +103,7 @@ var profession_basic_interface = (function() {
       .off('click')
 
     $('#profession-basic-config').find('span[data-prof="' + x + '"]').parent().remove();
+    profession_conc_interface.validate_existing();
   }
 
   var update_strain_change = function() {

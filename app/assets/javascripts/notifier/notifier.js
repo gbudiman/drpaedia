@@ -37,12 +37,38 @@ var notifier = function() {
       return;
     }
     n.update('message', i + ' skills selected. ');  
-    console.log('updated');
+  }
+
+  var conc_preq_missing = function(h) {
+    var p = build_missing_conc();
+    var message = generate_conc_preq_message(h);
+
+    if (message.length == 0) {
+      //console.log('close called');
+      p.update('message', '');
+      p.close();
+    } else {
+      //console.log('updating: ' + message);
+      //$.notify(message);
+      p.update('message', message);
+    }
+  }
+
+  var generate_conc_preq_message = function(h) {
+    var s = '';
+    $.each(h, function(conc, messages) {
+      if (Object.keys(messages).length == 0) return true;
+      s += 'Profession Concentration ' + conc + ' requires:<br />';
+      $.each(messages, function(i, x) {
+        s += x + '<br />';
+      })
+    })
+
+    return s;
   }
 
   var skill_preq_missing = function(all_valid, h) {
     //if (all_valid) { return; }
-    console.log(h);
     var p = build_missing_preq();
 
     if (!all_valid) {
@@ -115,6 +141,29 @@ var notifier = function() {
     return data['skill_missing_preq'];
   }
 
+  var build_missing_conc = function() {
+    if (data['conc_missing_preq'] == undefined) {
+      data['conc_missing_preq'] = $.notify({
+        message: ''
+      }, {
+        type: 'danger',
+        animate: {
+          enter: 'animated fadeInRight',
+          exit: 'animated fadeOutRight'
+        },
+        allow_dismiss: false,
+        delay: 0,
+        onClose: function() { delete data['conc_missing_preq']; },
+        template: '<div data-notify="container" id="skill-notify" class="col-xs-8 alert alert-{0}" role="alert">' +
+                    '<img data-notify="icon" class="img-circle pull-left">' +
+                    '<span data-notify="message">{2}</span>' +
+                  '</div>',
+      })
+    }
+
+    return data['conc_missing_preq'];
+  }
+
   var attach = function() {
     var a = $('[data-notify="deselect-all"]').find('a');
     a.on('click', function() {
@@ -124,6 +173,7 @@ var notifier = function() {
   }
 
   return {
+    conc_preq_missing: conc_preq_missing,
     select: select,
     skill_preq_missing: skill_preq_missing
   }

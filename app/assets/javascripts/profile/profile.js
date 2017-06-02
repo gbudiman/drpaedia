@@ -195,6 +195,8 @@ var profile = function() {
 
     tooling.compute_group($('#skills-acquired'));
     tooling.compute_group($('#skills-planned'));
+
+    profession_conc_interface.validate_existing();
   }
 
   var apply_rightside = function(entry, target) {

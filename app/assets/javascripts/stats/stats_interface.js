@@ -100,14 +100,24 @@ var stats_interface = function() {
     clearTimeout(delay_interval);
     var current_profile = profile.get_old_name();
     delay_interval = setTimeout(function() {
+      profession_conc_interface.validate_existing();
       profile.save_all_delayed(current_profile);
     }, 500);
 
   }
 
+  var get_config = function() {
+    return {
+      hp: parseInt($('#stat-sum-hp').text()),
+      mp: parseInt($('#stat-sum-mp').text()),
+      xp: parseInt($('#xp-total-acquired').text())
+    }
+  }
+
   return {
     adjust: adjust,
     attach: attach,
+    get_config: get_config,
     set: set,
     update: update
   }
