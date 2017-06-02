@@ -148,6 +148,7 @@ var profile = function() {
   var reset = function() {
     strain_interface.set_gui(null);
     profession_basic_interface.reset();
+    profession_conc_interface.reset();
     skill_interface.reset_to_pool();
     $('#skills-acquired').empty();
     $('#skills-planned').empty();

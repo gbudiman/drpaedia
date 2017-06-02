@@ -37,11 +37,12 @@ var notifier = function() {
       return;
     }
     n.update('message', i + ' skills selected. ');  
+    console.log('updated');
   }
 
   var skill_preq_missing = function(all_valid, h) {
-    if (all_valid) { return; }
-
+    //if (all_valid) { return; }
+    console.log(h);
     var p = build_missing_preq();
 
     if (!all_valid) {

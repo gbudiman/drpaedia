@@ -2,6 +2,7 @@ var dragdrop = (function() {
   var selected = {};
   var last_trigger = null;
   var right_side_selected = false;
+  var debug = false;
 
   var attach = function() {
     $('div[data-accessible]').on('click', function() {
@@ -12,6 +13,10 @@ var dragdrop = (function() {
     $('#skills-acquired').on('click', function() { drop($(this)); });
     $('#skills-planned').on('click', function() { drop($(this)); });
     //$('#skill-pool').find('[data-accessible]').on('click', function() { drop_alphabetically($(this)); })
+  }
+
+  var enable_debug = function(x) {
+    debug = x;
   }
 
   var handle_drag = function(id) {
@@ -59,6 +64,7 @@ var dragdrop = (function() {
     var parent_container = obj;
     $.each(selected, function(id, v) {
       var to_append = $('#' + id);
+
       if (obj.hasClass('tool-separator')) {
         parent_container = obj.parent();
         to_append.insertAfter(obj);
@@ -66,6 +72,7 @@ var dragdrop = (function() {
       } else if (drop_to_pool) {
         drop_alphabetically();
         tooling.attach_handles(to_append, false);
+        skill_interface.sort_pool();
       } else {
         rectified_obj = rectify_drop_parent(obj);
         to_append.appendTo(rectified_obj);
@@ -100,6 +107,7 @@ var dragdrop = (function() {
     }
 
     drop_alphabetically();
+    skill_interface.sort_pool();
   }
 
   var drop_alphabetically = function() {
@@ -109,11 +117,13 @@ var dragdrop = (function() {
       var anchor;
 
       tooling.attach_handles(obj, false);
-      $.each($('#skill-pool').find('[data-accessible]'), function() {
+      /*$.each($('#skill-pool').find('[data-accessible]'), function() {
         var current_search = $(this).text();
+        if (debug) console.log('current search = ' + current_search);
 
         if (current_search > skill_name) {
           anchor = $(this).attr('id');
+          console.log('insert ' + skill_name + ' before ' + current_search);
           return false;
         }
       })
@@ -122,7 +132,9 @@ var dragdrop = (function() {
         obj.insertBefore($('#' + anchor));
       } else {
         $('#skill-pool').append(obj);
-      }
+      }*/
+      $('#skill-pool').append(obj);
+      // skill_interface.sort_pool();
     })
 
     deselect_all();
@@ -271,6 +283,7 @@ var dragdrop = (function() {
     //right_side_selected = false;
     notifier.select(null);
     skill_popup.hide();
+    highlight_drop_handle();
   }
 
   return {
@@ -281,6 +294,7 @@ var dragdrop = (function() {
     drop_to_pool: drop_to_pool,
     selected: function() { return selected; },
     select_tool: select_tool,
-    deselect_all: deselect_all
+    deselect_all: deselect_all,
+    enable_debug: enable_debug
   }
 })()

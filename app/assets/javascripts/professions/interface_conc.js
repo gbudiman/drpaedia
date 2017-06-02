@@ -51,6 +51,12 @@ var profession_conc_interface = (function() {
     }
   }
 
+  var reset = function() {
+    profession_conc.reset();
+    $('#profession-conc-config').find('.purchased-conc').remove();
+    $('#conc-profession-list').find('a').removeClass('selected-profession');
+  }
+
   var update_profession_added = function(x) {
     $('#conc-profession-list').find('li[data-conc="' + x + '"]').find('a')
       .addClass('selected-profession')
@@ -68,6 +74,7 @@ var profession_conc_interface = (function() {
   return {
     add: add,
     build: build,
+    reset: reset,
     disable_limit_warning: disable_limit_warning,
     update_profession_added: update_profession_added,
     update_profession_removed: update_profession_removed

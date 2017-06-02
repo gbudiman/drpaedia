@@ -17,6 +17,11 @@ var profession_conc = (function() {
     skills.update_availability(true);
   }
 
+  var reset = function() {
+    selected = {};
+    limit = 2;
+  }
+
   var verify_count = function() {
     var within_limit = Object.keys(selected).length <= limit;
     var overlimit = Object.keys(selected).length - limit;
@@ -38,8 +43,6 @@ var profession_conc = (function() {
   }
 
   var is_profession = function(x) {
-    console.log(x);
-    console.log(all);
     return all[x] != undefined;
   }
 
@@ -48,6 +51,7 @@ var profession_conc = (function() {
     build: build,
     is_profession: is_profession,
     remove: remove,
+    reset: reset,
     selected: function() { return selected; }
   }
 })()

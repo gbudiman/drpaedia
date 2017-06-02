@@ -184,9 +184,13 @@ var skills = (function() {
           }
         })
 
-        $.each(to_pool, function(i, x) {
-          dragdrop.drop_to_pool(x);
-        })
+        // console.log(to_pool);
+        // $.each(to_pool, function(i, x) {
+        //   console.log('dropping to pool');
+        //   dragdrop.drop_to_pool(x);
+        // })
+
+        dragdrop.drop_to_pool(to_pool);
         //skill_interface.sort_pool();
 
         skill_interface.apply_filters();
@@ -232,7 +236,7 @@ var skills = (function() {
         }
       }
 
-      console.log(k + ' -> ' + valid_strain_t.cond + ' || ' + valid_prof_t.cond);
+      //console.log(k + ' -> ' + valid_strain_t.cond + ' || ' + valid_prof_t.cond);
       all_valid = all_valid && (valid_strain_t.cond || valid_prof_t.cond);  
     })
 

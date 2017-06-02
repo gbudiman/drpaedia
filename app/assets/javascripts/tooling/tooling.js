@@ -584,6 +584,7 @@ var tooling = function() {
     obj.on('click', function() {
       var objs = new Array();
       var current_obj = popover_caller.parent();
+      var to_pool = new Array();
       objs.push(current_obj);
       current_obj = current_obj.next();
 
@@ -595,13 +596,15 @@ var tooling = function() {
 
       $.each(objs, function(i, x) {
         if (x.hasClass('skill')) {
-          dragdrop.drop_to_pool(x.attr('id'));
+          to_pool.push(x.attr('id'))
+          //dragdrop.drop_to_pool(x.attr('id'));
           x.removeClass('tool-highlight');
         } else {
           x.remove();
         }
       })
 
+      dragdrop.drop_to_pool(to_pool);
       calc.recalculate_all();
     })
   }

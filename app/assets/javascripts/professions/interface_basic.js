@@ -117,6 +117,7 @@ var profession_basic_interface = (function() {
     profession_basic.reset();
     console.log('prof reset triggered');
     $('#profession-basic-config').find('.purchased-profession').remove();
+    $('#basic-profession-list').find('a').removeClass('selected-profession');
   }
 
   return {

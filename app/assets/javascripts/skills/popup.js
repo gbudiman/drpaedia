@@ -53,8 +53,8 @@ var skill_popup = function() {
           trigger: 'manual',
           html: true,
           placement: 'auto bottom',
-          viewport: traverse_to_parent(id)
-          //container: 'body',
+          viewport: traverse_to_parent(id),
+          container: 'body',
           //viewport: '#skill-pool'
         })
 
@@ -205,17 +205,23 @@ var skill_popup = function() {
   var destroy = function() {
     if (current_click == null) return;
 
-    var obj = $('#' + current_click);
-    obj.popover('destroy');
+    // var obj = $('#' + current_click);
+    // obj.popover('destroy');
+    // data = {};
+    $.each(data, function(id, _junk) {
+      $('#' + id).popover('destroy');
+    })
+    data = {}
+    
     state = 'hidden';
-    delete data[current_click];
+    //delete data[current_click];
     clearTimeout(timeout);   
     //console.log(' >>> destroyed ' + current_click); 
   }
 
   return {
     attach: attach,
-    hide: destroy,
+    hide: hide,
     destroy: destroy
   }
 }()

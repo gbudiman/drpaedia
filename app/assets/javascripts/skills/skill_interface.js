@@ -131,7 +131,16 @@ var skill_interface = (function() {
   }
 
   var sort_pool = function() {
+    console.log('sort pool called');
+    var items = $('#skill-pool').children();
+    items.sort(function(a, b) {
+      var va = $(a).find('.skill-name').text();
+      var vb = $(b).find('.skill-name').text();
+      //console.log('comparing ' + va + ' with ' + vb);
+      return (va < vb) ? -1 : 1;
+    })
 
+    $('#skill-pool').append(items);
   }
 
   var get_all_unselected = function() {
@@ -159,6 +168,7 @@ var skill_interface = (function() {
     remove: remove,
     reset_all: reset_all,
     reset_to_pool: reset_to_pool,
-    clear_alternator: clear_alternator
+    clear_alternator: clear_alternator,
+    sort_pool: sort_pool
   }
 })()
