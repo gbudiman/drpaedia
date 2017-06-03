@@ -68,7 +68,7 @@ hr {
 }
 
 .xp-block {
-  margin-right: -12px;
+  margin-left: 12px;
 }
 
 .drop-box {
@@ -79,7 +79,7 @@ hr {
 
 .dropdown-menu {
   font-size: 12px;
-  max-height: 330px;
+  max-height: 800%;
   overflow-y: auto;
 }
 

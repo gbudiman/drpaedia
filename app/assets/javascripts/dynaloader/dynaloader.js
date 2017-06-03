@@ -54,6 +54,7 @@ var dynaloader = (function() {
            get_json('strain_stats'),
            get_json('strains')).done(function() {
       dynaloader.set_gil('ok_to_save', false);
+      dynaloader.set_gil('ok_to_update_gui', false);
       strains.build();
       profession_basic.build();
       profession_conc.build();
@@ -65,7 +66,10 @@ var dynaloader = (function() {
       profile_interface.build();
 
       dynaloader.set_gil('ok_to_save', true);
+      dynaloader.set_gil('ok_to_update_gui', true);
       dynaloader.set_gil('ok_to_animate', true);
+
+      skills.update_availability();
     })
   }
 

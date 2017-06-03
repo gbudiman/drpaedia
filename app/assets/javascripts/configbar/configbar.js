@@ -15,7 +15,7 @@ var configbar = (function() {
   }
 
   var open = function() {
-    $('#config-bar').css('width', '250px');
+    $('#config-bar').css('width', '50%');
     state = 'opened';
   }
 
