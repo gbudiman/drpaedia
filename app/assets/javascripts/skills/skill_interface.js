@@ -40,6 +40,7 @@ var skill_interface = (function() {
         var marker = (val == min_cost) ? '' : '<sup>+</sup>'; 
         obj.html(val + marker);
 
+        calc.recalculate_skills();
         profile.save_all();
         return false;
       })

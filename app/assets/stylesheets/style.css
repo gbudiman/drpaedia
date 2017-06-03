@@ -95,11 +95,18 @@ hr {
   font-weight: bold;
 }
 
-.popover {
+.popover.popover-skill {
+  max-width: 67% !important;
+  min-width: 50% !important;
+  
+}
+
+.popover-skill > .popover-content {
+  padding: 2px;
   font-family: 'Exo', sans-serif;
   font-size: 12px;
-  min-width: 25% !important;
-  max-width: 25% !important;
+  max-height: 224px !important;
+  overflow-y: auto;
 }
 
 .stat-left, .stat-right {

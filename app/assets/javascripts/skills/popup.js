@@ -54,7 +54,8 @@ var skill_popup = function() {
           html: true,
           placement: 'auto bottom',
           viewport: traverse_to_parent(id),
-          container: 'body',
+          container: traverse_to_parent(id),
+          template: '<div class="popover popover-skill" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
           //viewport: '#skill-pool'
         })
 
