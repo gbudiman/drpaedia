@@ -86,7 +86,7 @@ var profession_conc_interface = (function() {
   var build = function(d) {
     var raw = '';
     $.each(d, function(type, sd) {
-      raw += '<li class="list-conc">' 
+      raw += '<li class="list-conc list-conc-header">' 
            +   type 
            +   label_conc(type)
            + '</li>';

@@ -131,7 +131,9 @@ var skill_interface = (function() {
   }
 
   var sort_pool = function() {
+    if (!dynaloader.get_gil('ok_to_update_gui')) return;
     console.log('sort pool called');
+
     var items = $('#skill-pool').children();
     items.sort(function(a, b) {
       var va = $(a).find('.skill-name').text();

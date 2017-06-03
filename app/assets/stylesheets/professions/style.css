@@ -28,6 +28,10 @@
   padding: 1px 12px;
 }
 
+.list-conc-header {
+  padding-left: 6px;
+}
+
 .pc-badge {
   position: absolute;
   right: 8px;

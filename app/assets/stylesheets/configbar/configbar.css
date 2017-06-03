@@ -8,6 +8,10 @@
   overflow-x: hidden;
   transition: 0.25s;
   padding-top: 5em;
-  padding-left: 1em;
-  background-color: white;
+  background-color: #ccc;
+  overflow-y: hidden;
+}
+
+.config-indent {
+  padding-left: 8px;
 }

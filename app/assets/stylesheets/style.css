@@ -9,7 +9,11 @@ hr {
 }
 
 #main-left, #main-right {
-  padding-top: 5em;
+  margin-top: 5em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 .badge {

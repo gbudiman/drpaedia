@@ -1,0 +1,67 @@
+%div{id: 'config-bar'}
+  %div{class: 'config-indent'}
+    %div{class: 'config-header'} Current Profile
+    %div{class: 'btn-group container'}
+      %button{type: 'button', class: 'btn btn-primary', id: 'profile-rename'} Default
+      %button{type: 'button', class: 'btn btn-primary dropdown-toggle', 'data-toggle': 'dropdown'}
+        %span{class: 'caret'}
+      %ul{class: 'dropdown-menu', id: 'profile-dropdown'}
+        %li
+          %a{href: '#', id: 'profile-copy'} Copy Profile...
+        %li
+          %a{href: '#', id: 'profile-new'} Create From Scratch...
+        %li{role: 'separator', class: 'divider', id: 'existing-profile'}
+
+    %hr
+
+    %div{class: 'config-header'} Strain
+    %div{class: 'container'}
+      %select{class: 'selectpicker show-tick', id: 'strain-dd'}
+
+    %hr
+
+    %div{class: 'config-header'} Basic Professions
+    %div{id: 'profession-basic-config', class: 'container'}
+      %div{class: 'dropdown'}
+        %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-basic-profession', 'data-toggle' => 'dropdown'}
+          %span{class: 'glyphicon glyphicon-plus'}
+          &nbsp
+          Add Profession
+          %span{class: 'caret'}
+        %ul{class: 'dropdown-menu', id: 'basic-profession-list'}
+
+      %div{id: 'basic-limit-warning'} 
+        Profession limit exceeded. Please remove or forget 
+        %span{id: 'basic-overlimit'}0
+        professions
+    %hr
+
+    %div{class: 'config-header'} Profession Concentrations
+    %div{id: 'profession-conc-error'} You must have at least 200 XP, 50 HP, and 50 MP to purchase one
+    %div{id: 'profession-conc-config', class: 'container'}
+      %div{class: 'dropdown'}
+        %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-prof-conc', 'data-toggle' => 'dropdown'}
+          %span{class: 'glyphicon glyphicon-plus'}
+          &nbsp
+          Add Concentration
+          %span{class: 'caret'}
+        %ul{class: 'dropdown-menu', id: 'conc-profession-list'}
+
+      %div{id: 'conc-limit-warning'}
+        Profession limit exceeded. Please remove
+        %span{id: 'conc-overlimit'}0
+        profession concentration
+
+    %div{id: 'profession-conc-config'}
+    %div{id: 'profession-adv-config'}
+    %hr
+    %div{class: 'config-header'} Filters
+    %ul{class: 'list-unstyled'}
+      %li
+        %input{type: 'checkbox', checked: true, id: 'filter-accessible'} Only Accessible
+      %li
+        %input{type: 'checkbox', checked: false, id: 'filter-discounted'} Only Discounted
+      %li
+        %input{type: 'checkbox', checked: true, id: 'filter-lore'} Hide Lore
+      %li
+        %input{type: 'checkbox', checked: true, id: 'filter-psionics'} Hide Psionics

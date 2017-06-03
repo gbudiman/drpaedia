@@ -191,11 +191,12 @@ var skills = (function() {
         // })
 
         dragdrop.drop_to_pool(to_pool);
-        //skill_interface.sort_pool();
+        
 
         skill_interface.apply_filters();
       })
 
+      skill_interface.sort_pool();
       console.log(' !!! update completed');
       tooling.auto_indent($('#skills-acquired'));
       tooling.auto_indent($('#skills-planned'));
