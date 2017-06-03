@@ -100,8 +100,10 @@ var dynaloader = (function() {
                     dynaloader.set_gil('ok_to_animate', true);
                     dynaloader.set_gil('ok_to_sort', true);
 
-                    skills.update_availability();
+                    //skills.update_availability();
                     load_message('Finalizing...').then(function() {
+                      notifier.set_timeout(250);
+                      skill_interface.set_timeout(250);
                       clear_message();
                     });
                   });

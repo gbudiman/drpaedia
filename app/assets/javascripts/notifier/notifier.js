@@ -1,5 +1,9 @@
 var notifier = function() {
   var data = {};
+  var timeout_select = setTimeout(null, 0);
+  var timeout_conc = setTimeout(null, 0);
+  var timeout_skill = setTimeout(null, 0);
+  var timeout = 0; //ms
 
   var select = function(i) {
     // if (dynaloader.has_delegations('initial_load')) { return; }
@@ -8,50 +12,57 @@ var notifier = function() {
     /*if (i == null) {
       return;
     }*/
+    clearTimeout(timeout_select);
+    setTimeout(function() {
+      if (data['select'] == undefined) {
+        data['select'] = $.notify({
+          message: ''
+        }, {
+          type: 'warning',
+          animate: {
+            enter: 'animated fadeInRight',
+            exit: 'animated fadeOutRight'
+          },
+          delay: 0,
+          newest_on_top: true,
+          allow_dismiss: false,
+          template: '<div data-notify="container" class="col-xs-4 col-sm-3 alert alert-{0} text-right" role="alert">' +
+                      '<img data-notify="icon" class="img-circle pull-left">' +
+                      '<span data-notify="message">{2}</span>' +
+                      '<span data-notify="deselect-all"><a href="#">Deselect all</a></span>' +
+                    '</div>',
+          onShow: attach,
+          onClose: function() { delete data['select']; }
+        });
+      }
 
-    if (data['select'] == undefined) {
-      data['select'] = $.notify({
-        message: ''
-      }, {
-        type: 'warning',
-        animate: {
-          enter: 'animated fadeInRight',
-          exit: 'animated fadeOutRight'
-        },
-        allow_dismiss: false,
-        delay: 0,
-        template: '<div data-notify="container" class="col-xs-4 col-sm-3 alert alert-{0} text-right" role="alert">' +
-                    '<img data-notify="icon" class="img-circle pull-left">' +
-                    '<span data-notify="message">{2}</span>' +
-                    '<span data-notify="deselect-all"><a href="#">Deselect all</a></span>' +
-                  '</div>',
-        onShow: attach,
-        onClose: function() { delete data['select']; }
-      });
-    }
-
-    var n = data['select'];
-    
-    if (i == null || i == 0) {
-      n.close();
-      return;
-    }
-    n.update('message', i + ' skills selected. ');  
+      var n = data['select'];
+      
+      if (i == null || i == 0) {
+        n.close();
+        return;
+      }
+      n.update('message', i + ' skills selected. ');  
+    }, timeout);
   }
 
   var conc_preq_missing = function(h) {
-    var p = build_missing_conc();
-    var message = generate_conc_preq_message(h);
+    clearTimeout(timeout_conc);
+    timeout_conc = setTimeout(function() {
+      var p = build_missing_conc();
+      var message = generate_conc_preq_message(h);
 
-    if (message.length == 0) {
-      //console.log('close called');
-      p.update('message', '');
-      p.close();
-    } else {
-      //console.log('updating: ' + message);
-      //$.notify(message);
-      p.update('message', message);
-    }
+      if (message.length == 0) {
+        console.log('conc cleared');
+        p.update('message', '');
+        p.close();
+      } else {
+        console.log('updating: ' + message);
+        //$.notify(message);
+        p.update('message', message);
+      }
+    }, timeout);
+    
   }
 
   var generate_conc_preq_message = function(h) {
@@ -69,36 +80,40 @@ var notifier = function() {
 
   var skill_preq_missing = function(all_valid, h) {
     //if (all_valid) { return; }
-    var p = build_missing_preq();
-
-    if (!all_valid) {
-      var message = generate_skill_preq_message(h)
-      p.update('message', message);
-
+    clearTimeout(timeout_skill);
+    timeout_skill = setTimeout(function() {
+      var p = build_missing_preq();
+      var message = generate_skill_preq_message(h);
+      
       if (message.length == 0) {
+        console.log('skill cleared');
+        p.update('message', '');
         p.close();
+      } else {
+        console.log('updating: ' + message);
+        p.update('message', message);
+        attach_skills();
       }
-
-      attach_skills();
-    } else {
-      p.update('message', '');
-      p.close();
-    }
+    }, timeout);
   }
 
   var generate_skill_preq_message = function(h) {
     var s = '';
+    var invalids = 0;
 
     $.each(h, function(k, v) {
       if (v.length == 0) return true;
-
-      s += k + ' requires the following:<br />';
+      var t = k + ' requires the following:<br />';
       
       $.each(v, function(i, p) {
-        $.each(p, function(key, _junk) {
-          s += key;
-          s += ' <a class="skill-add" data-name="' + key + '">Add?</a><br />';
-        })
+        if (Object.keys(p).length > 0) {
+          invalids++;
+          $.each(p, function(key, _junk) {
+            t += key;
+            t += ' <a class="skill-add" data-name="' + key + '">Add?</a><br />';
+          })
+          s += t;
+        }
       })
     })
 
@@ -127,11 +142,13 @@ var notifier = function() {
           enter: 'animated fadeInRight',
           exit: 'animated fadeOutRight'
         },
-        allow_dismiss: false,
         delay: 0,
+        newest_on_top: true,
         onShown: attach_skills,
+        allow_dismiss: true,
         onClose: function() { delete data['skill_missing_preq']; },
         template: '<div data-notify="container" id="skill-notify" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
                     '<img data-notify="icon" class="img-circle pull-left">' +
                     '<span data-notify="message">{2}</span>' +
                   '</div>',
@@ -151,10 +168,12 @@ var notifier = function() {
           enter: 'animated fadeInRight',
           exit: 'animated fadeOutRight'
         },
-        allow_dismiss: false,
         delay: 0,
+        newest_on_top: true,
+        allow_dismiss: true,
         onClose: function() { delete data['conc_missing_preq']; },
         template: '<div data-notify="container" id="skill-notify" class="col-xs-8 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
                     '<img data-notify="icon" class="img-circle pull-left">' +
                     '<span data-notify="message">{2}</span>' +
                   '</div>',
@@ -175,6 +194,7 @@ var notifier = function() {
   return {
     conc_preq_missing: conc_preq_missing,
     select: select,
-    skill_preq_missing: skill_preq_missing
+    skill_preq_missing: skill_preq_missing,
+    set_timeout: function(x) { timeout = x; }
   }
 }()

@@ -1,4 +1,7 @@
 var skill_interface = (function() {
+  var timeout = 0;
+  var timeout_sort = setTimeout(null, 0);
+
   var apply_filters = function() {
     filterview.apply_all();
   }
@@ -151,17 +154,21 @@ var skill_interface = (function() {
 
   var sort_pool = function() {
     if (!dynaloader.get_gil('ok_to_sort') || !dynaloader.get_gil('ok_to_update_gui')) return;
-    console.log('sort pool called');
+    clearTimeout(timeout_sort);
+    timeout_sort = setTimeout(function() {
+      console.log('sort pool called');
 
-    var items = $('#skill-pool').children();
-    items.sort(function(a, b) {
-      var va = $(a).find('.skill-name').text();
-      var vb = $(b).find('.skill-name').text();
-      //console.log('comparing ' + va + ' with ' + vb);
-      return (va < vb) ? -1 : 1;
-    })
+      var items = $('#skill-pool').children();
+      items.sort(function(a, b) {
+        var va = $(a).find('.skill-name').text();
+        var vb = $(b).find('.skill-name').text();
+        //console.log('comparing ' + va + ' with ' + vb);
+        return (va < vb) ? -1 : 1;
+      })
 
-    $('#skill-pool').append(items);
+      $('#skill-pool').append(items);
+    }, timeout);
+    
   }
 
   var get_all_unselected = function() {
@@ -190,6 +197,7 @@ var skill_interface = (function() {
     reset_all: reset_all,
     reset_to_pool: reset_to_pool,
     clear_alternator: clear_alternator,
-    sort_pool: sort_pool
+    sort_pool: sort_pool,
+    set_timeout: function(x) { timeout = x; }
   }
 })()

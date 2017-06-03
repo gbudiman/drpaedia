@@ -72,6 +72,7 @@ var dragdrop = (function() {
       } else if (drop_to_pool) {
         drop_alphabetically();
         tooling.attach_handles(to_append, false);
+        console.log(' !!! Normal drop : sort() ');
         skill_interface.sort_pool();
       } else {
         rectified_obj = rectify_drop_parent(obj);
@@ -108,6 +109,7 @@ var dragdrop = (function() {
     }
 
     drop_alphabetically();
+    console.log(' !!! Drop to pool : sort() ');
     skill_interface.sort_pool();
   }
 
