@@ -35,7 +35,7 @@ var filterview = (function() {
         advanced: false
       }
 
-      open_state[code] = false;
+      //open_state[code] = false;
     });
   }
 
@@ -64,16 +64,31 @@ var filterview = (function() {
   }
 
   var apply = function() {
+    var has_result = false;
+
     $.each(cache, function(id, _junk) {
       var new_state = get_state_is_open(id);
       var last_state = open_state[id];
 
-      if (new_state != last_state) {
+      if (last_state == undefined || new_state != last_state) {
         open_state[id] = new_state;
-        if (new_state) { $('#' + id).show(); }
-        else { $('#' + id).hide(); }
+        if (new_state) { $('#skill-pool').find('#' + id).show(); }
+        else { $('#skill-pool').find('#' + id).hide(); }
       }
     })
+
+    $.each(open_state, function(_junk, val) {
+      if (val) {
+        has_result = true;
+        return false;
+      }
+    })
+
+    if (has_result) {
+      $('#skill-pool-no-result').hide();
+    } else {
+      $('#skill-pool-no-result').show();
+    }
   }
 
   var apply_all = function() {

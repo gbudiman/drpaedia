@@ -150,7 +150,7 @@ var skill_interface = (function() {
   }
 
   var sort_pool = function() {
-    if (!dynaloader.get_gil('ok_to_update_gui')) return;
+    if (!dynaloader.get_gil('ok_to_sort') || !dynaloader.get_gil('ok_to_update_gui')) return;
     console.log('sort pool called');
 
     var items = $('#skill-pool').children();

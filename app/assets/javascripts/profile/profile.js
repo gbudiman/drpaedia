@@ -170,8 +170,12 @@ var profile = function() {
   var switch_to = function(new_value) {
     old_profile = selected;
     selected = new_value;
+    dynaloader.set_gil('ok_to_sort', false);
     dynaloader.set_gil('ok_to_save', false, reset);
     dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
+    dynaloader.set_gil('ok_to_sort', true);
+    skill_interface.sort_pool();
+
     old_profile = selected;
     profile_interface.update_selected(selected);
   }
@@ -209,6 +213,7 @@ var profile = function() {
     tooling.compute_group($('#skills-acquired'));
     tooling.compute_group($('#skills-planned'));
 
+    filterview.apply_all();
     profession_conc_interface.validate_existing();
   }
 

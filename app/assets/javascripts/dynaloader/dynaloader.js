@@ -5,7 +5,8 @@ var dynaloader = (function() {
   var global_interlock = {
     ok_to_save: false,
     ok_to_update_gui: false,
-    ok_to_animate: false
+    ok_to_animate: false,
+    ok_to_sort: false,
   }
 
   var set_gil = function(key, value, func) {
@@ -68,6 +69,7 @@ var dynaloader = (function() {
       dynaloader.set_gil('ok_to_save', true);
       dynaloader.set_gil('ok_to_update_gui', true);
       dynaloader.set_gil('ok_to_animate', true);
+      dynaloader.set_gil('ok_to_sort', true);
 
       skills.update_availability();
     })

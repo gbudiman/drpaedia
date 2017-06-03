@@ -6,6 +6,10 @@
   cursor: pointer;
 }
 
+.tool.tool-separator {
+  font-weight: bold;
+}
+
 #tool-acq-group-base {
   display: none;
 }
