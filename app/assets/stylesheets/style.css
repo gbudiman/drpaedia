@@ -1,3 +1,8 @@
+body {
+  font-family: 'Exo', sans-serif;
+  font-size: 12px;
+}
+
 hr {
   margin-top: 4px;
   margin-bottom: 4px;
@@ -5,6 +10,58 @@ hr {
 
 #main-left, #main-right {
   padding-top: 5em;
+}
+
+.badge {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin-top: -1px;
+  margin-bottom: -1px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-align: right;
+}
+
+.badge-header {
+  margin-top: -4px;
+}
+
+.stat-pad {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.btn {
+  font-size: 12px;
+}
+
+.btn-tool-group {
+  margin-top: -4px;
+}
+
+.dropdown-menu {
+  font-size: 12px;
+}
+
+.default-no-selection {
+  color: #888;
+}
+
+.form-control {
+  font-size: 12px;
+}
+
+.group-header {
+  font-weight: bold;
+  font-size: 125%;
+}
+
+.popover {
+  font-family: 'Exo', sans-serif;
+  font-size: 12px;
+  min-width: 25% !important;
+  max-width: 25% !important;
 }
 
 .stat-left, .stat-right {

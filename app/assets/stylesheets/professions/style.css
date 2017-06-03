@@ -33,6 +33,15 @@
   right: 8px;
 }
 
+.basic-prof-name, .conc-prof-name {
+  font-weight: bold
+}
+
+.config-header {
+  font-weight: bold;
+  font-size: 110%;
+}
+
 .conc-disabled {
   text-decoration: line-through;
   cursor: default;
@@ -43,7 +52,7 @@
   display: none;
 }
 
-#conc-limit-warning {
+#conc-limit-warning{
   color: red;
   display: none;
 }

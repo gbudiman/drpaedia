@@ -10,8 +10,7 @@
         %span{class: 'profile-name'} Loading...
 
 %div{id: 'config-bar'}
-  Current Profile
-  %br
+  %div{class: 'config-header'} Current Profile
   %div{class: 'btn-group container'}
     %button{type: 'button', class: 'btn btn-primary', id: 'profile-rename'} Default
     %button{type: 'button', class: 'btn btn-primary dropdown-toggle', 'data-toggle': 'dropdown'}
@@ -24,10 +23,14 @@
       %li{role: 'separator', class: 'divider', id: 'existing-profile'}
 
   %hr
-  Strain
-  %select{class: 'selectpicker show-tick', id: 'strain-dd'}
+
+  %div{class: 'config-header'} Strain
+  %div{class: 'container'}
+    %select{class: 'selectpicker show-tick', id: 'strain-dd'}
+
   %hr
-  Purchased Professions
+
+  %div{class: 'config-header'} Basic Professions
   %div{id: 'profession-basic-config', class: 'container'}
     %div{class: 'dropdown'}
       %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-basic-profession', 'data-toggle' => 'dropdown'}
@@ -43,8 +46,8 @@
       professions
   %hr
 
-  Profession Concentrations
-  %div{id: 'profession-conc-error'} You must have at least 200 XP, 50 HP, and 50 MP
+  %div{class: 'config-header'} Profession Concentrations
+  %div{id: 'profession-conc-error'} You must have at least 200 XP, 50 HP, and 50 MP to purchase one
   %div{id: 'profession-conc-config', class: 'container'}
     %div{class: 'dropdown'}
       %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-prof-conc', 'data-toggle' => 'dropdown'}
@@ -62,16 +65,16 @@
   %div{id: 'profession-conc-config'}
   %div{id: 'profession-adv-config'}
   %hr
-  Filters
-  %hr
-  %div
-    %input{type: 'checkbox', checked: true, id: 'filter-accessible'} Only Accessible
-  %div
-    %input{type: 'checkbox', checked: false, id: 'filter-discounted'} Only Discounted
-  %div
-    %input{type: 'checkbox', checked: true, id: 'filter-lore'} Hide Lore
-  %div
-    %input{type: 'checkbox', checked: true, id: 'filter-psionics'} Hide Psionics
+  %div{class: 'config-header'} Filters
+  %ul{class: 'list-unstyled'}
+    %li
+      %input{type: 'checkbox', checked: true, id: 'filter-accessible'} Only Accessible
+    %li
+      %input{type: 'checkbox', checked: false, id: 'filter-discounted'} Only Discounted
+    %li
+      %input{type: 'checkbox', checked: true, id: 'filter-lore'} Hide Lore
+    %li
+      %input{type: 'checkbox', checked: true, id: 'filter-psionics'} Hide Psionics
 
 %div{class: 'col-xs-6', id: 'main-left'}
   %div{id: 'skill-pool'}
@@ -87,9 +90,9 @@
     %hr
 
   %div{class: 'col-xs-12'} 
-    Acquired Skills
-    %span{class: 'badge', id: 'skills-acquired-xp'} 0
-    %div{class: 'btn-group pull-right'}
+    %span{class: 'group-header'} Acquired Skills
+    %span{class: 'badge badge-header', id: 'skills-acquired-xp'} 0
+    %div{class: 'btn-group pull-right btn-tool-group'}
       %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
         Add
         %span{class: 'caret'}
@@ -100,13 +103,15 @@
     %div{class: 'drop-container', id: 'skills-acquired'}
 
 
+  %div{class: 'col-xs-12'}
+    %hr
   %div{class: 'col-xs-12'} 
-    Planner 
+    %span{class: 'group-header'} Planner 
     Stats
-    %span{class: 'badge', id: 'skills-planned-stats'} 0
+    %span{class: 'badge badge-header', id: 'skills-planned-stats'} 0
     Skills
-    %span{class: 'badge', id: 'skills-planned-xp'} 0
-    %div{class: 'btn-group pull-right'}
+    %span{class: 'badge badge-header', id: 'skills-planned-xp'} 0
+    %div{class: 'btn-group pull-right  btn-tool-group'}
       %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
         Add
         %span{class: 'caret'}

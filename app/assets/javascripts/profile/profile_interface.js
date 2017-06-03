@@ -95,7 +95,7 @@ var profile_interface = function() {
         active_class = '';
       }
 
-      s += '<li>'
+      s += '<li class="profile-block">'
          +   set_primary_option(x, primary)
          +   '<span><a href="#" data-name="' + x + '" class="' + active_class + '">'
          +     x
@@ -107,7 +107,7 @@ var profile_interface = function() {
     })
 
     $.each(deleted_profiles, function(x, _junk) {
-      s += '<li>'
+      s += '<li class="profile-block">'
          +   '<span><a href="#" data-name="' + x + '" class="profile-deleted">'
          +     x
          +   '</a></span>'

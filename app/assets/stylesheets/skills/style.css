@@ -16,13 +16,13 @@
 
 .skill-infancy {
   display: none;
-  color: #888;
-  background-color: #eee;
+  background-color: #ccc;
+  opacity: 0.5;
 }
 
-.skill-cost {
+/*.skill-cost {
   margin-top: 1px;
-}
+}*/
 
 .badge-success {
   background-color: #5cb83c;
@@ -69,6 +69,8 @@
 }
 
 .btn-alternator {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding: 0px 6px;
-  margin: 0px 2px;
+  margin: -1px 2px 0px 2px;
+  border: 0px;
 }

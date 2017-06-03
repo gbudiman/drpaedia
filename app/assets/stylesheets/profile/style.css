@@ -14,6 +14,20 @@
   color: #333;
 }
 
+.dropdown-menu li a.anchor-active {
+  padding: 1px 4px;
+}
+
 .set-primary.glyphicon-star-empty {
   cursor: pointer;
+}
+
+.profile-block {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.divider {
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
