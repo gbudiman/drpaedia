@@ -120,7 +120,8 @@ var tooling = function() {
       type: 'text',
       unsavedclass: null,
       placeholder: 'Enter new name...',
-      value: ''
+      value: '',
+      container: 'body'
     }).on('shown', function() {
       //hide_popover();
       var that = $(this);
@@ -529,7 +530,8 @@ var tooling = function() {
       trigger: 'manual',
       html: true,
       content: generate_more_options(obj.parent()),
-      placement: 'top'
+      placement: 'top',
+      container: 'body'
     }).on('shown.bs.popover', function() {
       apply_popover_interactivity();
       highlight_children(obj.parent(), true);

@@ -9,11 +9,15 @@ hr {
 }
 
 #main-left, #main-right {
-  margin-top: 5em;
+  margin-top: 52px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding: 0px;
+}
+
+#main-right {
+  margin-left: -12px;
+  margin-right: -24px;
 }
 
 .badge {
@@ -42,10 +46,41 @@ hr {
 
 .btn-tool-group {
   margin-top: -4px;
+  margin-bottom: 4px;
+}
+
+.btn-tool-group-planner {
+  margin-top: -16px;
+  margin-bottom: 4px;
+}
+
+.btn-stat {
+  padding: 0px 4px;
+}
+
+.form-control.input-stat {
+  padding: 0px 4px;
+}
+
+.stat-sum {
+  text-align: right;
+  font-weight: bold;
+}
+
+.xp-block {
+  margin-right: -12px;
+}
+
+.drop-box {
+  margin-right: -12px;
+  padding-right: 0px;
+  padding-top: 4px;
 }
 
 .dropdown-menu {
   font-size: 12px;
+  max-height: 330px;
+  overflow-y: auto;
 }
 
 .default-no-selection {
@@ -58,7 +93,6 @@ hr {
 
 .group-header {
   font-weight: bold;
-  font-size: 125%;
 }
 
 .popover {

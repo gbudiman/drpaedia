@@ -24,8 +24,8 @@
   %div{class: 'col-xs-12'}
     %hr
 
-  %div{class: 'col-xs-12'} 
-    %span{class: 'group-header'} Acquired Skills
+  %div{class: 'col-xs-12 drop-box'} 
+    %span{class: 'group-header'} Acquired
     %span{class: 'badge badge-header', id: 'skills-acquired-xp'} 0
     %div{class: 'btn-group pull-right btn-tool-group'}
       %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
@@ -37,16 +37,14 @@
     %div{class: 'row'}
     %div{class: 'drop-container', id: 'skills-acquired'}
 
-
-  %div{class: 'col-xs-12'}
-    %hr
-  %div{class: 'col-xs-12'} 
+  %div{class: 'col-xs-12 drop-box'} 
     %span{class: 'group-header'} Planner 
+    %br
     Stats
     %span{class: 'badge badge-header', id: 'skills-planned-stats'} 0
     Skills
     %span{class: 'badge badge-header', id: 'skills-planned-xp'} 0
-    %div{class: 'btn-group pull-right  btn-tool-group'}
+    %div{class: 'btn-group pull-right  btn-tool-group btn-tool-group-planner'}
       %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
         Add
         %span{class: 'caret'}

@@ -10,7 +10,7 @@ var layout = (function() {
   var set = function() {
     var height = $(window).height();
     var cut = $('nav.navbar').height();
-    var max_height = height - cut - 12;
+    var max_height = height - cut - 4;
     $('#main-left').css('max-height', max_height + 'px');
     $('#main-right').css('max-height', max_height + 'px');
   }
