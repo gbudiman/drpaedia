@@ -60,6 +60,11 @@ var profession_conc_interface = (function() {
     return invalids;
   }
 
+  var validate_conc = function(x, config, valids) {
+    var g = groups[x];
+    return validate(g, config, valids);
+  }
+
   var validate_existing = function() {
     if (!dynaloader.get_gil('ok_to_update_gui')) return;
 
@@ -183,6 +188,7 @@ var profession_conc_interface = (function() {
     disable_limit_warning: disable_limit_warning,
     update_profession_added: update_profession_added,
     update_profession_removed: update_profession_removed,
-    validate_existing: validate_existing
+    validate_existing: validate_existing,
+    validate_conc: validate_conc
   }
 })();

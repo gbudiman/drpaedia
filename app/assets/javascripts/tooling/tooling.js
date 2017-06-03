@@ -249,7 +249,7 @@ var tooling = function() {
     var p;
 
     switch(pclass) {
-      case 'Conc': break;
+      case 'Conc': p = profession_conc.get_purchaseable(); break;
       case 'Basic': p = profession_basic.get_purchaseable(); break;
       case 'Forget': p = profession_basic.get_forgettable(); break;
     }
@@ -669,6 +669,7 @@ var tooling = function() {
           .trigger('click');
       } else {
         $('[data-prof="' + sel + '"').trigger('click');
+        $('[data-conc="' + sel + '"').trigger('click');
       }
 
       return true;
