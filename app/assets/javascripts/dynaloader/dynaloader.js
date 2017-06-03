@@ -35,7 +35,29 @@ var dynaloader = (function() {
     return global_interlock[key];
   }
 
+  var load_message = function(x) {
+    return new Promise(function(resolve, reject) {
+      var anchor = $('#modal-loader').find('.last-message');
+
+      var t = '<li><span class="glyphicon glyphicon-ok"></span>&nbsp;  &nbsp;' + x + '</li>';
+      anchor.before(t);
+
+      setTimeout(function() {
+        resolve()
+      }, 16);
+    })
+    
+  }
+
+  var clear_message = function() {
+    $('#modal-loader').find('.last-message').remove();
+    $('#modal-loader').modal('hide');
+  }
+
   var load_remote = function() {
+    $('#modal-loader').modal({
+
+    })
     $.when(get_json('advanced_cat'),
            get_json('concentration_cat'),
            get_json('profession_advanced'),
@@ -56,22 +78,39 @@ var dynaloader = (function() {
            get_json('strains')).done(function() {
       dynaloader.set_gil('ok_to_save', false);
       dynaloader.set_gil('ok_to_update_gui', false);
+
       strains.build();
-      profession_basic.build();
-      profession_conc.build();
-      skills.build();
-      filterview.attach();
-      stats_interface.attach();
-      tooling.attach();  
-      profile.load();
-      profile_interface.build();
+      load_message('Strains loaded').then(function() {
+        profession_basic.build();
+        profession_conc.build()
+        load_message('Professions loaded').then(function() {
+          skills.build();
+          load_message('Skills loaded').then(function() {
+            filterview.attach();
+            load_message('FilterView initialized').then(function() {
+              stats_interface.attach();
+              load_message('Stats interface initialized').then(function() {
+                tooling.attach();
+                load_message('ToolBoard initialized').then(function() {
+                  profile.load();
+                  load_message('Profiles loaded').then(function() {
+                    profile_interface.build();
+                    dynaloader.set_gil('ok_to_save', true);
+                    dynaloader.set_gil('ok_to_update_gui', true);
+                    dynaloader.set_gil('ok_to_animate', true);
+                    dynaloader.set_gil('ok_to_sort', true);
 
-      dynaloader.set_gil('ok_to_save', true);
-      dynaloader.set_gil('ok_to_update_gui', true);
-      dynaloader.set_gil('ok_to_animate', true);
-      dynaloader.set_gil('ok_to_sort', true);
-
-      skills.update_availability();
+                    skills.update_availability();
+                    load_message('Finalizing...').then(function() {
+                      clear_message();
+                    });
+                  });
+                });
+              }); 
+            });
+          });
+        });
+      });  
     })
   }
 
