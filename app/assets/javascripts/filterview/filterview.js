@@ -1,9 +1,13 @@
 var filterview = (function() {
+  var cache = {};
+  var open_state = {};
+
   var filters = {
-    filter_accessible: true,
-    filter_discounted: false,
-    filter_lore: true,
-    filter_psionics: true,
+    filter_accessible: true, //show accessible only
+    filter_discounted: false, //show discounted only
+    filter_lore: true, //hide lores
+    filter_psionics: true, //hide psionics
+    filter_advanced: true, //hide advanced
   }
 
   var attach = function() {
@@ -21,26 +25,54 @@ var filterview = (function() {
     })
   }
 
+  var build_cache = function() {
+    $.each(skills.get_all_code(), function(code, _junk) {
+      cache[code] = {
+        accessible: false,
+        discounted: false,
+        lore: false,
+        psionics: false,
+        advanced: false
+      }
+
+      open_state[code] = false;
+    });
+  }
+
+  var get_state_is_open = function(id) {
+    var c = cache[id];
+    var f = filters;
+
+    var show_only_accessible = f.filter_accessible ? c.accessible : true;
+    var show_only_discounted = f.filter_discounted ? c.discounted : true;
+    var show_lores = f.filter_lore ? !c.lore : true;
+    var show_psionics = f.filter_psionics ? !c.psionics : true;
+
+    return show_only_accessible
+        && show_only_discounted
+        && show_lores
+        && show_psionics;
+  }
+
   var update = function(target, value) {
     filters[target] = value;
     apply();
   }
 
+  var t = function(id) {
+    return skills.get_name(id);
+  }
+
   var apply = function() {
-    $('div[data-accessible]').each(function() {
-      var show = true;
-      var is_accessible = $(this).attr('data-accessible') == 'true';
-      var is_discounted = $(this).attr('data-discounted') == 'true';
-      var is_lore = $(this).attr('data-type') == 'lore';
-      var is_psionics = $(this).attr('data-type') == 'psionics';
+    $.each(cache, function(id, _junk) {
+      var new_state = get_state_is_open(id);
+      var last_state = open_state[id];
 
-      if (filters.filter_accessible && !is_accessible) { show = false; }
-      if (filters.filter_discounted && !is_discounted) { show = false; }
-      if (is_lore && filters.filter_lore) { show = false; }
-      if (is_psionics && filters.filter_psionics) { show = false; }
-
-      if (show) { $(this).show(); }
-      else { $(this).hide(); }
+      if (new_state != last_state) {
+        open_state[id] = new_state;
+        if (new_state) { $('#' + id).show(); }
+        else { $('#' + id).hide(); }
+      }
     })
   }
 
@@ -50,12 +82,28 @@ var filterview = (function() {
     filters.filter_lore = $('#filter-lore').prop('checked');
     filters.filter_psionics = $('#filter-psionics').prop('checked');
 
-    $('div[data-accessible]').show();
+    //$('div[data-accessible]').show();
     apply();
+  }
+
+  var set = function(id, x, val) {
+    cache[id][x] = val;
+  }
+
+  var set_once = function(id, x) {
+    switch(x) {
+      case 'lore': cache[id][x] = true; break;
+      case 'psionics': cache[id][x] = true; break;
+      case 'advanced': cache[id][x] = true; break;
+    }
   }
 
   return {
     apply_all: apply_all,
-    attach: attach
+    attach: attach,
+    build_cache: build_cache,
+    cache: function() { return cache; },
+    set: set,
+    set_once: set_once
   }
 })()

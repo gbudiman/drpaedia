@@ -52,6 +52,8 @@ var skill_interface = (function() {
     var r = '';
     Object.keys(data).sort().forEach(function(k, i) {
       var shorthand = data[k].shorthand;
+      filterview.set_once(shorthand, data[k].type);
+
       r += '<div class="skill skill-infancy" id="' + shorthand + '" '
          +   'data-type="' + data[k].type + '" ' 
          +   'data-accessible=false '
@@ -73,15 +75,28 @@ var skill_interface = (function() {
   var display = function(id, costs, is_open) {
     var obj = $('#' + id);
     var cost = $('#' + id + '-cost');
+
     obj.attr('data-accessible', true);
+    filterview.set(id, 'accessible', true);
+
     if (Object.keys(costs).length > 1) {
       obj.attr('data-discounted', true);
-      cost.addClass('badge-success');
-    }
+      filterview.set(id, 'discounted', true);
 
-    if (!is_open) {
-      obj.attr('data-discounted', true);
       cost.addClass('badge-success');
+    } else {
+
+      if (!is_open) {
+        obj.attr('data-discounted', true);
+        filterview.set(id, 'discounted', true);
+
+        cost.addClass('badge-success');
+      } else {
+        obj.attr('data-discounted', false);
+        filterview.set(id, 'discounted', false);
+
+        cost.removeClass('badge-success');
+      }
     }
 
     obj.removeClass('skill-infancy');
@@ -99,6 +114,9 @@ var skill_interface = (function() {
     obj
       .attr('data-accessible', false)
       .attr('data-discounted', false);
+
+    filterview.set(id, 'accessible', false);
+    filterview.set(id, 'discounted', false);
 
     cost.removeClass('badge-success');
     cost.text('');

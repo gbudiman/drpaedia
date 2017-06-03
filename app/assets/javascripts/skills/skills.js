@@ -57,6 +57,7 @@ var skills = (function() {
       skill_hash[r.skill_list[k]] = k;
     })
 
+    filterview.build_cache();
     skill_interface.build(data);
     update_availability(false);
     skill_popup.attach();
@@ -317,6 +318,8 @@ var skills = (function() {
     get_cost: get_cost,
     get_all_possible_costs: get_all_possible_costs,
     get_code: function(x) { return data[x].shorthand; },
+    get_all_code: function() { return skill_hash; },
+    get_name: function(x) { return skill_hash[x]; },
     has_tier: has_tier,
     hash: get_hash,
     update_availability: update_availability,
