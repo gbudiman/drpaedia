@@ -107,6 +107,10 @@ var profile = function() {
     }
   }
 
+  var force_save_all = function() {
+    $.jStorage.set('all', { profiles: profiles, config: config });
+  }
+
   var save_all_delayed = function(expected) {
     console.log(expected + ' <> ' + selected);
     if (expected == selected) {
@@ -128,10 +132,19 @@ var profile = function() {
   }
 
   var load = function() {
-    var v = $.jStorage.get('all') || empty_default;
+    var v = $.jStorage.get('all');// || empty_default;
+    var first_save = false;
+    if (v == null) {
+      v = empty_default;
+      first_save = true;
+    }
     profiles = v.profiles;
     config = v.config;
     selected = v.config.primary;
+
+    if (first_save) {
+      force_save_all();
+    }
 
     switch_to(selected);
     //dynaloader.set_gil('ok_to_save', false, reset);
