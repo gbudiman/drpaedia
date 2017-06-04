@@ -632,6 +632,7 @@ var tooling = function() {
     obj.on('click', function() {
       var target = popover_caller.parent();
 
+      popover_caller.popover('hide');
       //dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
       dynaloader.set_gil(['ok_to_update_gui', 'ok_to_save'], false, function() {
         if (target.hasClass('tool-separator')) {
