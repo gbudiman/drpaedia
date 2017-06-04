@@ -56,8 +56,31 @@ var skill_popup = function() {
           placement: 'auto bottom',
           viewport: traverse_to_parent(id),
           container: traverse_to_parent(id),
-          template: '<div class="popover popover-skill" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+          title: '<span class="text-info"><strong>' 
+               +   skills.get_name(id) 
+               + '</strong></span>'
+               + '<button type="button" class="close">&times;</button>',
+          template: '<div class="popover popover-skill" role="tooltip">'
+                  +   '<div class="arrow"></div>'
+                  +   '<h3 class="popover-title"></h3>'
+                  +   '<div class="popover-content"></div>'
+                  + '</div>'
           //viewport: '#skill-pool'
+        }).on('shown.bs.popover', function() {
+          var that = $(this);
+          $('.popover').find('button.close').on('click', function() {
+            that.popover('hide');
+            return false;
+          })
+
+          var box_shift = $('#main-right').width() * 0.1;
+          var p = $('.popover');
+          var box_left = parseInt(p.css('left'));
+          var arrow = p.find('.arrow')
+          var arrow_left = parseInt(arrow.css('left'));
+
+          p.css('left', '50%');
+          arrow.css('left', '75%');
         })
 
         data[id] = true;

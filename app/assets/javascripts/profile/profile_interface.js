@@ -13,6 +13,9 @@ var profile_interface = function() {
     }).on('save', function(e, params) {
       profile.rename(params.newValue);
       update_list();
+      setTimeout(function() {
+        update_selected(params.newValue);
+      }, 50);
     }).on('shown', function(e, params) {
       var that = $(this);
       var input = $('.editable-popup').find('input');
@@ -221,7 +224,7 @@ var profile_interface = function() {
   }
 
   var update_selected = function(new_value) {
-    $('#profile-rename').text(new_value);
+    $('#profile-rename').html('<span class="glyphicon glyphicon-pencil"></span>&nbsp; ' + new_value);
     $('#config-button').find('.profile-name').text('Profile: ' + new_value);
     configbar.initialize_arrow();
   }
