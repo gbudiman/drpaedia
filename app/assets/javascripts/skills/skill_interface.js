@@ -66,6 +66,7 @@ var skill_interface = (function() {
 
       r += '<div class="skill skill-infancy" id="' + shorthand + '" '
          +   'data-type="' + data[k].type + '" ' 
+         +   ((data[k].psi_level != undefined && data[k].psi_level > 0) ? 'data-psi-level=' + data[k].psi_level + ' ': '')
          +   'data-accessible=false '
          +   'data-discounted=false '
          + '>'
@@ -195,6 +196,34 @@ var skill_interface = (function() {
     return s;
   }
 
+  var get_psis = function() {
+    var a = get_psis_in('skills-acquired');
+    var b = get_psis_in('skills-planned');
+
+    $.each([1, 2, 3], function(_junk, i) {
+      a[i] = a[i] + b[i];
+    })
+
+    console.log(a);
+
+    return a;
+  }
+
+  var get_psis_in = function(id) {
+    var o = {
+      1: 0,
+      2: 0,
+      3: 0
+    }
+
+    $('#' + id).find('[data-psi-level]').each(function() {
+      var level = parseInt($(this).attr('data-psi-level'));
+      o[level] = o[level] + 1;
+    })
+
+    return o;
+  }
+
   return {
     apply_filters: apply_filters,
     build: build,
@@ -205,6 +234,7 @@ var skill_interface = (function() {
     reset_to_pool: reset_to_pool,
     clear_alternator: clear_alternator,
     sort_pool: sort_pool,
-    set_timeout: function(x) { timeout = x; }
+    set_timeout: function(x) { timeout = x; },
+    get_psis: get_psis
   }
 })()

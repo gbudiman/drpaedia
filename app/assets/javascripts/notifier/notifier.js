@@ -3,6 +3,7 @@ var notifier = function() {
   var timeout_select = setTimeout(null, 0);
   var timeout_conc = setTimeout(null, 0);
   var timeout_skill = setTimeout(null, 0);
+  var timeout_psis = setTimeout(null, 0);
   var timeout = 250; //ms
 
   var select = function(i) {
@@ -53,12 +54,9 @@ var notifier = function() {
       var message = generate_conc_preq_message(h);
 
       if (message.length == 0) {
-        console.log('conc cleared');
         p.update('message', '');
         p.close();
       } else {
-        console.log('updating: ' + message);
-        //$.notify(message);
         p.update('message', message);
       }
     }, timeout);
@@ -86,15 +84,45 @@ var notifier = function() {
       var message = generate_skill_preq_message(h);
       
       if (message.length == 0) {
-        console.log('skill cleared');
         p.update('message', '');
         p.close();
       } else {
-        console.log('updating: ' + message);
         p.update('message', message);
         attach_skills();
       }
     }, timeout);
+  }
+
+  var psis_preq_missing = function() {
+    clearTimeout(timeout_psis);
+    timeout_psis = setTimeout(function() {
+      var p = build_missing_psis();
+      var message = generate_psis_preq_message();
+
+      if (message.length == 0) {
+        p.update('message', '');
+        p.close();
+      } else {
+        p.update('message', message);
+      }
+    }, timeout);
+  }
+
+  var generate_psis_preq_message = function() {
+    var psis = skill_interface.get_psis();
+    var messages = new Array();
+
+    if (psis[3] * 2 > psis[2]) {
+      var diff = 2 * psis[3] - psis[2];
+      messages.push('Add ' + diff + ' more Intermediate Psionic skills');
+    }
+
+    if (psis[2] * 2 > psis[1]) {
+      var diff = 2 * psis[2] - psis[1];
+      messages.push('Add ' + diff + ' more Basic Psionic skills');
+    }
+
+    return messages.join('<br />');
   }
 
   var generate_skill_preq_message = function(h) {
@@ -158,6 +186,32 @@ var notifier = function() {
     return data['skill_missing_preq'];
   }
 
+  var build_missing_psis = function() {
+    if (data['skill_missing_psis'] == undefined) {
+      data['skill_missing_psis'] = $.notify({
+        message: ''
+      }, {
+        type: 'danger',
+        animate: {
+          enter: 'animated fadeInRight',
+          exit: 'animated fadeOutRight'
+        },
+        delay: 0,
+        newest_on_top: true,
+        onShown: attach_skills,
+        allow_dismiss: true,
+        onClose: function() { delete data['skill_missing_psis']; },
+        template: '<div data-notify="container" id="skill-notify" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                    '<img data-notify="icon" class="img-circle pull-left">' +
+                    '<span data-notify="message">{2}</span>' +
+                  '</div>',
+      })
+    }
+
+    return data['skill_missing_psis'];
+  }
+
   var build_missing_conc = function() {
     if (data['conc_missing_preq'] == undefined) {
       data['conc_missing_preq'] = $.notify({
@@ -195,6 +249,7 @@ var notifier = function() {
     conc_preq_missing: conc_preq_missing,
     select: select,
     skill_preq_missing: skill_preq_missing,
+    psis_preq_missing: psis_preq_missing,
     set_timeout: function(x) { timeout = x; }
   }
 }()

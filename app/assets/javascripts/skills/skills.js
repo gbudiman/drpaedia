@@ -12,17 +12,21 @@ var skills = (function() {
       if (r.skill_group[k] != undefined) {
         var type;
         var prepend = '';
+        var psi_level = -1;
 
         if (k.match(/lore/i)) {
           type = 'lore';
         } else if (k.match(/psionic/i)) {
           type = 'psionics';
           if (k.match(/basic/i)) {
-            prepend = 'Psionics I - ';  
+            prepend = 'Psi I - ';  
+            psi_level = 1;
           } else if (k.match(/interm/i)) {
-            prepend = 'Psionics II - ';
+            prepend = 'Psi II - ';
+            psi_level = 2;
           } else if (k.match(/adv/i)) {
-            prepend = 'Psionics III - ';
+            prepend = 'Psi III - ';
+            psi_level = 3;
           }
           
         }
@@ -31,7 +35,8 @@ var skills = (function() {
           data[prepend + sub_k] = {
             shorthand: r.skill_list[sub_k],
             type: type,
-            conditions: v
+            conditions: v,
+            psi_level: psi_level
           }
 
           skill_hash[r.skill_list[sub_k]] = prepend + sub_k;
@@ -244,7 +249,9 @@ var skills = (function() {
       all_valid = all_valid && (valid_strain_t.cond || valid_prof_t.cond);  
     })
 
+
     notifier.skill_preq_missing(all_valid, messages);
+    notifier.psis_preq_missing();
   }
 
   var validate_by_profession = function(obj, all) {
