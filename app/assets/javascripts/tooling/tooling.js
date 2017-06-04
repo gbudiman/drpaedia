@@ -325,16 +325,19 @@ var tooling = function() {
       target.text('Conc');
       obj.find('.tool-prof-xp').text('30');
       rebuild_prof_list(obj);
+      compute_group($('#skills-planned'));
       calc.recalculate_planned_profession();
     } else if (target.text() == 'Conc') {
       target.text('Forget');
       obj.find('.tool-prof-xp').text('10');
       rebuild_prof_list(obj);
+      compute_group($('#skills-planned'));
       calc.recalculate_planned_profession();
     } else if (target.text() == 'Forget') {
       target.text('Basic');
       obj.find('.tool-prof-xp').text('10');
       rebuild_prof_list(obj);
+      compute_group($('#skills-planned'));
       calc.recalculate_planned_profession();
     }
 
