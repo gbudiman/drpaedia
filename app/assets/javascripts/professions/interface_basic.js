@@ -1,6 +1,7 @@
 var profession_basic_interface = (function() {
   var add = function(prof) {
     profession_basic.add(prof);
+    trigger_filterview(prof, true);
 
     var s = '<div class="purchased-profession">'
           +   '<span class="basic-prof-name">' + prof + '</span>'
@@ -15,6 +16,7 @@ var profession_basic_interface = (function() {
       var target_prof = $(this).attr('data-prof');
       $(this).parent().remove();
       profession_basic.remove(target_prof);
+      trigger_filterview(target_prof, false);
     })
 
     $('#profession-basic-config')
@@ -27,10 +29,12 @@ var profession_basic_interface = (function() {
         anchor.removeClass('forgotten-basic-prof');
         profession_basic.unforget(target_prof);
         that.text('F');
+        trigger_filterview(target_prof, true);
       } else {
         anchor.addClass('forgotten-basic-prof');
         profession_basic.forget(target_prof);
         that.text('U');
+        trigger_filterview(target_prof, false);
       }
 
       profession_conc_interface.validate_existing();
@@ -40,6 +44,13 @@ var profession_basic_interface = (function() {
   var forget = function(prof) {
     $('#profession-basic-config')
       .find('.forget-profession[data-prof="' + prof + '"]').trigger('click');
+  }
+
+  var trigger_filterview = function(type, val) {
+    if (type == 'Psionist') {
+      $('#filter-psionics').prop('checked', !val);
+      filterview.apply_all();
+    }
   }
 
   var build = function(type) {
