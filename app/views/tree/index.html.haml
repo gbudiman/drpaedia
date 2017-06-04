@@ -1,7 +1,7 @@
 = render 'loader'
 = render 'profile_modals'
 
-%nav{class: 'navbar navbar-inverse navbar-fixed-top'}
+%nav{class: 'navbar navbar-inverse navbar-fixed-top navbar-xs'}
   %div{class: 'container-fluid'}
     %div{class: 'navbar-header pull-left'}
       %a{class: 'navbar-brand'} DRpaedia
@@ -18,15 +18,16 @@
       %div{id: 'skill-pool-no-result'} No skills match filter criteria
 
   %div{class: 'col-xs-6', id: 'main-right'}
-    = render 'stat_hp'
-    = render 'stat_mp'
-    = render 'stat_inf'
-    %div{class: 'col-xs-12'}
-      %hr
+    %div{class: 'stat-container'}
+      = render 'stat_hp'
+      = render 'stat_mp'
+      = render 'stat_inf'
+    / %div{class: 'row'}
+    /   %hr
     = render 'xp_summary'
 
-    %div{class: 'col-xs-12'}
-      %hr
+    / %div{class: 'row'}
+    /   %hr
 
     %div{class: 'col-xs-12 drop-box'} 
       %span{class: 'group-header'} Acquired
