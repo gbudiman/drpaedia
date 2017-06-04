@@ -12,53 +12,54 @@
 
 = render 'configbar'
 
-%div{class: 'col-xs-6', id: 'main-left'}
-  %div{id: 'skill-pool'}
-    %div{id: 'skill-pool-no-result'} No skills match filter criteria
+%div{class: 'row'}
+  %div{class: 'col-xs-6', id: 'main-left'}
+    %div{id: 'skill-pool'}
+      %div{id: 'skill-pool-no-result'} No skills match filter criteria
 
-%div{class: 'col-xs-6', id: 'main-right'}
-  = render 'stat_hp'
-  = render 'stat_mp'
-  = render 'stat_inf'
-  %div{class: 'col-xs-12'}
-    %hr
-  = render 'xp_summary'
+  %div{class: 'col-xs-6', id: 'main-right'}
+    = render 'stat_hp'
+    = render 'stat_mp'
+    = render 'stat_inf'
+    %div{class: 'col-xs-12'}
+      %hr
+    = render 'xp_summary'
 
-  %div{class: 'col-xs-12'}
-    %hr
+    %div{class: 'col-xs-12'}
+      %hr
 
-  %div{class: 'col-xs-12 drop-box'} 
-    %span{class: 'group-header'} Acquired
-    %span{class: 'badge badge-header', id: 'skills-acquired-xp'} 0
-    %div{class: 'btn-group pull-right btn-tool-group'}
-      %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
-        Add
-        %span{class: 'caret'}
-      %ul{class: 'dropdown-menu'}
-        %li
-          %a{href: '#', id: 'tool-acq-group'} Group
-    %div{class: 'row'}
-    %div{class: 'drop-container', id: 'skills-acquired'}
+    %div{class: 'col-xs-12 drop-box'} 
+      %span{class: 'group-header'} Acquired
+      %span{class: 'badge badge-header', id: 'skills-acquired-xp'} 0
+      %div{class: 'btn-group pull-right btn-tool-group'}
+        %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
+          Add
+          %span{class: 'caret'}
+        %ul{class: 'dropdown-menu'}
+          %li
+            %a{href: '#', id: 'tool-acq-group'} Group
+      %div{class: 'row'}
+      %div{class: 'drop-container', id: 'skills-acquired'}
 
-  %div{class: 'col-xs-12 drop-box'} 
-    %span{class: 'group-header'} Planner 
-    %br
-    Stats
-    %span{class: 'badge badge-header', id: 'skills-planned-stats'} 0
-    Skills
-    %span{class: 'badge badge-header', id: 'skills-planned-xp'} 0
-    %div{class: 'btn-group pull-right  btn-tool-group btn-tool-group-planner'}
-      %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
-        Add
-        %span{class: 'caret'}
-      %ul{class: 'dropdown-menu'}
-        %li
-          %a{href: '#', id: 'tool-separator'} Group
-          %a{href: '#', id: 'tool-stat-planner'} Stat Planner
-          %a{href: '#', id: 'tool-checkin-planner'} Checkin Marker
-          %a{href: '#', id: 'tool-profession-planner'} Profession Planner
-    %div{class: 'row'}
-    %div{class: 'drop-container', id: 'skills-planned'}
+    %div{class: 'col-xs-12 drop-box'} 
+      %span{class: 'group-header'} Planner 
+      %br
+      Stats
+      %span{class: 'badge badge-header', id: 'skills-planned-stats'} 0
+      Skills
+      %span{class: 'badge badge-header', id: 'skills-planned-xp'} 0
+      %div{class: 'btn-group pull-right  btn-tool-group btn-tool-group-planner'}
+        %button{type: 'button', class: 'btn btn-default dropdown-toggle dropdown-tool', 'data-toggle': 'dropdown'}
+          Add
+          %span{class: 'caret'}
+        %ul{class: 'dropdown-menu'}
+          %li
+            %a{href: '#', id: 'tool-separator'} Group
+            %a{href: '#', id: 'tool-stat-planner'} Stat Planner
+            %a{href: '#', id: 'tool-checkin-planner'} Checkin Marker
+            %a{href: '#', id: 'tool-profession-planner'} Profession Planner
+      %div{class: 'row'}
+      %div{class: 'drop-container', id: 'skills-planned'}
 
 %div{id: 'tool-acq-group-base', class: 'tool tool-separator tool-applicable'}
   %span{class: 'glyphicon glyphicon-arrow-down'}

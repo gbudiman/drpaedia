@@ -1,6 +1,7 @@
 body {
   font-family: 'Exo', sans-serif;
   font-size: 12px;
+  overflow-x: hidden;
 }
 
 hr {
@@ -15,13 +16,15 @@ hr {
   padding: 0px;
 }
 
-#main-right {
-  margin-left: -12px;
-  margin-right: -24px;
-}
-
 #main-left {
   z-index: 10;
+  margin-left: 15px;
+  padding-right: 12px;
+}
+
+#main-right {
+  margin-left: -24px;
+  padding-right: 10px;
 }
 
 #skills-acquired, #skills-planned {
