@@ -80,20 +80,20 @@ var dynaloader = (function() {
       dynaloader.set_gil('ok_to_update_gui', false);
 
       strains.build();
-      load_message('Strains loaded').then(function() {
+      load_message('Irradiating wastelands').then(function() {
         profession_basic.build();
         profession_conc.build()
-        load_message('Professions loaded').then(function() {
+        load_message('Mutating survivors').then(function() {
           skills.build();
-          load_message('Skills loaded').then(function() {
+          load_message('Raising zombies').then(function() {
             filterview.attach();
-            load_message('FilterView initialized').then(function() {
+            load_message('Splattering bloods').then(function() {
               stats_interface.attach();
-              load_message('Stats interface initialized').then(function() {
+              load_message('Attaching chainsaws').then(function() {
                 tooling.attach();
-                load_message('ToolBoard initialized').then(function() {
+                load_message('Drying up ocean').then(function() {
                   profile.load();
-                  load_message('Profiles loaded').then(function() {
+                  load_message('Setting up siege').then(function() {
                     profile_interface.build();
                     dynaloader.set_gil('ok_to_save', true);
                     dynaloader.set_gil('ok_to_update_gui', true);
