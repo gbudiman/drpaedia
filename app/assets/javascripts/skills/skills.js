@@ -197,9 +197,9 @@ var skills = (function() {
         skill_interface.apply_filters();
       })
 
-      console.log(' !!! UA.sort() ');
+      //console.log(' !!! UA.sort() ');
       skill_interface.sort_pool();
-      console.log(' !!! update completed');
+      //console.log(' !!! update completed');
       //tooling.auto_indent($('#skills-acquired'));
       //tooling.auto_indent($('#skills-planned'));
       tooling.auto_indent_all();

@@ -15,7 +15,8 @@ var skill_popup = function() {
   }
 
   var traverse_to_parent = function(id) {
-    var obj = $('#' + id).parent();
+    return generic.traverse_to_parent(id);
+    /*var obj = $('#' + id).parent();
     var id = obj.attr('id');
 
     while(id != 'skill-pool' && id != 'skills-acquired' && id != 'skills-planned') {
@@ -23,7 +24,7 @@ var skill_popup = function() {
       id = obj.attr('id');
     }
 
-    return '#' + id;
+    return '#' + id;*/
   }
 
   var handle = function(id) {

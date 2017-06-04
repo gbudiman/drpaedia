@@ -26,6 +26,7 @@ var skill_interface = (function() {
     var possible_costs = skills.get_all_possible_costs(skill_name);
     var current_cost = parseInt(obj.text());
     var anchor = obj;
+    var skill_id = parent.attr('id');
 
     var min_cost = Object.keys(possible_costs).sort()[0];
 
@@ -44,11 +45,17 @@ var skill_interface = (function() {
         obj.html(val + marker);
 
         calc.recalculate_skills();
+        var leader = $(traverse_to_parent(skill_id));
+        tooling.compute_group(leader);
         profile.save_all();
         return false;
       })
     })
 
+  }
+
+  var traverse_to_parent = function(id) {
+    return generic.traverse_to_parent(id);
   }
 
   var build = function(data) {

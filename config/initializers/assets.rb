@@ -10,6 +10,7 @@ Rails.application.config.assets.version = '1.0'
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 Rails.application.config.assets.precompile += %w( style.css 
                                                   configbar/configbar.css 
+                                                  generic.js
                                                   filterview/*.js 
                                                   calc/*.js
                                                   configbar/*.js 

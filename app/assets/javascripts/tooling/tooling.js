@@ -179,8 +179,6 @@ var tooling = function() {
 
     clearTimeout(group_interval);
 
-
-    console.log('isc = ' + is_collapsed);
     var get_children = function() {
       var el = obj.next();
 
@@ -192,7 +190,7 @@ var tooling = function() {
     }
 
     var adjust_orientation = function(exec) {
-      console.log('orientation adjusted ' + is_collapsed + ' exec ' + exec + ' (' + target.length + ')');
+      //console.log('orientation adjusted ' + is_collapsed + ' exec ' + exec + ' (' + target.length + ')');
       if (target.length == 0) {
         arrow.removeClass('glyphicon-menu-up glyphicon-menu-down');
         member_count.text('');
