@@ -1,5 +1,6 @@
 .tool {
   padding: 2px 4px;
+  border-bottom: 1px solid #ddd;
 }
 
 .tool .glyphicon {

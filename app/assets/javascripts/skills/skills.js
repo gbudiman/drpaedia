@@ -18,11 +18,11 @@ var skills = (function() {
         } else if (k.match(/psionic/i)) {
           type = 'psionics';
           if (k.match(/basic/i)) {
-            prepend = 'Psionics Basic - ';  
+            prepend = 'Psionics I - ';  
           } else if (k.match(/interm/i)) {
-            prepend = 'Psionics Intermediate - ';
+            prepend = 'Psionics II - ';
           } else if (k.match(/adv/i)) {
-            prepend = 'Psionics Advanced - ';
+            prepend = 'Psionics III - ';
           }
           
         }
@@ -200,8 +200,9 @@ var skills = (function() {
       console.log(' !!! UA.sort() ');
       skill_interface.sort_pool();
       console.log(' !!! update completed');
-      tooling.auto_indent($('#skills-acquired'));
-      tooling.auto_indent($('#skills-planned'));
+      //tooling.auto_indent($('#skills-acquired'));
+      //tooling.auto_indent($('#skills-planned'));
+      tooling.auto_indent_all();
     })
   }
 

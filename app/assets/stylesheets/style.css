@@ -24,6 +24,11 @@ hr {
   z-index: 10;
 }
 
+#skills-acquired, #skills-planned {
+  display: inline-table;
+  width: 100%;
+}
+
 .badge {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   margin-top: -1px;
@@ -141,4 +146,10 @@ hr {
   border-radius: 4px;
   border: 1px solid #ddd;
   max-height: 360px;
+}
+
+.modal-dialog.modal-loader {
+  width: 60%;
+  left: 20%;
+  top: 10%;
 }

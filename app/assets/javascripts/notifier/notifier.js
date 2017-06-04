@@ -3,7 +3,7 @@ var notifier = function() {
   var timeout_select = setTimeout(null, 0);
   var timeout_conc = setTimeout(null, 0);
   var timeout_skill = setTimeout(null, 0);
-  var timeout = 0; //ms
+  var timeout = 250; //ms
 
   var select = function(i) {
     // if (dynaloader.has_delegations('initial_load')) { return; }
@@ -13,7 +13,7 @@ var notifier = function() {
       return;
     }*/
     clearTimeout(timeout_select);
-    setTimeout(function() {
+    timeout_select = setTimeout(function() {
       if (data['select'] == undefined) {
         data['select'] = $.notify({
           message: ''

@@ -1,6 +1,7 @@
 var tooling = function() {
   var delay_interval = setTimeout(null, 0);
   var group_interval = setTimeout(null, 0);
+  var indent_interval = setTimeout(null, 0);
   var popover_caller;
   var state;
 
@@ -435,25 +436,23 @@ var tooling = function() {
     $.each(obj.children(), function() {
       var that = $(this);
       if (is_group(that)) {
+        console.log('Auto Collapse -> toggle_group_visibility');
         toggle_group_visibility(that);
       }
     })
     
   }
 
-  var auto_indent = function(_obj) {
-    var obj = _obj;
+  var exec_indent = function(obj) {
+    console.log(obj);
     if (obj.attr('id') != 'skills-acquired' && obj.attr('id') != 'skills-planned') {
       obj = obj.parent();
-      /*if (obj.hasClass('skill')) {
-        obj = obj.parent();
-      } else {
-        alert('WARNING! Auto indent on unsupported container ' + obj.attr('id'));
-        return;
-      }*/
     }
 
+    console.log('Auto Indent -> auto_collapse');
     auto_collapse(obj);
+
+    console.log('Auto Indent -> compute_group');
     compute_group(obj);
     var state = 'init';
     obj.children().each(function() {
@@ -470,6 +469,19 @@ var tooling = function() {
         }
       }
     })
+  }
+
+  var auto_indent = function(_obj) {
+    clearTimeout(indent_interval);
+    indent_interval = setTimeout(function() {
+      exec_indent(_obj);
+    }, 500);
+  }
+
+  var auto_indent_all = function() {
+    console.log('Auto indent ALL');
+    exec_indent($('#skills-acquired'));
+    exec_indent($('#skills-planned'));
   }
 
   var compute_group = function(obj) {
@@ -721,6 +733,7 @@ var tooling = function() {
     attach_handles: attach_handles,
     auto_collapse: auto_collapse,
     auto_indent: auto_indent,
+    auto_indent_all: auto_indent_all,
     hide_popover: hide_popover,
     is_group: is_group,
     update_planned_prof_list: update_planned_prof_list,
