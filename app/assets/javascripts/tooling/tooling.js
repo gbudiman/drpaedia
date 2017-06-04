@@ -444,7 +444,6 @@ var tooling = function() {
   }
 
   var exec_indent = function(obj) {
-    console.log(obj);
     if (obj.attr('id') != 'skills-acquired' && obj.attr('id') != 'skills-planned') {
       obj = obj.parent();
     }
@@ -582,9 +581,9 @@ var tooling = function() {
       var cached = popover_caller.parent();
       var next = cached.next();
 
+      popover_caller.popover('hide');
       popover_caller.parent().remove();
 
-      console.log(next);
       while (next.length > 0) {
         if (!next.hasClass('tool-highlight')) break;
         next.removeClass('tool-highlight');
@@ -592,6 +591,7 @@ var tooling = function() {
       }
 
       calc.recalculate_all();
+      profile.save_all();
     })
   }
 
@@ -602,6 +602,8 @@ var tooling = function() {
       var to_pool = new Array();
       objs.push(current_obj);
       current_obj = current_obj.next();
+
+      popover_caller.popover('hide');
 
       while (current_obj.length > 0) {
         if (is_group(current_obj)) break;
@@ -621,6 +623,7 @@ var tooling = function() {
 
       dragdrop.drop_to_pool(to_pool);
       calc.recalculate_all();
+      profile.save_all();
     })
   }
 
