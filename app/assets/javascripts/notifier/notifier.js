@@ -27,7 +27,7 @@ var notifier = function() {
           delay: 0,
           newest_on_top: true,
           allow_dismiss: false,
-          template: '<div data-notify="container" class="col-xs-4 col-sm-3 alert alert-{0} text-right" role="alert">' +
+          template: '<div data-notify="container" class="col-xs-8 col-sm-6 col-md-4 alert alert-{0} text-right" role="alert">' +
                       '<img data-notify="icon" class="img-circle pull-left">' +
                       '<span data-notify="message">{2}</span>' +
                       '<span data-notify="deselect-all"><a href="#">Deselect all</a></span>' +

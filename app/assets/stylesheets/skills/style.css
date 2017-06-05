@@ -1,11 +1,16 @@
 .popover {
   min-width: 200px !important;
   width: auto;
+  left: 50% !important;
 }
 
 .popover-content {
   padding: 8px;
   width: 100%;
+}
+
+.popover.popover-skill > .arrow {
+  left: 75% !important;
 }
 
 .skill {

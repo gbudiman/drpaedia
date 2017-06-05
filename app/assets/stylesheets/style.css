@@ -6,6 +6,11 @@ body {
   margin-right: auto;
   //overflow-x: hidden;
   //overflow-y: hidden;
+  overflow-y: hidden;
+}
+
+body:hover {
+  overflow-y: auto;
 }
 
 hr {
@@ -42,7 +47,7 @@ hr {
 
 #main-left, #main-right {
   margin-top: 36px;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   padding: 0px;
 }
@@ -56,6 +61,10 @@ hr {
 
 #main-right {
 
+}
+
+#main-left:hover, #main-right:hover {
+  overflow-y: auto;
 }
 
 #skill-pool {
@@ -125,8 +134,7 @@ input.input-stat.input-sm {
 }
 
 .drop-box {
-  margin-right: -12px;
-  padding-right: 0px;
+  padding-right: 2px;
   padding-top: 4px;
 }
 
@@ -194,7 +202,10 @@ input.input-stat.input-sm {
 
 .modal-dialog.modal-loader {
   width: 60%;
-  left: 20%;
+  //left: 20%;
+  //right: 20%;
+  margin-left: auto;
+  margin-right: auto;
   top: 10%;
 }
 
@@ -205,6 +216,7 @@ input.input-stat.input-sm {
 
 .stat-container {
   margin-top: 2px;
+  padding-right: 4px;
 }
 
 .footer {
