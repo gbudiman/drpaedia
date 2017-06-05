@@ -1,7 +1,7 @@
 .popover {
   min-width: 200px !important;
   width: auto;
-  left: 50% !important;
+  left: 33% !important;
 }
 
 .popover-content {
@@ -10,7 +10,12 @@
 }
 
 .popover.popover-skill > .arrow {
-  left: 75% !important;
+  left: 60% !important;
+}
+
+.popover.popover-skill {
+  max-width: 67% !important;
+  min-width: 67% !important; 
 }
 
 .skill {

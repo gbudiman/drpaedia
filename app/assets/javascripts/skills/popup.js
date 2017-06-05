@@ -72,21 +72,11 @@ var skill_popup = function() {
             that.popover('hide');
             return false;
           })
-        }).on('show.bs.popover', function() {
-          // var box_shift = $('#main-right').width() * 0.1;
-          var p = $('.popover');
-          // var box_left = parseInt(p.css('left'));
-          var arrow = p.find('.arrow')
-          // var arrow_left = parseInt(arrow.css('left'));
-
-          p.css('left', '50%');
-          arrow.css('left', '75%');
         })
 
         data[id] = true;
-
         smart_trigger();
-      }, 50);
+      }, 25);
     } else {
       smart_trigger();
     }

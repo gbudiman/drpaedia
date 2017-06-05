@@ -156,12 +156,6 @@ input.input-stat.input-sm {
   font-weight: bold;
 }
 
-.popover.popover-skill {
-  max-width: 67% !important;
-  min-width: 50% !important;
-  
-}
-
 .popover-skill > .popover-content {
   padding: 2px;
   font-family: 'Exo', sans-serif;
