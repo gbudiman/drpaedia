@@ -6,7 +6,7 @@ body {
   margin-right: auto;
   //overflow-x: hidden;
   //overflow-y: hidden;
-  overflow-y: hidden;
+  //overflow-y: hidden;
 }
 
 body:hover {
@@ -47,7 +47,7 @@ hr {
 
 #main-left, #main-right {
   margin-top: 36px;
-  overflow-y: hidden;
+  //overflow-y: hidden;
   overflow-x: hidden;
   padding: 0px;
 }
