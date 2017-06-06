@@ -162,6 +162,7 @@ var skill_interface = (function() {
     $('#skills-planned').find('.skill').each(function() {
       ids.push($(this).attr('id'));
     })
+
     dragdrop.drop_to_pool(ids);
   }
 

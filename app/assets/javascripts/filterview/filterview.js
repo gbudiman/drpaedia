@@ -66,6 +66,7 @@ var filterview = (function() {
   var apply = function() {
     var has_result = false;
 
+    console.log('filterview:apply');
     $.each(cache, function(id, _junk) {
       var new_state = get_state_is_open(id);
       var last_state = open_state[id];

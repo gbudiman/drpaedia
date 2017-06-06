@@ -76,7 +76,7 @@ var dragdrop = (function() {
         skill_interface.sort_pool();
       } else {
         rectified_obj = rectify_drop_parent(obj);
-        to_append.prependTo(rectified_obj);
+        to_append.show().appendTo(rectified_obj);
         tooling.attach_handles(to_append, true);
       }
     })

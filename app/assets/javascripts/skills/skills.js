@@ -188,12 +188,14 @@ var skills = (function() {
     //dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
     animate_pool_loading(function() {
       dynaloader.set_gil('ok_to_update_gui', false, function() {
+        console.log('update_availability');
         get_config();
         skill_popup.hide();
         var to_pool = new Array();
         if (reset_all) { skill_interface.reset_all(); }
         $.each(data, function(k, v) {
           var constraint = constraint_satisfied(v);
+
           if (constraint.is_satisfied) {
             skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
           } else {
