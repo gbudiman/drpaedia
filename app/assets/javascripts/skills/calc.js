@@ -46,6 +46,7 @@ var calc = function() {
     var forgotten = Object.keys(profession_basic.forgotten()).length;
     var conc = Object.keys(profession_conc.selected()).length;
 
+    if (profile.get_current()['strain'] == 'Remnants') norm--;
     norm = norm < 0 ? 0 : norm;
     
     data['profs-acquired'] = 10 * (norm + forgotten * 2) + 30 * conc;

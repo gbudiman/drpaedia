@@ -102,6 +102,7 @@ var profession_basic = (function() {
     var overlimit = Object.keys(selected).length - limit;
 
     profession_basic_interface.disable_limit_warning(within_limit, overlimit);
+    notifier.basic_overlimit(overlimit);
     profession_adv.update();
     calc.recalculate_purchased_profession();
     tooling.update_planned_prof_list();

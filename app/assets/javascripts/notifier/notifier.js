@@ -5,6 +5,8 @@ var notifier = function() {
   var timeout_skill = setTimeout(null, 0);
   var timeout_psis = setTimeout(null, 0);
   var timeout_adv = setTimeout(null, 0);
+  var timeout_overlimit_basic = setTimeout(null, 0);
+  var timeout_overlimit_conc = setTimeout(null, 0);
   var timeout = 250; //ms
 
   var select = function(i) {
@@ -46,6 +48,32 @@ var notifier = function() {
       }
       n.update('message', i + ' skills selected. ');  
     }, timeout);
+  }
+
+  var basic_overlimit = function(n) {
+    clearTimeout(timeout_overlimit_basic);
+    timeout_overlimit_basic = setTimeout(function() {
+      var p = build_basic_overlimit();
+
+      if (n <= 0) {
+        p.close();
+      } else {
+        p.update('message', 'Please remove or forget ' + n + ' basic professions');
+      }
+    })
+  }
+
+  var conc_overlimit = function(n) {
+    clearTimeout(timeout_overlimit_conc);
+    timeout_overlimit_conc = setTimeout(function() {
+      var p = build_conc_overlimit();
+
+      if (n <= 0) {
+        p.close();
+      } else {
+        p.update('message', 'Please remove ' + n + ' profession concentrations');
+      }
+    })
   }
 
   var conc_preq_missing = function(h) {
@@ -277,6 +305,56 @@ var notifier = function() {
     return data['adv_missing_preq'];
   }
 
+  var build_basic_overlimit = function() {
+    if (data['basic_overlimit'] == undefined) {
+      data['basic_overlimit'] = $.notify({
+        message: ''
+      }, {
+        type: 'danger',
+        animate: {
+          enter: 'animated fadeInRight',
+          exit: 'animated fadeOutRight'
+        },
+        delay: 0,
+        newest_on_top: true,
+        allow_dismiss: true,
+        onClose: function() { delete data['basic_overlimit']; },
+        template: '<div data-notify="container" id="skill-notify" class="col-xs-8 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                    '<img data-notify="icon" class="img-circle pull-left">' +
+                    '<span data-notify="message">{2}</span>' +
+                  '</div>',
+      })
+    }
+
+    return data['basic_overlimit'];
+  }
+
+  var build_conc_overlimit = function() {
+    if (data['conc_overlimit'] == undefined) {
+      data['conc_overlimit'] = $.notify({
+        message: ''
+      }, {
+        type: 'danger',
+        animate: {
+          enter: 'animated fadeInRight',
+          exit: 'animated fadeOutRight'
+        },
+        delay: 0,
+        newest_on_top: true,
+        allow_dismiss: true,
+        onClose: function() { delete data['conc_overlimit']; },
+        template: '<div data-notify="container" id="skill-notify" class="col-xs-8 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                    '<img data-notify="icon" class="img-circle pull-left">' +
+                    '<span data-notify="message">{2}</span>' +
+                  '</div>',
+      })
+    }
+
+    return data['conc_overlimit'];
+  }
+
   var attach = function() {
     var a = $('[data-notify="deselect-all"]').find('a');
     a.on('click', function() {
@@ -286,6 +364,8 @@ var notifier = function() {
   }
 
   return {
+    basic_overlimit: basic_overlimit,
+    conc_overlimit: conc_overlimit,
     adv_preq_missing: adv_preq_missing,
     conc_preq_missing: conc_preq_missing,
     select: select,

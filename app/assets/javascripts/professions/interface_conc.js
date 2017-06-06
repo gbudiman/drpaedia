@@ -172,12 +172,14 @@ var profession_conc_interface = (function() {
       .on('click', function(event) {
         return false;
       })
+    validate_existing();
   }
 
   var update_profession_removed = function(x) {
     $('#conc-profession-list').find('li[data-conc="' + x + '"]').find('a')
       .removeClass('selected-profession')
       .off('click');
+    validate_existing();
   }
 
   return {
