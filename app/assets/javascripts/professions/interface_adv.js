@@ -78,6 +78,7 @@ var profession_adv_interface = (function() {
 
   var hide_unlock = function(val) {
     if (val) {
+      profile.set_acknowledge(true);
       profession_adv.update();
       $('#profession-adv-unlock').hide();
       $('#profession-adv-select-container').show();
@@ -285,8 +286,7 @@ var profession_adv_interface = (function() {
 
     $('#advanced-list').find('button.btn-adv').on('click', function() {
       var val = $(this).attr('data-adv');
-      $('#adv-selector').selectpicker('val', val);
-      update_gui(val);
+      set_gui(val);
       return false;
     })
   }
@@ -297,17 +297,26 @@ var profession_adv_interface = (function() {
   }
 
   var set = function(x) {
-    profession_adv.reset();
+    profession_adv.set(x);
     skills.update_availability(true);
   }
+
+  var set_gui = function(val) {
+    $('#adv-selector').selectpicker('val', val);
+    update_gui(val);
+  }
+
 
   return {
     build_modal: build_modal,
     build_selector: build_selector,
     display_readable: display_readable,
     enable_select_button: enable_select_button,
+    hide_unlock: hide_unlock,
     update_selector: update_selector,
+    update_gui: update_gui,
     render: render,
-    reset: reset
+    reset: reset,
+    set_gui: set_gui
   }
 })()

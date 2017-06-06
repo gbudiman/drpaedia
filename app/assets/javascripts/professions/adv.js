@@ -18,6 +18,7 @@ var profession_adv = (function() {
 
   var update = function() {
     if (!dynaloader.get_gil('ok_to_update_gui')) return;
+    if (!profile.get_current()['prefs'].advanced_acknowledged) return;
 
     clearTimeout(update_timeout);
     update_timeout = setTimeout(function() {
@@ -111,11 +112,13 @@ var profession_adv = (function() {
 
   var reset = function() {
     selected = {};
+    profile.save_all();
   }
 
   var set = function(x) {
     reset();
     selected[x] = true;
+    profile.save_all();
   }
 
   return {

@@ -92,7 +92,7 @@ var profile = function() {
   }
 
   var save_all = function() {
-    var caller = arguments.callee.caller.toString();
+    //var caller = arguments.callee.caller.toString();
     if (dynaloader.get_gil('ok_to_save')) {
       // console.log(caller);
       store();
@@ -197,6 +197,10 @@ var profile = function() {
       $.each(d.professions.concentration, function(x, _junk) {
         profession_conc_interface.add(x);
       })
+
+      $.each(d.professions.advanced, function(x, _junk) {
+        profession_adv_interface.set_gui(x);
+      })
     }
 
     stats_interface.set(d.stats);
@@ -208,6 +212,8 @@ var profile = function() {
       apply_rightside(x, 'skills-planned');
     })
 
+    apply_advanced_lock();
+
     tooling.compute_group($('#skills-acquired'));
     tooling.compute_group($('#skills-planned'));
 
@@ -215,6 +221,11 @@ var profile = function() {
     skills.update_availability();
     profession_conc_interface.validate_existing();
     console.log(' >>> apply completed');
+  }
+
+  var apply_advanced_lock = function() {
+    var ack = profiles[selected].prefs.advanced_acknowledged;
+    profession_adv_interface.hide_unlock(ack);
   }
 
   var apply_rightside = function(entry, target) {
@@ -251,7 +262,8 @@ var profile = function() {
     return {
       selected: profession_basic.selected(),
       forgotten: profession_basic.forgotten(),
-      concentration: profession_conc.selected()
+      concentration: profession_conc.selected(),
+      advanced: profession_adv.selected()
     }
   }
 
@@ -305,6 +317,11 @@ var profile = function() {
     prefs[key] = value
   }
 
+  var set_acknowledge = function(val) {
+    profiles[selected].prefs.advanced_acknowledged = val;
+    save_all();
+  }
+
   return {
     apply: apply,
     copy_current_to: copy_current_to,
@@ -325,6 +342,7 @@ var profile = function() {
     set_pref: set_pref,
     soft_delete: soft_delete,
     undelete: undelete,
+    set_acknowledge: set_acknowledge,
     switch_to: switch_to,
     wipe: wipe
   }
