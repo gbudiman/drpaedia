@@ -217,11 +217,11 @@ var tooling = function() {
     adjust_orientation(exec);
 
     if ((is_collapsed && exec) || (!is_collapsed && !exec)) {
-      console.log('expanding');
+      // console.log('expanding');
       obj.attr('data-group-is-collapsed', false);
       $.each(target, function(i, x) { x.show(); })
     } else {
-      console.log('collapsing');
+      // console.log('collapsing');
       obj.attr('data-group-is-collapsed', true);
       $.each(target, function(i, x) { x.hide(); })
     }
@@ -445,7 +445,7 @@ var tooling = function() {
     $.each(obj.children(), function() {
       var that = $(this);
       if (is_group(that)) {
-        console.log('Auto Collapse -> toggle_group_visibility');
+        // console.log('Auto Collapse -> toggle_group_visibility');
         toggle_group_visibility(that);
       }
     })
@@ -457,10 +457,10 @@ var tooling = function() {
       obj = obj.parent();
     }
 
-    console.log('Auto Indent -> auto_collapse');
+    // console.log('Auto Indent -> auto_collapse');
     auto_collapse(obj);
 
-    console.log('Auto Indent -> compute_group');
+    // console.log('Auto Indent -> compute_group');
     compute_group(obj);
     var state = 'init';
     obj.children().each(function() {
@@ -487,7 +487,7 @@ var tooling = function() {
   }
 
   var auto_indent_all = function() {
-    console.log('Auto indent ALL');
+    // console.log('Auto indent ALL');
     exec_indent($('#skills-acquired'));
     exec_indent($('#skills-planned'));
   }
@@ -533,7 +533,7 @@ var tooling = function() {
       update_and_reset_anchor(anchor);
     }
 
-    console.log(' >>> compute group completed');
+    // console.log(' >>> compute group completed');
   }
 
   var indent = function(obj, apply) {

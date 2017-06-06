@@ -65,8 +65,8 @@ var filterview = (function() {
 
   var apply = function() {
     var has_result = false;
+    var update_count = 0;
 
-    console.log('filterview:apply');
     $.each(cache, function(id, _junk) {
       var new_state = get_state_is_open(id);
       var last_state = open_state[id];
@@ -75,8 +75,11 @@ var filterview = (function() {
         open_state[id] = new_state;
         if (new_state) { $('#skill-pool').find('#' + id).show(); }
         else { $('#skill-pool').find('#' + id).hide(); }
+        update_count++;
       }
     })
+
+    console.log('filterview:apply ' + update_count + ' updated');
 
     $.each(open_state, function(_junk, val) {
       if (val) {

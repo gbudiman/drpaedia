@@ -100,7 +100,6 @@ var stats_interface = function() {
     clearTimeout(delay_interval);
     var current_profile = profile.get_old_name();
     delay_interval = setTimeout(function() {
-      console.log(' """ delayed eval sum');
       profession_conc_interface.validate_existing();
       profession_adv.update();
       profile.save_all_delayed(current_profile);

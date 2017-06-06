@@ -100,3 +100,11 @@
 #profession-adv-select-container {
   display: none;
 }
+
+#advanced-list {
+  display: none;
+}
+
+.adv-list-block {
+  padding-top: 2px;
+}

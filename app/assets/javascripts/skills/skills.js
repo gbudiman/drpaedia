@@ -188,7 +188,6 @@ var skills = (function() {
     //dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
     animate_pool_loading(function() {
       dynaloader.set_gil('ok_to_update_gui', false, function() {
-        console.log('update_availability');
         get_config();
         skill_popup.hide();
         var to_pool = new Array();

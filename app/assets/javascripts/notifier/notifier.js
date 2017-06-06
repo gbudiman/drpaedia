@@ -55,7 +55,7 @@ var notifier = function() {
       var message = generate_conc_preq_message(h);
 
       if (message.length == 0) {
-        p.update('message', '');
+        //p.update('message', '');
         p.close();
       } else {
         p.update('message', message);
@@ -70,25 +70,12 @@ var notifier = function() {
       var p = build_missing_adv();
 
       if (h.length == 0) {
-        p.update('message', '');
+        //p.update('message', '');
         p.close();
       } else {
         p.update('message', 'Constraints violated for Advanced Profession ' + h);
       }
     })
-  }
-
-  var generate_conc_preq_message = function(h) {
-    var s = '';
-    $.each(h, function(conc, messages) {
-      if (Object.keys(messages).length == 0) return true;
-      s += 'Profession Concentration ' + conc + ' requires:<br />';
-      $.each(messages, function(i, x) {
-        s += x + '<br />';
-      })
-    })
-
-    return s;
   }
 
   var skill_preq_missing = function(all_valid, h) {
@@ -99,7 +86,7 @@ var notifier = function() {
       var message = generate_skill_preq_message(h);
       
       if (message.length == 0) {
-        p.update('message', '');
+        //p.update('message', '');
         p.close();
       } else {
         p.update('message', message);
@@ -115,12 +102,25 @@ var notifier = function() {
       var message = generate_psis_preq_message();
 
       if (message.length == 0) {
-        p.update('message', '');
+        //p.update('message', '');
         p.close();
       } else {
         p.update('message', message);
       }
     }, timeout);
+  }
+
+  var generate_conc_preq_message = function(h) {
+    var s = '';
+    $.each(h, function(conc, messages) {
+      if (Object.keys(messages).length == 0) return true;
+      s += 'Profession Concentration ' + conc + ' requires:<br />';
+      $.each(messages, function(i, x) {
+        s += x + '<br />';
+      })
+    })
+
+    return s;
   }
 
   var generate_psis_preq_message = function() {

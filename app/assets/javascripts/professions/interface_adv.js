@@ -25,10 +25,34 @@ var profession_adv_interface = (function() {
     });
   }
 
+  var attach_list_toggle = function() {
+    $('#adv-list-toggle').change(function() {
+      var val = $(this).prop('checked');
+
+      set_list_toggle_state(val);
+    })
+
+    set_list_toggle_state($('#adv-list-toggle').prop('checked'));
+  }
+
+  var set_list_toggle_state = function(val) {
+    if (val) {
+      $('#advanced-list').fadeIn();
+      $('#skill-pool').hide();
+    } else {
+      $('#advanced-list').hide();
+      $('#skill-pool').fadeIn();
+    }
+  }
+
   var update_gui = function(val) {
     set(val);
     reinitialize_all_select_buttons();
     enable_select_button(val, true);
+  }
+
+  var set_list_gui = function(val) {
+    $('#adv-list-toggle').bootstrapToggle(val ? 'on' : 'off');
   }
 
   var build_selector = function(data) {
@@ -41,6 +65,7 @@ var profession_adv_interface = (function() {
     $('#adv-selector').append(raw);
     $('#adv-selector').selectpicker('refresh');
     attach_selector();
+    attach_list_toggle();
   }
 
   var reinitialize_all_select_buttons = function() {
@@ -317,6 +342,7 @@ var profession_adv_interface = (function() {
     update_gui: update_gui,
     render: render,
     reset: reset,
-    set_gui: set_gui
+    set_gui: set_gui,
+    set_list_gui: set_list_gui
   }
 })()

@@ -72,6 +72,9 @@ var skill_popup = function() {
             that.popover('hide');
             return false;
           })
+          $('.popover').off('click').on('click', function() {
+            return false;
+          })
         })
 
         data[id] = true;

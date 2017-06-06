@@ -63,6 +63,8 @@
         Unlock
     %div{class: 'container', id: 'profession-adv-select-container'}
       %select{class: 'selectpicker show-tick', id: 'adv-selector', 'data-width': 'fit', 'data-size': 8}
+      %div{class: 'adv-list-block'}
+        %input{'data-toggle': 'toggle', id: 'adv-list-toggle', type: 'checkbox', 'data-on': 'Show List', 'data-off': 'Hide List', 'data-width': '128px'}
 
     %hr
     %div{class: 'config-header'} Filters

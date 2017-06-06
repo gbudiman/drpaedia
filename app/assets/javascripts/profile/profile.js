@@ -220,12 +220,12 @@ var profile = function() {
     filterview.apply_all();
     skills.update_availability();
     profession_conc_interface.validate_existing();
-    console.log(' >>> apply completed');
   }
 
   var apply_advanced_lock = function() {
     var ack = profiles[selected].prefs.advanced_acknowledged;
     profession_adv_interface.hide_unlock(ack);
+    profession_adv_interface.set_list_gui(ack);
   }
 
   var apply_rightside = function(entry, target) {
