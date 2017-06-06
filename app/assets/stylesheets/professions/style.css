@@ -55,6 +55,10 @@
   display: none;
 }
 
+.btn.btn-adv {
+  display: none;
+}
+
 .adv {
   cursor: pointer;
   //background-color: white;

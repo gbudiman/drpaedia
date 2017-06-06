@@ -314,7 +314,7 @@ var profile = function() {
     load: load,
     store: store,
     get_all: function() { return profiles; },
-    get_current: function() { return data; },
+    get_current: function() { return profiles[selected]; },
     get_current_name: function() { return selected; },
     get_old_name: function() { return old_profile; },
     get_master: function() { return $.jStorage.get('all'); },
