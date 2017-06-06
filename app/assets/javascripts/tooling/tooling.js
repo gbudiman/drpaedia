@@ -73,11 +73,11 @@ var tooling = function() {
     if (enable) {
       if (obj.find('.glyphicon-arrow-up').length > 0) return;
 
-      var down = ' <span class="glyphicon glyphicon-arrow-down"></span> ';
+      var down = ' <span class="glyphicon glyphicon-arrow-down pull-right"></span> ';
       var up = '<span class="glyphicon glyphicon-arrow-up pull-right"></span>';
 
-      obj.prepend(down);
-      obj.children().last().before(up);
+      //obj.prepend(down);
+      obj.children().last().before(up).before(down);
       activate(obj);
     } else {
       obj.find('.glyphicon-arrow-up').remove();
@@ -382,14 +382,22 @@ var tooling = function() {
           }
           break;
         }
+
         if (direction == 'up') {
           anchor = maybe_anchor;
           maybe_anchor = maybe_anchor.prev();
+          if (maybe_anchor.find('.glyphicon-option-vertical').length == 0) {
+            anchor = null;
+            //break;
+          }
           
         } else if (direction == 'down') {
           anchor = maybe_anchor;
           maybe_anchor = maybe_anchor.next();
-          
+
+          if (maybe_anchor.length == 0) {
+            anchor = null;
+          }
         }
       }
     } else {
