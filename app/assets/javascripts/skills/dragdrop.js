@@ -88,6 +88,7 @@ var dragdrop = (function() {
     calc.recalculate_skills();
     skills.validate();
     profession_conc_interface.validate_existing();
+    profession_adv.update();
     profile.save_all();
   }
 
@@ -146,6 +147,7 @@ var dragdrop = (function() {
     calc.recalculate_skills();
     skills.validate();
     profession_conc_interface.validate_existing();
+    profession_adv.update();
     return false;
   }
 

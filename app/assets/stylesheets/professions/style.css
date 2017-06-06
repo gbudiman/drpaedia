@@ -73,6 +73,11 @@
   color: #aaa;
 }
 
+.bg-success-alt {
+  background-color: #3c763d;
+  color: #fff;
+}
+
 #basic-limit-warning {
   color: red;
   display: none;

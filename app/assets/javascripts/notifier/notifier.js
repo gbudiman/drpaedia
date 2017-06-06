@@ -4,6 +4,7 @@ var notifier = function() {
   var timeout_conc = setTimeout(null, 0);
   var timeout_skill = setTimeout(null, 0);
   var timeout_psis = setTimeout(null, 0);
+  var timeout_adv = setTimeout(null, 0);
   var timeout = 250; //ms
 
   var select = function(i) {
@@ -61,6 +62,20 @@ var notifier = function() {
       }
     }, timeout);
     
+  }
+
+  var adv_preq_missing = function(h) {
+    clearTimeout(timeout_adv);
+    timeout_adv = setTimeout(function() {
+      var p = build_missing_adv();
+
+      if (h.length == 0) {
+        p.update('message', '');
+        p.close();
+      } else {
+        p.update('message', 'Constraints violated for Advanced Profession ' + h);
+      }
+    })
   }
 
   var generate_conc_preq_message = function(h) {
@@ -237,6 +252,31 @@ var notifier = function() {
     return data['conc_missing_preq'];
   }
 
+  var build_missing_adv = function() {
+    if (data['adv_missing_preq'] == undefined) {
+      data['adv_missing_preq'] = $.notify({
+        message: ''
+      }, {
+        type: 'danger',
+        animate: {
+          enter: 'animated fadeInRight',
+          exit: 'animated fadeOutRight'
+        },
+        delay: 0,
+        newest_on_top: true,
+        allow_dismiss: true,
+        onClose: function() { delete data['adv_missing_preq']; },
+        template: '<div data-notify="container" id="skill-notify" class="col-xs-8 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                    '<img data-notify="icon" class="img-circle pull-left">' +
+                    '<span data-notify="message">{2}</span>' +
+                  '</div>',
+      })
+    }
+
+    return data['adv_missing_preq'];
+  }
+
   var attach = function() {
     var a = $('[data-notify="deselect-all"]').find('a');
     a.on('click', function() {
@@ -246,6 +286,7 @@ var notifier = function() {
   }
 
   return {
+    adv_preq_missing: adv_preq_missing,
     conc_preq_missing: conc_preq_missing,
     select: select,
     skill_preq_missing: skill_preq_missing,

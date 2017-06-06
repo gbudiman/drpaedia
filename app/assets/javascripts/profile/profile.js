@@ -43,10 +43,7 @@ var profile = function() {
   }
 
   var set_primary = function(x) {
-
     config.primary = x;
-    console.log(x);
-    console.log(config);
     save_all();
   }
 
@@ -112,7 +109,7 @@ var profile = function() {
   }
 
   var save_all_delayed = function(expected) {
-    console.log(expected + ' <> ' + selected);
+    //console.log(expected + ' <> ' + selected);
     if (expected == selected) {
       save_all();
     }
@@ -162,6 +159,7 @@ var profile = function() {
     strain_interface.set_gui(null);
     profession_basic_interface.reset();
     profession_conc_interface.reset();
+    profession_adv_interface.reset();
     skill_interface.reset_to_pool();
     $('#skills-acquired').empty();
     $('#skills-planned').empty();
@@ -293,7 +291,7 @@ var profile = function() {
         a.push({prof: $(this).find('.tool-option').text(),
                 selected: $(this).find('.tool-prof-select').find(':selected').text(),
                 nominal: parseInt($(this).find('.tool-prof-xp').text())});
-      } else {
+      } else if ($(this).hasClass('skill')) {
         a.push({skill: $(this).attr('id'),
                 cost: parseInt($(this).find('.skill-cost').text()),
                 alt: $(this).find('sup').length > 0});

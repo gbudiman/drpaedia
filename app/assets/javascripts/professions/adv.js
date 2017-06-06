@@ -21,8 +21,10 @@ var profession_adv = (function() {
 
     clearTimeout(update_timeout);
     update_timeout = setTimeout(function() {
-      var ag = new AgentGirl(get_profile_data());
+      var profile = get_profile_data();
+      if (profile == null) return;
 
+      var ag = new AgentGirl(get_profile_data());
       compute_advanced_profession_constraints(ag);
     }, 250);
   }
@@ -32,15 +34,17 @@ var profession_adv = (function() {
     var p = profile.get_current();
     var lookup = skills.get_all_code();
 
+    if (p.stats == undefined) return null;
+
     h.hp = p.stats.hp;
     h.mp = p.stats.mp;
     h.professions = Object.keys(p.professions.selected);
     h.strain = p.strain;
     h.xp_sum = parseInt($('#xp-total-acquired').text()) + parseInt($('#xp-total-planned').text());
     h.lore_count = 0;
-    h.psi1_count = 0;
-    h.psi2_count = 0;
-    h.psi3_count = 0;
+    h.psionic_basic = 0;
+    h.psionic_intermediate = 0;
+    h.psionic_advanced = 0;
     h.skills = new Array();
 
     $.each(p.acq.concat(p.plan), function(_junk, x) {
@@ -48,15 +52,18 @@ var profession_adv = (function() {
         var skill_code = x.skill;
         var skill_name = lookup[skill_code];
 
+        if (skill_name == undefined) {
+          console.log('UNDEF: ' + skill_code);
+        }
         h.skills.push(skill_name);
         if (skill_name.match(/^Lore/)) {
           h.lore_count++;
         } else if (skill_name.match(/^Psi I -/)) {
-          h.psi1_count++;
+          h.psionic_basic++;
         } else if (skill_name.match(/^Psi II -/)) {
-          h.psi2_count++;
+          h.psionic_intermediate++;
         } else if (skill_name.match(/^Psi III -/)) {
-          h.psi3_count++;
+          h.psionic_advanced++;
         }
       }
     })
@@ -65,33 +72,19 @@ var profession_adv = (function() {
   }
 
   var compute_advanced_profession_constraints = function(ag) {
-    var enable_advanced_profession_selector = function(name, value) {
-      var o = $('#advanced-list').find('button[data-adv="' + name + '"]');
-      if (value) {
-        o.show();
-      } else {
-        o.hide();
-      }
-    }
-
     $.each(data, function(name, obj) {
       var s = obj.test(ag);
       var target = $('#advanced-list').find('div[data-adv="' + name + '"]');
 
       if (s.result) {
-        target
-          .removeClass('faded')
-          .find('.btn-advanced-profession').show();
+        target.removeClass('faded');
 
-        enable_advanced_profession_selector(name, true);
+        profession_adv_interface.enable_select_button(name, true);
         available[name] = true;
       } else {
-        //enable_ap_select_button(name, true);
-        target
-          .addClass('faded')
-          .find('.btn-advanced-profession').hide();
+        target.addClass('faded');
 
-        enable_advanced_profession_selector(name, false);
+        profession_adv_interface.enable_select_button(name, false);
         available[name] = false;
       }
       
@@ -99,14 +92,29 @@ var profession_adv = (function() {
     });
 
     profession_adv_interface.update_selector(available);
+    validate_existing();
+  }
+
+  var validate_existing = function() {
+    $.each(selected, function(key, _junk) {
+      if (!available[key]) {
+        notifier.adv_preq_missing(key);
+      } else {
+        notifier.adv_preq_missing('');
+      }
+    })
   }
 
   var is_profession = function(x) {
     return data[x] != undefined;
   }
 
-  var set = function(x) {
+  var reset = function() {
     selected = {};
+  }
+
+  var set = function(x) {
+    reset();
     selected[x] = true;
   }
 
@@ -115,6 +123,7 @@ var profession_adv = (function() {
     data: function() { return data; },
     get_available: function() { return available; },
     is_profession: is_profession,
+    reset: reset,
     set: set,
     selected: function() { return selected; },
     update: update

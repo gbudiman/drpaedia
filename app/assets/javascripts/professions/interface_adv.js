@@ -21,11 +21,14 @@ var profession_adv_interface = (function() {
     $('#adv-selector').selectpicker({
 
     }).on('changed.bs.select', function() {
-      var new_value = $('#adv-selector').val();
-      set(new_value);
+      update_gui($('#adv-selector').val());
     });
+  }
 
-
+  var update_gui = function(val) {
+    set(val);
+    reinitialize_all_select_buttons();
+    enable_select_button(val, true);
   }
 
   var build_selector = function(data) {
@@ -38,6 +41,28 @@ var profession_adv_interface = (function() {
     $('#adv-selector').append(raw);
     $('#adv-selector').selectpicker('refresh');
     attach_selector();
+  }
+
+  var reinitialize_all_select_buttons = function() {
+    $('#advanced-list')
+      .find('button[data-adv]')
+        .text('Select')
+        .prop('disabled', false);
+  }
+
+  var enable_select_button = function(name, value) {
+    var selected = profession_adv.selected();
+    var o = $('#advanced-list').find('button[data-adv="' + name + '"]');
+
+    if (value) {
+      if (selected[name] == undefined) {
+        o.text('Select').prop('disabled', false).show();
+      } else {
+        o.text('Selected').prop('disabled', true).show();
+      }
+    } else {
+      o.hide();
+    }
   }
 
   var update_selector = function(data) {
@@ -257,11 +282,22 @@ var profession_adv_interface = (function() {
         target.hide();
       }
     })
+
+    $('#advanced-list').find('button.btn-adv').on('click', function() {
+      var val = $(this).attr('data-adv');
+      $('#adv-selector').selectpicker('val', val);
+      update_gui(val);
+      return false;
+    })
+  }
+
+  var reset = function() {
+    profession_adv.reset();
+    hide_unlock(false);
   }
 
   var set = function(x) {
-    console.log('adv changed to ' + x);
-    profession_adv.set(x);
+    profession_adv.reset();
     skills.update_availability(true);
   }
 
@@ -269,7 +305,9 @@ var profession_adv_interface = (function() {
     build_modal: build_modal,
     build_selector: build_selector,
     display_readable: display_readable,
+    enable_select_button: enable_select_button,
     update_selector: update_selector,
     render: render,
+    reset: reset
   }
 })()

@@ -33,6 +33,7 @@ var strain_interface = (function() {
     selected_strain = x;
 
     profession_basic.update_strain_change();
+    profession_adv.update();
     skills.update_availability(true);
 
     if (strains.data()[x]) {
