@@ -82,7 +82,8 @@ var dynaloader = (function() {
       strains.build();
       load_message('Irradiating wastelands').then(function() {
         profession_basic.build();
-        profession_conc.build()
+        profession_conc.build();
+        profession_adv.build();
         load_message('Mutating survivors').then(function() {
           skills.build();
           load_message('Raising zombies').then(function() {

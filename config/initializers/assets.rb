@@ -28,4 +28,6 @@ Rails.application.config.assets.precompile += %w( style.css
                                                   bootstrap-editable.*
                                                   bootstrap-notify.*
                                                   jstorage.*
+                                                  AgentGirl.js
+                                                  SParser.js
                                                   animate.css)

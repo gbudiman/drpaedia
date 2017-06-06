@@ -51,6 +51,24 @@
   cursor: default;
 }
 
+.adv-requirement {
+  display: none;
+}
+
+.adv {
+  cursor: pointer;
+  //background-color: white;
+  border-bottom: 1px solid #ddd;
+  padding: 4px;
+  display: inline-table;
+  width: 100%;
+}
+
+.adv.faded {
+  background-color: #eee;
+  color: #aaa;
+}
+
 #basic-limit-warning {
   color: red;
   display: none;
