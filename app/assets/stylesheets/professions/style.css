@@ -82,3 +82,16 @@
   color: red;
   display: none;
 }
+
+#profession-adv-select-container > .bootstrap-select > .dropdown-menu > .dropdown-menu > li.disabled > a > span {
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+#profession-adv-select-container > .bootstrap-select > .dropdown-menu > .dropdown-menu {
+  overflow-x: hidden;
+}
+
+#profession-adv-select-container {
+  display: none;
+}

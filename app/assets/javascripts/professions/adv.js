@@ -1,6 +1,8 @@
 var profession_adv = (function() {
   var data;
   var update_timeout = setTimeout(null, 0);
+  var available = {};
+  var selected = {};
 
   var build = function() {
     profession_adv_interface.build_modal();
@@ -11,6 +13,7 @@ var profession_adv = (function() {
     })
 
     profession_adv_interface.render(data);
+    profession_adv_interface.build_selector(data);
   }
 
   var update = function() {
@@ -63,25 +66,6 @@ var profession_adv = (function() {
 
   var compute_advanced_profession_constraints = function(ag) {
     var enable_advanced_profession_selector = function(name, value) {
-      //var o = $('#setup-profession input[value="' + name + '"]');
-
-      // if (value == false) {
-      //   // disable
-      //   o.prop('disabled', true);
-      //   if (o.prop('checked') && ok_to_trigger_advanced_profession_removal) {
-      //     console.log(name + ' has been deselected due to unmet constraint');
-      //     $('#alert-deselection').show();
-      //     $('#alert-deselection-text').text('Advanced Profession ' + name + ' has been deselected due to unmet constraints');
-      //     $('#profession-selector').multiselect('deselect', name, true);
-      //   }
-
-      //   if (!o.parent().hasClass('text-muted')) {
-      //     o.parent().addClass('text-muted');
-      //   }
-      // } else {
-      //   o.prop('disabled', false)
-      //    .parent().removeClass('text-muted');
-      // }
       var o = $('#advanced-list').find('button[data-adv="' + name + '"]');
       if (value) {
         o.show();
@@ -100,6 +84,7 @@ var profession_adv = (function() {
           .find('.btn-advanced-profession').show();
 
         enable_advanced_profession_selector(name, true);
+        available[name] = true;
       } else {
         //enable_ap_select_button(name, true);
         target
@@ -107,15 +92,31 @@ var profession_adv = (function() {
           .find('.btn-advanced-profession').hide();
 
         enable_advanced_profession_selector(name, false);
+        available[name] = false;
       }
       
       profession_adv_interface.display_readable(s, target.find('div.adv-requirement'), name);
     });
+
+    profession_adv_interface.update_selector(available);
+  }
+
+  var is_profession = function(x) {
+    return data[x] != undefined;
+  }
+
+  var set = function(x) {
+    selected = {};
+    selected[x] = true;
   }
 
   return {
     build: build,
     data: function() { return data; },
+    get_available: function() { return available; },
+    is_profession: is_profession,
+    set: set,
+    selected: function() { return selected; },
     update: update
   }
 })()

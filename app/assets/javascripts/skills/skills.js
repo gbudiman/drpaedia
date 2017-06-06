@@ -62,6 +62,16 @@ var skills = (function() {
       skill_hash[r.skill_list[k]] = k;
     })
 
+    $.each(r.advanced_cat, function(k, v) {
+      data[k] = {
+        shorthand: r.skill_list[k],
+        type: 'adv',
+        conditions: v
+      }
+
+      skill_hash[r.skill_list[k]] = k;
+    })
+
     filterview.build_cache();
     skill_interface.build(data);
     update_availability(false);
@@ -133,7 +143,10 @@ var skills = (function() {
 
   var get_config = function() {
     strain = strain_interface.selected();
-    professions = Object.assign({}, profession_basic.selected(), profession_conc.selected());
+    professions = Object.assign({}, 
+                                profession_basic.selected(), 
+                                profession_conc.selected(),
+                                profession_adv.selected());
 
     return {
       strain: strain,

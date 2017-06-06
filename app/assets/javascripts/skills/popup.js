@@ -185,7 +185,9 @@ var skill_popup = function() {
 
     $.each(cond, function(k, v) {
       profession_class = 'cond-disabled';
-      if (profession_basic.is_profession(k) || profession_conc.is_profession(k)) {
+      if (profession_basic.is_profession(k) 
+       || profession_conc.is_profession(k)
+       || profession_adv.is_profession(k)) {
         if (is_purchased_profession(k)) {
           profession_class = 'cond-discounted';
 

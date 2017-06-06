@@ -19,7 +19,6 @@ var strain_interface = (function() {
     $('#strain-dd').append(raw);
     $('#strain-dd').selectpicker('refresh');
     attach();
-    console.log('build complete');
   }
 
   var get_selected_strain = function() {
@@ -45,7 +44,6 @@ var strain_interface = (function() {
   }
 
   var set_gui = function(_x) {
-    console.log('set gui to ' + _x);
     var x = _x == null ? 'No Selection' : _x;
     $('#strain-dd').selectpicker('val', x);
     set(x);

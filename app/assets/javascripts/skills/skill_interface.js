@@ -60,6 +60,9 @@ var skill_interface = (function() {
 
   var build = function(data) {
     var r = '';
+    var p_adv = '<span><sup>ADV</sup></span>';
+    var p_conc = '<span><sup>CONC</sup></span>';
+
     Object.keys(data).sort().forEach(function(k, i) {
       var shorthand = data[k].shorthand;
       filterview.set_once(shorthand, data[k].type);
@@ -70,6 +73,8 @@ var skill_interface = (function() {
          +   'data-accessible=false '
          +   'data-discounted=false '
          + '>'
+         +   (data[k].type == 'conc' ? p_conc : '')
+         +   (data[k].type == 'adv' ? p_adv : '')
          +   '<span class="skill-name">' + k + '</span>'
          +   '<span class="badge badge-default skill-cost pull-right" id="' + shorthand + '-cost" data-badge="skill-cost"></span>'
          + '</div>';

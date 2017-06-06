@@ -61,7 +61,9 @@
         %span{class: 'glyphicon glyphicon-lock'}
         &nbsp; 
         Unlock
-    %div{id: 'profession-adv-config'}
+    %div{class: 'container', id: 'profession-adv-select-container'}
+      %select{class: 'selectpicker show-tick', id: 'adv-selector', 'data-width': 'fit', 'data-size': 8}
+
     %hr
     %div{class: 'config-header'} Filters
     %ul{class: 'list-unstyled'}

@@ -17,11 +17,48 @@ var profession_adv_interface = (function() {
     })
   }
 
+  var attach_selector = function() {
+    $('#adv-selector').selectpicker({
+
+    }).on('changed.bs.select', function() {
+      var new_value = $('#adv-selector').val();
+      set(new_value);
+    });
+
+
+  }
+
+  var build_selector = function(data) {
+    var raw = '<option class="default-no-selection">No Selection</option>';
+
+    $.each(data, function(k, _junk) {
+      raw += '<option value="' + k + '">' + k + '</option>';
+    })
+
+    $('#adv-selector').append(raw);
+    $('#adv-selector').selectpicker('refresh');
+    attach_selector();
+  }
+
+  var update_selector = function(data) {
+    var s = $('#adv-selector');
+    $.each(data, function(k, val) {
+      var o = s.find('option[value="' + k + '"]');
+
+      o.prop('disabled', !val);
+    })
+
+    s.selectpicker('refresh');
+  }
+
   var hide_unlock = function(val) {
     if (val) {
+      profession_adv.update();
       $('#profession-adv-unlock').hide();
+      $('#profession-adv-select-container').show();
     } else {
       $('#profession-adv-unlock').show();
+      $('#profession-adv-select-container').hide();
     }
   }
 
@@ -222,9 +259,17 @@ var profession_adv_interface = (function() {
     })
   }
 
+  var set = function(x) {
+    console.log('adv changed to ' + x);
+    profession_adv.set(x);
+    skills.update_availability(true);
+  }
+
   return {
     build_modal: build_modal,
+    build_selector: build_selector,
     display_readable: display_readable,
+    update_selector: update_selector,
     render: render,
   }
 })()
