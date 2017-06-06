@@ -43,6 +43,7 @@ hr {
 
 .row.main {
   margin-right: 0px;
+  margin-left: 0px;
 }
 
 #main-left, #main-right {
@@ -54,8 +55,6 @@ hr {
 
 #main-left {
   z-index: 10;
-  margin-left: 15px;
-  margin-right: -15px;
   padding-right: 2px;
 }
 
@@ -130,12 +129,12 @@ input.input-stat.input-sm {
 }
 
 .xp-block {
-  margin-left: 12px;
 }
 
 .drop-box {
   padding-right: 2px;
   padding-top: 4px;
+  padding-left: 0px;
 }
 
 .dropdown-menu {
@@ -211,6 +210,8 @@ input.input-stat.input-sm {
 .stat-container {
   margin-top: 2px;
   padding-right: 4px;
+  margin-left: -15px;
+  padding-left: 4px;
 }
 
 .footer {
