@@ -5,7 +5,7 @@
 %nav{class: 'navbar navbar-inverse navbar-fixed-top navbar-xs'}
   %div{class: 'container-fluid navbar-container'}
     %div{class: 'navbar-header pull-left'}
-      %a{class: 'navbar-brand'} DRpaedia
+      %a{class: 'navbar-brand'} DRpaedia:V2+Beta
     %div{class: 'navbar-header pull-right'}
       %a{class: 'navbar-brand', href: '#', id: 'config-button'} 
         %span{class: 'profile-arrow'}
@@ -120,6 +120,20 @@
 
 %div{class: 'footer'}
   %div{class: 'credits'} DRpaedia 0.7.0
+
+  %div{id: 'disqus_thread', class: 'col-xs-12'}
+  :javascript
+    var disqus_config = function() {
+      //this.page.url = 'drpaedia.org';
+      //this.page.identifier = 'builder';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = '//drpaedia.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
 
 = stylesheet_link_tag 'style'
 = javascript_include_tag 'generic'
