@@ -85,6 +85,8 @@ var dragdrop = (function() {
     deselect_all();
     highlight_drop_handle(false);
     tooling.auto_indent(parent_container);
+    tooling.compute_group($('#skills-planned'));
+    tooling.compute_group($('#skills-acquired'));
     calc.recalculate_skills();
     skills.validate();
     profession_basic.verify_count();
@@ -144,6 +146,8 @@ var dragdrop = (function() {
 
     deselect_all();
     highlight_drop_handle(false);
+    tooling.compute_group($('#skills-planned'));
+    tooling.compute_group($('#skills-acquired'));
     skill_popup.destroy();
     calc.recalculate_skills();
     skills.validate();
