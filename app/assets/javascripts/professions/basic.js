@@ -98,8 +98,9 @@ var profession_basic = (function() {
   }
 
   var verify_count = function() {
-    var within_limit = Object.keys(selected).length <= limit;
-    var overlimit = Object.keys(selected).length - limit;
+    var extra = special_case();
+    var within_limit = Object.keys(selected).length <= limit + extra;
+    var overlimit = Object.keys(selected).length - limit - extra;
 
     profession_basic_interface.disable_limit_warning(within_limit, overlimit);
     notifier.basic_overlimit(overlimit);
@@ -107,6 +108,15 @@ var profession_basic = (function() {
     calc.recalculate_purchased_profession();
     tooling.update_planned_prof_list();
     profile.save_all();
+  }
+
+  var special_case = function() {
+    var has_special_2 = profile.has_skill(['Duality', 'Memories of Many']);
+    var has_special_1 = profile.has_skill('Gun-Fu');
+
+    if (has_special_2) return 2;
+    if (has_special_1) return 1;
+    return 0;
   }
 
   var get_purchaseable = function() {
@@ -153,6 +163,7 @@ var profession_basic = (function() {
     update_strain_change: update_strain_change,
     get_purchaseable: get_purchaseable,
     get_forgettable: get_forgettable,
-    get_valid_conc: get_valid_conc
+    get_valid_conc: get_valid_conc,
+    verify_count: verify_count
   }
 })()

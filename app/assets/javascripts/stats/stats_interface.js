@@ -99,6 +99,8 @@ var stats_interface = function() {
 
     clearTimeout(delay_interval);
     var current_profile = profile.get_old_name();
+
+    console.log('stat evaluated');
     delay_interval = setTimeout(function() {
       profession_conc_interface.validate_existing();
       profession_adv.update();

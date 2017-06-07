@@ -225,6 +225,7 @@ var profile = function() {
     filterview.apply_all();
     skills.update_availability();
     profession_conc_interface.validate_existing();
+    profession_basic.verify_count();
   }
 
   var apply_advanced_lock = function() {
@@ -330,6 +331,29 @@ var profile = function() {
     save_all();
   }
 
+  var get_all_skills = function() {
+    var h = {};
+    $.each(pack_acq().concat(pack_plan()), function(junk, x) {
+      if (x.skill != undefined) {
+        h[skills.get_name(x.skill)] = true;
+      }
+    })
+
+    return h;
+  }
+
+  var has_skill = function(name) {
+    var all_skills = get_all_skills()
+    var names = Array.isArray(name) ? name : [name];
+    var result = false;
+
+    $.each(names, function(_junk, n) {
+      result = result || (all_skills[n] != undefined);
+    })
+
+    return result;
+  }
+
   return {
     apply: apply,
     copy_current_to: copy_current_to,
@@ -339,6 +363,8 @@ var profile = function() {
     get_all: function() { return profiles; },
     get_current: function() { return profiles[selected]; },
     get_current_professions: get_current_professions,
+    get_all_skills: get_all_skills,
+    has_skill: has_skill,
     get_current_name: function() { return selected; },
     get_old_name: function() { return old_profile; },
     get_master: function() { return $.jStorage.get('all'); },
