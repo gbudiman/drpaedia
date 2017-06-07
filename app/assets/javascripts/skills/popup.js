@@ -101,7 +101,7 @@ var skill_popup = function() {
     var join_list = function(list, needle) {
       var s = [];
       $.each(list, function(k, v) {
-        s.push(k + ' (' + skills.get_cost(k, v) + ')');
+        s.push(k + ' (' + skills.get_cost(k, profile.get_current_professions()) + ')');
       })
       return s.join(needle);
     }

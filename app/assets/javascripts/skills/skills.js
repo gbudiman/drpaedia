@@ -156,14 +156,17 @@ var skills = (function() {
 
   var get_data = function() { return data; }
   var get_hash = function(id) { return skill_hash[id]; }
-  var get_cost = function(skill, key) {
+  var get_cost = function(skill) {
     var g = data[skill].conditions;
+    var min = 99999;
+    $.each(g, function(key, val) {
+      if (typeof(val) == 'object') {
+        var current_min = val.cost;
+        if (current_min < min) min = current_min;
+      }
+    })
 
-    if (g[key] == null) {
-      if (g.innate != undefined) { return 3; }
-    }
-
-    return g[key].cost;
+    return min;
   }
   var get_all_possible_costs = function(skill) {
     return constraint_satisfied(data[skill]).possible_costs;

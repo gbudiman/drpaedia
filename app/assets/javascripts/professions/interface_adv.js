@@ -5,6 +5,8 @@ var profession_adv_interface = (function() {
     }).on('hidden.bs.modal', function() {
       // why bootstrap add padding-right upon close???
       $('body').css('padding-right', 0);
+    }).on('shown.bs.modal', function() {
+      $('body').css('padding-right', 0);
     })
 
     $('#adv-unlock').on('click', function() {

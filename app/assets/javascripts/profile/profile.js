@@ -42,6 +42,11 @@ var profile = function() {
     return config.primary;
   }
 
+  var get_current_professions = function() {
+    var s = profiles[selected].professions;
+    return Object.assign({}, s.selected, s.concentration, s.advanced);
+  }
+
   var set_primary = function(x) {
     config.primary = x;
     save_all();
@@ -225,7 +230,10 @@ var profile = function() {
   var apply_advanced_lock = function() {
     var ack = profiles[selected].prefs.advanced_acknowledged;
     profession_adv_interface.hide_unlock(ack);
-    profession_adv_interface.set_list_gui(ack);
+
+    if (ack == false) {
+      profession_adv_interface.set_list_gui(ack);
+    }
   }
 
   var apply_rightside = function(entry, target) {
@@ -330,6 +338,7 @@ var profile = function() {
     store: store,
     get_all: function() { return profiles; },
     get_current: function() { return profiles[selected]; },
+    get_current_professions: get_current_professions,
     get_current_name: function() { return selected; },
     get_old_name: function() { return old_profile; },
     get_master: function() { return $.jStorage.get('all'); },
