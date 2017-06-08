@@ -1,7 +1,7 @@
 %div{id: 'config-bar'}
   %div{class: 'config-indent'}
     %div{class: 'config-header'} Current Profile
-    %div{class: 'btn-group container'}
+    %div{class: 'btn-group container col-xs-12'}
       %button{type: 'button', class: 'btn btn-primary', id: 'profile-rename'} 
         %span{class: 'glyphicon glyphicon-pencil'} &nbsp;
         Default
@@ -14,16 +14,18 @@
           %a{href: '#', id: 'profile-new'} Create From Scratch...
         %li{role: 'separator', class: 'divider', id: 'existing-profile'}
 
-    %hr
+    %div{class: 'row col-xs-12'}
+      %hr
 
     %div{class: 'config-header'} Strain
-    %div{class: 'container'}
+    %div{class: 'container col-xs-12'}
       %select{class: 'selectpicker show-tick', id: 'strain-dd', 'data-width': 'fit'}
 
-    %hr
+    %div{class: 'row col-xs-12'}
+      %hr
 
     %div{class: 'config-header'} Basic Professions
-    %div{id: 'profession-basic-config', class: 'container'}
+    %div{id: 'profession-basic-config', class: 'container col-xs-12'}
       %div{class: 'dropdown'}
         %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-basic-profession', 'data-toggle' => 'dropdown'}
           %span{class: 'glyphicon glyphicon-plus'}
@@ -36,11 +38,12 @@
         Profession limit exceeded. Please remove or forget 
         %span{id: 'basic-overlimit'}0
         professions
-    %hr
+    %div{class: 'row col-xs-12'}
+      %hr
 
     %div{class: 'config-header'} Profession Concentrations
     %div{id: 'profession-conc-error'} You must have at least 200 XP, 50 HP, and 50 MP to purchase one
-    %div{id: 'profession-conc-config', class: 'container'}
+    %div{id: 'profession-conc-config', class: 'container col-xs-12'}
       %div{class: 'dropdown'}
         %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-prof-conc', 'data-toggle' => 'dropdown'}
           %span{class: 'glyphicon glyphicon-plus'}
@@ -54,19 +57,21 @@
         %span{id: 'conc-overlimit'}0
         profession concentration
 
-    %hr
+    %div{class: 'row col-xs-12'}
+      %hr
     %div{class: 'config-header'} Advanced Professions
-    %div{class: 'container', id: 'profession-adv-unlock'}
+    %div{class: 'container col-xs-12', id: 'profession-adv-unlock'}
       %button{type: 'button', class: 'btn btn-primary', id: 'adv-unlock'}
         %span{class: 'glyphicon glyphicon-lock'}
         &nbsp; 
         Unlock
-    %div{class: 'container', id: 'profession-adv-select-container'}
+    %div{class: 'container col-xs-12', id: 'profession-adv-select-container'}
       %select{class: 'selectpicker show-tick', id: 'adv-selector', 'data-width': 'fit', 'data-size': 8}
       %div{class: 'adv-list-block'}
         %input{'data-toggle': 'toggle', id: 'adv-list-toggle', type: 'checkbox', 'data-on': 'Show List', 'data-off': 'Hide List', 'data-width': '128px'}
 
-    %hr
+    %div{class: 'row col-xs-12'}
+      %hr
     %div{class: 'config-header'} Filters
     %ul{class: 'list-unstyled'}
       %li

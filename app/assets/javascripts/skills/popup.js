@@ -212,8 +212,29 @@ var skill_popup = function() {
       // }
     })
 
+    var interaction = skills.get_interaction(skill_name);
+    var ias = new Array();
+    var c = '';
+    if (interaction.counters != undefined) {
+      ias.push('<span class="label label-success">Counters</span> ' 
+               +  interaction.counters.join(', '));
+    }
 
-    return s;
+    if (interaction.countered != undefined) {
+      ias.push('<span class="label label-warning">Countered by</span> ' 
+               +  interaction.countered.join(', '));
+    }
+
+    c = ias.join('<br />');
+
+    return '<div class="popover-costs">'
+         +   s
+         + '</div>'
+         + (c.length > 0 
+           ? ('<div class="popover-interactions">'
+             +   c
+             +'</div>')
+           : '');
   }
 
 

@@ -14,6 +14,7 @@
 
 .config-indent {
   padding-left: 8px;
+  max-width: 320px;
 }
 
 .select.select-block .btn {

@@ -159,8 +159,20 @@ input.input-stat.input-sm {
   padding: 2px;
   font-family: 'Exo', sans-serif;
   font-size: 12px;
+}
+
+.popover-skill > .popover-content > .popover-costs {
+  
   max-height: 224px !important;
   overflow-y: auto;
+}
+
+.popover-interactions {
+  max-height: 80px !important;
+  overflow-y: auto;
+  border-top: 1px solid #aaa;
+  padding-top: 2px;
+  background-color: #f7f7f7;
 }
 
 .stat-left, .stat-right {

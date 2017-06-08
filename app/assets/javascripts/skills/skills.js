@@ -3,6 +3,8 @@ var skills = (function() {
   var strain = null;
   var professions = {};
   var skill_hash = {};
+  var counters = {};
+  var countered = {};
 
   var build = function() {
     data = {};
@@ -71,6 +73,11 @@ var skills = (function() {
 
       skill_hash[r.skill_list[k]] = k;
     })
+
+    
+    counters = r.skill_counters;
+    countered = r.skill_countered;
+    
 
     filterview.build_cache();
     skill_interface.build(data);
@@ -168,8 +175,16 @@ var skills = (function() {
 
     return min;
   }
+
   var get_all_possible_costs = function(skill) {
     return constraint_satisfied(data[skill]).possible_costs;
+  }
+
+  var get_interaction = function(x) {
+    return {
+      counters: counters[x],
+      countered: countered[x]
+    }
   }
 
   var animate_pool_loading = function(func) {
@@ -346,6 +361,7 @@ var skills = (function() {
     get_code: function(x) { return data[x].shorthand; },
     get_all_code: function() { return skill_hash; },
     get_name: function(x) { return skill_hash[x]; },
+    get_interaction: get_interaction,
     has_tier: has_tier,
     hash: get_hash,
     update_availability: update_availability,
