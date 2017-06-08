@@ -44,11 +44,13 @@ var profile_interface = function() {
 
   var attach_scratch_button = function() {
     $('#profile-new').on('click', function(event) {
-      var profiles = profile.get_all();
+      var profiles = Object.assign({}, profile.get_all(), profile.get_deleted());
+
       var new_name = 'new';
       var counter = 0;
       var exist = profiles[new_name + counter.toString()] != undefined;
 
+      console.log(profiles);
       while (exist) {
         counter++;
         exist = profiles[new_name + counter.toString()] != undefined;

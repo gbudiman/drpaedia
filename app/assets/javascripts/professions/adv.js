@@ -120,7 +120,9 @@ var profession_adv = (function() {
 
   var set = function(x) {
     reset();
-    selected[x] = true;
+    if (x != 'No Selection') {
+      selected[x] = true;
+    }
     profile.save_all();
   }
 

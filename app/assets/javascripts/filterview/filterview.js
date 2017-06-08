@@ -7,7 +7,7 @@ var filterview = (function() {
     filter_discounted: false, //show discounted only
     filter_lore: true, //hide lores
     filter_psionics: true, //hide psionics
-    filter_advanced: true, //hide advanced
+    filter_adv: true, //hide advanced
   }
 
   var attach = function() {
@@ -23,6 +23,9 @@ var filterview = (function() {
     $('#filter-psionics').on('click', function() {
       update('filter_psionics', $(this).prop('checked'));
     })
+    $('#filter-adv').on('click', function() {
+      update('filter_adv', $(this).prop('checked'));
+    })
   }
 
   var build_cache = function() {
@@ -32,7 +35,7 @@ var filterview = (function() {
         discounted: false,
         lore: false,
         psionics: false,
-        advanced: false
+        adv: false
       }
 
       //open_state[code] = false;
@@ -47,11 +50,13 @@ var filterview = (function() {
     var show_only_discounted = f.filter_discounted ? c.discounted : true;
     var show_lores = f.filter_lore ? !c.lore : true;
     var show_psionics = f.filter_psionics ? !c.psionics : true;
+    var show_adv = f.filter_adv ? !c.adv : true
 
     return show_only_accessible
         && show_only_discounted
         && show_lores
-        && show_psionics;
+        && show_psionics
+        && show_adv;
   }
 
   var update = function(target, value) {
@@ -100,6 +105,7 @@ var filterview = (function() {
     filters.filter_discounted = $('#filter-discounted').prop('checked');
     filters.filter_lore = $('#filter-lore').prop('checked');
     filters.filter_psionics = $('#filter-psionics').prop('checked');
+    filters.filter_adv = $('#filter-adv').prop('checked');
 
     //$('div[data-accessible]').show();
     apply();
@@ -113,7 +119,7 @@ var filterview = (function() {
     switch(x) {
       case 'lore': cache[id][x] = true; break;
       case 'psionics': cache[id][x] = true; break;
-      case 'advanced': cache[id][x] = true; break;
+      case 'adv': cache[id][x] = true; break;
     }
   }
 

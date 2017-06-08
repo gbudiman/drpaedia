@@ -24,3 +24,7 @@
 .purchased-profession {
   padding-right: 15px;
 }
+
+#filter-adv-list {
+  display: none;
+}

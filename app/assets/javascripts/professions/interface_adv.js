@@ -108,10 +108,16 @@ var profession_adv_interface = (function() {
       profile.set_acknowledge(true);
       profession_adv.update();
       $('#profession-adv-unlock').hide();
+      $('#filter-adv-list').show();
+      $('#filter-adv').prop('checked', false);
       $('#profession-adv-select-container').show();
+      filterview.apply_all();
     } else {
       $('#profession-adv-unlock').show();
+      $('#filter-adv-list').hide();
+      $('#filter-adv').prop('checked', true);
       $('#profession-adv-select-container').hide();
+      filterview.apply_all();
     }
   }
 

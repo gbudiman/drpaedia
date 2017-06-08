@@ -361,6 +361,7 @@ var profile = function() {
     load: load,
     store: store,
     get_all: function() { return profiles; },
+    get_deleted: function() { return deleted; },
     get_current: function() { return profiles[selected]; },
     get_current_professions: get_current_professions,
     get_all_skills: get_all_skills,

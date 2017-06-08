@@ -210,8 +210,6 @@ var skill_interface = (function() {
       a[i] = a[i] + b[i];
     })
 
-    console.log(a);
-
     return a;
   }
 
