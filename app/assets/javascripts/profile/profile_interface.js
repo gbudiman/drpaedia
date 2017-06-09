@@ -11,10 +11,11 @@ var profile_interface = function() {
       validate: validate_profile_name,
       container: 'body',
     }).on('save', function(e, params) {
-      profile.rename(params.newValue);
+      var new_value = params.newValue.trim();
+      profile.rename(new_value);
       update_list();
       setTimeout(function() {
-        update_selected(params.newValue);
+        update_selected(new_value);
       }, 50);
     }).on('shown', function(e, params) {
       var that = $(this);

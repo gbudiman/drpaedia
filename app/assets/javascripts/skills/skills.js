@@ -278,7 +278,12 @@ var skills = (function() {
       }
 
       //console.log(k + ' -> ' + valid_strain_t.cond + ' || ' + valid_prof_t.cond);
+
       all_valid = all_valid && (valid_strain_t.cond || valid_prof_t.cond);  
+
+      if (valid_strain_t.cond || valid_prof_t.cond) {
+        messages = {};
+      }
     })
 
 

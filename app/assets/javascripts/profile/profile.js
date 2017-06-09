@@ -114,7 +114,7 @@ var profile = function() {
   }
 
   var save_all_delayed = function(expected) {
-    //console.log(expected + ' <> ' + selected);
+    // console.log(expected + ' <> ' + selected);
     if (expected == selected) {
       save_all();
     }
@@ -131,6 +131,7 @@ var profile = function() {
     $.jStorage.set('all', { profiles: profiles, config: config });
     if (debug) console.log($.jStorage.get('all'));
     profile_interface.update_selected(new_value);
+    old_profile = new_value;
   }
 
   var load = function() {
