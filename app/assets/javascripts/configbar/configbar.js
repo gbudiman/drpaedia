@@ -15,6 +15,7 @@ var configbar = (function() {
   }
 
   var open = function() {
+    dragdrop.deselect_all();
     $('#config-bar').css('width', '50%');
     state = 'opened';
   }

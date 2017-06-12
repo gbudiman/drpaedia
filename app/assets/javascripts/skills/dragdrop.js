@@ -50,7 +50,7 @@ var dragdrop = (function() {
     return obj;
   }
 
-  var drop = function(obj) {
+  var drop = function(obj, prepend) {
     //console.log('dropping to ' + obj.attr('id'));
 
     //console.log(last_trigger + ' <> ' + obj.attr('id'));
@@ -76,7 +76,11 @@ var dragdrop = (function() {
         skill_interface.sort_pool();
       } else {
         rectified_obj = rectify_drop_parent(obj);
-        to_append.show().appendTo(rectified_obj);
+        if (prepend != undefined) {
+          to_append.show().prependTo(rectified_obj);
+        } else {
+          to_append.show().appendTo(rectified_obj);
+        }
         tooling.attach_handles(to_append, true);
       }
     })
@@ -87,6 +91,7 @@ var dragdrop = (function() {
     tooling.auto_indent(parent_container);
     tooling.compute_group($('#skills-planned'));
     tooling.compute_group($('#skills-acquired'));
+    tooling.auto_indent_all();
     calc.recalculate_skills();
     skills.validate();
     profession_basic.verify_count();
@@ -98,7 +103,7 @@ var dragdrop = (function() {
   var drop_selective = function(id, obj) {
     deselect_all();
     selected[id] = true;
-    drop(obj);
+    drop(obj, 'prepend');
   }
 
   var drop_to_pool = function(id) {
@@ -148,6 +153,7 @@ var dragdrop = (function() {
     highlight_drop_handle(false);
     tooling.compute_group($('#skills-planned'));
     tooling.compute_group($('#skills-acquired'));
+    tooling.auto_indent_all();
     skill_popup.destroy();
     calc.recalculate_skills();
     skills.validate();

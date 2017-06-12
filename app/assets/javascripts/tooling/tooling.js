@@ -77,7 +77,7 @@ var tooling = function() {
       var up = '<span class="glyphicon glyphicon-arrow-up pull-right"></span>';
 
       //obj.prepend(down);
-      obj.children().last().before(up).before(down);
+      obj.children().last().before(up).after(down);
       activate(obj);
     } else {
       obj.find('.glyphicon-arrow-up').remove();
@@ -684,7 +684,7 @@ var tooling = function() {
       return true;
     } else if (obj.hasClass('skill')) {
       dragdrop.drop_selective(obj.attr('id'), $('#skills-acquired'));
-      obj.css('background-color', '#fff');
+      //obj.css('background-color', '#fff');
       return false;
     } else if (obj.hasClass('tool-prof-planner')) {
       var sel = obj.find('select option:selected').text();

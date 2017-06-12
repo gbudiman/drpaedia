@@ -31,3 +31,7 @@
   margin-top: 4px;
   margin-bottom: 4px;
 }
+
+#profile-dropdown > li.profile-block > span > a {
+  padding: 1px 4px;
+}
