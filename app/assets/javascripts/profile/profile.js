@@ -226,6 +226,7 @@ var profile = function() {
     if (dynaloader.get_gil('ok_to_save')) {
       // console.log(caller);
       store();
+      config.timestamp = Date.now();
       $.jStorage.set('all', { profiles: profiles, config: config });
       if (debug) {
         console.log('Saving all...');
