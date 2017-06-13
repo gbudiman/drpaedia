@@ -10,12 +10,14 @@ var dynaloader = (function() {
   }
 
   var set_gil = function(key, value, func) {
+    var keys;
+
     if (!Array.isArray(key)) {
       keys = [key];
     } else {
       keys = key;
     }
-
+    
     $.each(keys, function(i, x) {
       global_interlock[x] = value;
     })
