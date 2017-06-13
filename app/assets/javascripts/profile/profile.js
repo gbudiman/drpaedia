@@ -341,16 +341,12 @@ var profile = function() {
     stats_interface.set(d.stats);
     $.each(d.acq, function(i, x) {
       var post = apply_rightside(x, 'skills-acquired');
-      if (post) {
-        postprocess_cost[x.skill] = x.cost;
-      }
+      if (post) postprocess_cost[x.skill] = x.cost;
     })
 
     $.each(d.plan, function(i, x) {
       var post = apply_rightside(x, 'skills-planned');
-      if (post) {
-        postprocess_cost[x.skill] = x.cost;
-      }
+      if (post) postprocess_cost[x.skill] = x.cost;
     })
 
     apply_advanced_lock();
@@ -385,7 +381,7 @@ var profile = function() {
         tooling.copy_programmatically('tool-separator', target, { title: entry.group, is_collapsed: entry.is_collapsed })
       }
     } else if (entry.skill != undefined) {
-      dragdrop.drop_selective(entry.skill, $('#' + target));
+      dragdrop.drop_selective(entry.skill, $('#' + target), 'append');
       //var alt = entry.alt ? '<sup>+</sup>' : '';
       //$('#' + entry.skill + '-cost').html(entry.cost + alt);
       if (entry.alt) {

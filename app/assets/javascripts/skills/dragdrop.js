@@ -100,10 +100,10 @@ var dragdrop = (function() {
     profile.save_all();
   }
 
-  var drop_selective = function(id, obj) {
+  var drop_selective = function(id, obj, append) {
     deselect_all();
     selected[id] = true;
-    drop(obj, 'prepend');
+    drop(obj, (append == 'append' ? undefined : 'prepend'));
   }
 
   var drop_to_pool = function(id) {
