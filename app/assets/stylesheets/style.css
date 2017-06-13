@@ -41,6 +41,22 @@ hr {
   max-width: 640px;
 }
 
+.navbar-brand-main {
+  padding-left: 0;
+}
+
+.navbar-minmax, .navbar-brand.navbar-minmax {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+a.navbar-brand.navbar-brand-main {
+  margin-left: 0 !important;
+}
+
+.row.navbar-row {
+  margin-left: 0;
+}
 .row.main {
   margin-right: 0px;
   margin-left: 0px;
@@ -134,7 +150,7 @@ input.input-stat.input-sm {
 .drop-box {
   padding-right: 2px;
   padding-top: 4px;
-  padding-left: 0px;
+  padding-left: 2px;
 }
 
 .dropdown-menu {

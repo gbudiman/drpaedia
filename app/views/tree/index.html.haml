@@ -4,12 +4,22 @@
 
 %nav{class: 'navbar navbar-inverse navbar-fixed-top navbar-xs'}
   %div{class: 'container-fluid navbar-container'}
-    %div{class: 'navbar-header pull-left'}
-      %a{class: 'navbar-brand'} DRpaedia
-    %div{class: 'navbar-header pull-right'}
-      %a{class: 'navbar-brand', href: '#', id: 'config-button'} 
-        %span{class: 'profile-arrow'}
-        %span{class: 'profile-name'} Loading...
+    / %div{class: 'navbar-header pull-left'}
+    /   %a{class: 'navbar-brand'} DRpaedia
+    /   %a{class: 'navbar-brand pull-right'} Maximize
+    / %div{class: 'navbar-header pull-right'}
+    /   %a{class: 'navbar-brand', href: '#', id: 'config-button'} 
+    /     %span{class: 'profile-arrow'}
+    /     %span{class: 'profile-name'} Loading...
+    %div{class: 'row row-main'}
+      %div{class: 'navbar-header col-xs-4 navbar-brand-main'}
+        %a{class: 'navbar-brand navbar-brand-main'} DRpaedia
+      %div{class: 'navbar-header col-xs-2 navbar-minmax'}
+        %a{class: 'navbar-brand text-right navbar-minmax pull-right', href: '#', id: 'minmax'} << Max
+      %div{class: 'navbar-header pull-right'}
+        %a{class: 'navbar-brand', href: '#', id: 'config-button'}
+          %span{class: 'profile-arrow'}
+          %span{class: 'profile-name'} Loading...
 
 = render 'configbar'
 
@@ -119,7 +129,7 @@
   %span{class: 'glyphicon glyphicon-arrow-down pull-right'}
 
 %div{class: 'footer'}
-  %div{class: 'credits'} DRpaedia 0.7.0
+  %div{class: 'credits'} DRpaedia 0.7.1
 
   %div{id: 'disqus_thread', class: 'col-xs-12'}
   :javascript
