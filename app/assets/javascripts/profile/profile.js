@@ -153,6 +153,8 @@ var profile = function() {
       switch_to(latch_header);
       profile_interface.update_list();
       profile_interface.update_selected(latch_header);
+
+      Cookies.remove('drpedia');
     }
   }
 

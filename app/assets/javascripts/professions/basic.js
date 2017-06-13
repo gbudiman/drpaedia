@@ -9,7 +9,6 @@ var profession_basic = (function() {
     selected[x] = true;
     profession_basic_interface.update_profession_added(x);
     verify_count();
-    console.log('Basic::add -> UA');
     skills.update_availability(false);
   }
 

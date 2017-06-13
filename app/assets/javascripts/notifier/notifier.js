@@ -60,7 +60,7 @@ var notifier = function() {
       } else {
         p.update('message', 'Please remove or forget ' + n + ' basic professions');
       }
-    })
+    }, timeout)
   }
 
   var conc_overlimit = function(n) {
@@ -73,7 +73,7 @@ var notifier = function() {
       } else {
         p.update('message', 'Please remove ' + n + ' profession concentrations');
       }
-    })
+    }, timeout)
   }
 
   var conc_preq_missing = function(h) {
@@ -103,7 +103,7 @@ var notifier = function() {
       } else {
         p.update('message', 'Constraints violated for Advanced Profession ' + h);
       }
-    })
+    }, timeout)
   }
 
   var skill_preq_missing = function(all_valid, h) {
