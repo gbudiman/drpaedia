@@ -1,11 +1,13 @@
 var profile = function() {
-  old_profile = '';
-  debug = true;
-  selected = 'default';
-  profiles = {};
-  config = {};
-  deleted = {};
-  previous_primary = null;
+  var old_profile = '';
+  var debug = true;
+  var selected = 'default';
+  var profiles = {};
+  var config = {};
+  var deleted = {};
+  var previous_primary = null;
+
+  var postprocess_cost = {};
 
   var empty_default = {
     profiles: {
@@ -31,6 +33,106 @@ var profile = function() {
     if (config.primary == undefined) config.primary = new_value;
     switch_to(new_value);
     save_all();
+  }
+
+  var get_old_cookies = function() {
+    return Cookies.getJSON();
+  }
+
+  var port_old_cookies = function() {
+    var test_cookie = '26|26|Diesel Jocks|Cook,Fishmonger,Sniper,Marksman|AJ,AQ,AU,BH,BO,BP,BU,BX,BZ,CB,CK,CO,CQ,CR,CT,CZ,PA,PB,PC,DH,GC,GG,GH,GJ,GK,GN,GV,HC,HG|GD|1|AU9,GD6|1';
+    var cookies = get_old_cookies();
+    var transform = function(data) {
+      var splits = data.split('|')
+      var hp = parseInt(splits[0]);
+      var mp = parseInt(splits[1]);
+      var strain = splits[2].trim();
+      var professions = {
+        advanced: {},
+        concentration: {},
+        forgotten: {},
+        selected: {}
+      }
+      var acqs = {};
+      var plans = {};
+      
+      $.each(splits[3].trim().split(','), function(_junk, _x) {
+        var x = _x.trim();
+        if (profession_basic.is_profession(x)) {
+          professions.selected[x] = true;
+        } else if (profession_conc.is_profession(x)) {
+          professions.concentration[x] = true;
+        } else if (profession_adv.is_profession(x)) {
+          professions.advanced[x] = true;
+        }
+      })
+
+      $.each(splits[4].trim().split(','), function(_junk, x) {
+        if (x.length < 2) return true;
+        acqs[x] = {
+          alt: false,
+          skill: x
+        }
+      });
+
+      $.each(splits[5].trim().split(','), function(_junk, x) {
+        if (x.length < 2) return true;
+        plans[x] = {
+          alt: false,
+          skill: x
+        }
+      });
+
+      var adv_ack = (parseInt(splits[6]) == 1) ? true : false;
+      var inf = parseInt(splits[8])
+
+      $.each(splits[7].trim().split(','), function(_junk, x) {
+        var skill_id = x.slice(0, 2);
+        var skill_cost = parseInt(x.slice(2));
+
+        if (skill_id.length < 2) return true;
+
+        if (acqs[skill_id] != undefined) {
+          acqs[skill_id].alt = true;
+          acqs[skill_id].cost = skill_cost;
+        } else if (plans[skill_id] != undefined) {
+          plans[skill_id].alt = true;
+          plans[skill_id].cost = skill_cost;
+        }
+      })
+
+      if (strain.length == 0) strain = 'No Selection';
+      var converted = {
+        stats: { hp: hp, mp: mp, inf: inf },
+        strain: strain,
+        prefs: { advanced_acknowledged: adv_ack },
+        acq: new Array(),
+        plan: new Array(),
+        professions: professions
+      }
+
+      $.each(acqs, function(x, data) {
+        converted.acq.push(data);
+      })
+
+      $.each(plans, function(x, data) {
+        converted.plan.push(data);
+      })
+
+      return converted;
+    }
+
+    var converted = transform(test_cookie);
+    profiles['new3'] = converted;
+    switch_to('new3');
+
+    if (cookies.drpedia != undefined) {
+      
+      $.each(cookies.drpedia.split(','), function(_junk, header) {
+        transform(cookies[heaader.trim()]);
+      })
+      
+    }
   }
 
   var get_first_available = function() {
@@ -169,6 +271,7 @@ var profile = function() {
     skill_interface.reset_to_pool();
     $('#skills-acquired').empty();
     $('#skills-planned').empty();
+    calc.recalculate_all();
   }
 
   var switch_to = function(new_value) {
@@ -187,6 +290,7 @@ var profile = function() {
   var apply = function() {
     //dynaloader.set_delegate('profile_apply', calc.recalculate_all, function() {
     var d = profiles[selected];
+
     if (d == undefined) return;
     strain_interface.set_gui(d.strain);
 
@@ -211,11 +315,17 @@ var profile = function() {
 
     stats_interface.set(d.stats);
     $.each(d.acq, function(i, x) {
-      apply_rightside(x, 'skills-acquired');
+      var post = apply_rightside(x, 'skills-acquired');
+      if (post) {
+        postprocess_cost[x.skill] = x.cost;
+      }
     })
 
     $.each(d.plan, function(i, x) {
-      apply_rightside(x, 'skills-planned');
+      var post = apply_rightside(x, 'skills-planned');
+      if (post) {
+        postprocess_cost[x.skill] = x.cost;
+      }
     })
 
     apply_advanced_lock();
@@ -225,8 +335,10 @@ var profile = function() {
 
     filterview.apply_all();
     skills.update_availability();
+
     profession_conc_interface.validate_existing();
     profession_basic.verify_count();
+    calc.recalculate_all();
   }
 
   var apply_advanced_lock = function() {
@@ -239,6 +351,8 @@ var profile = function() {
   }
 
   var apply_rightside = function(entry, target) {
+    var postprocess = null;
+
     if (entry.group != undefined) {
       if (target == 'skills-acquired') {
         tooling.copy_programmatically('tool-acq-group', target, { title: entry.group, is_collapsed: entry.is_collapsed })
@@ -247,8 +361,11 @@ var profile = function() {
       }
     } else if (entry.skill != undefined) {
       dragdrop.drop_selective(entry.skill, $('#' + target));
-      var alt = entry.alt ? '<sup>+</sup>' : '';
-      $('#' + entry.skill + '-cost').html(entry.cost + alt);
+      //var alt = entry.alt ? '<sup>+</sup>' : '';
+      //$('#' + entry.skill + '-cost').html(entry.cost + alt);
+      if (entry.alt) {
+        postprocess = entry.cost
+      }
     } else if (entry.stat != undefined) {
       tooling.copy_programmatically('tool-stat-planner', target, { option: entry.stat, nominal: entry.nominal })
     } else if (entry.checkin != undefined) {
@@ -256,6 +373,8 @@ var profile = function() {
     } else if (entry.prof != undefined) {
       tooling.copy_programmatically('tool-profession-planner', target, { option: entry.prof, nominal: entry.nominal, selected: entry.selected })
     }
+
+    return postprocess;
   }
 
   var wipe = function() {
@@ -367,6 +486,7 @@ var profile = function() {
     get_current_professions: get_current_professions,
     get_all_skills: get_all_skills,
     has_skill: has_skill,
+    get_postprocess_cost: function() { return postprocess_cost; },
     get_current_name: function() { return selected; },
     get_old_name: function() { return old_profile; },
     get_master: function() { return $.jStorage.get('all'); },
@@ -374,6 +494,7 @@ var profile = function() {
     get_primary: get_primary,
     set_primary: set_primary,
     rename: rename,
+    port_old_cookies: port_old_cookies,
     save_all: save_all,
     save_all_delayed: save_all_delayed,
     set_pref: set_pref,

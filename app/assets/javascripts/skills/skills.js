@@ -188,14 +188,25 @@ var skills = (function() {
   }
 
   var animate_pool_loading = function(func) {
+    func();
+    var do_postprocess = function() {
+      console.log('postprocess called');
+      $.each(profile.get_postprocess_cost(), function(id, val) {
+        $('#' + id + '-cost')
+          .html(val + '<sup>+</sup>');
+      })
+    }
+
     if (!dynaloader.get_gil('ok_to_animate')) {
       func();
+      do_postprocess();
     } else {
 
       $('#skill-pool').animate({
         opacity: 0.5
       }, 50, function() { 
         func();
+        do_postprocess();
         $('#skill-pool').css('opacity', 1);
       });
     }
@@ -240,6 +251,7 @@ var skills = (function() {
       //tooling.auto_indent($('#skills-acquired'));
       //tooling.auto_indent($('#skills-planned'));
       tooling.auto_indent_all();
+      console.log('UA completed');
     })
   }
 

@@ -103,8 +103,8 @@ var dynaloader = (function() {
 
                     //skills.update_availability();
                     load_message('Finalizing...').then(function() {
-                      notifier.set_timeout(250);
-                      skill_interface.set_timeout(250);
+                      //notifier.set_timeout(250);
+                      //skill_interface.set_timeout(250);
                       clear_message();
                     });
                   });
