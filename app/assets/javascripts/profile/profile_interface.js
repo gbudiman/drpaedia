@@ -150,9 +150,15 @@ var profile_interface = function() {
         }
 
         var profile_name = $(this).attr('data-name');
-        profile.switch_to(profile_name);
-        update_list();
-        update_selected(profile_name);
+
+        $('#skill-pool').animate({
+          opacity: 0.5
+        }, 50, function() {
+          profile.switch_to(profile_name);
+          update_list();
+          update_selected(profile_name);
+        })
+        
         return false;
       })
 

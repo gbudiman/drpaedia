@@ -41,6 +41,7 @@ var profile = function() {
 
   var port_old_cookies = function() {
     var test_cookie = '26|26|Diesel Jocks|Cook,Fishmonger,Sniper,Marksman|AJ,AQ,AU,BH,BO,BP,BU,BX,BZ,CB,CK,CO,CQ,CR,CT,CZ,PA,PB,PC,DH,GC,GG,GH,GJ,GK,GN,GV,HC,HG|GD|1|AU9,GD6|1';
+    var test_c2 = '51|52|Mericans|Publican,Ring Leader,Scavenger,Civil Servant|AP,BF,BH,BK,BL,BP,BS,BY,CC,CE,CJ,CZ,PA,PB,PC,PD,DH,FW,GC,GD|XK|0|GC6|0';
     var cookies = get_old_cookies();
     var transform = function(data) {
       var splits = data.split('|')
@@ -119,19 +120,39 @@ var profile = function() {
         converted.plan.push(data);
       })
 
+      converted.acq = converted.acq.reverse();
+      converted.plan = converted.plan.reverse();
+
       return converted;
     }
+    // profiles['new3'] = transform(test_cookie);
+    // profiles['new4'] = transform(test_c2);
+    // set_primary('new3');
+    // $.jStorage.set('all', { profiles: profiles, config: config });
 
-    var converted = transform(test_cookie);
-    profiles['new3'] = converted;
-    switch_to('new3');
+    // //switch_to('new4');
+    // switch_to('new3');
+    // profile_interface.update_list();
+    // profile_interface.update_selected('new3');
 
+    //profile_interface.update_selected();
     if (cookies.drpedia != undefined) {
-      
-      $.each(cookies.drpedia.split(','), function(_junk, header) {
-        transform(cookies[heaader.trim()]);
-      })
-      
+      var existing_profiles = cookies.drpedia.split(',');
+      var latch_header = null;
+
+      $.each(existing_profiles, function(_junk, header) {
+        profiles[header] = transform(cookies[header.trim()]);
+        latch_header = header;
+      });
+
+      if (latch_header != null) {
+        set_primary(latch_header);
+      }
+
+      $.jStorage.set('all', { profiles: profiles, config: config });
+      switch_to(latch_header);
+      profile_interface.update_list();
+      profile_interface.update_selected(latch_header);
     }
   }
 
@@ -153,7 +174,7 @@ var profile = function() {
     config.primary = x;
     save_all();
   }
-
+  
   var soft_delete = function(name) {
     deleted[name] = profiles[name];
     delete profiles[name];
@@ -277,6 +298,7 @@ var profile = function() {
   var switch_to = function(new_value) {
     old_profile = selected;
     selected = new_value;
+
     dynaloader.set_gil('ok_to_sort', false);
     dynaloader.set_gil('ok_to_save', false, reset);
     dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
@@ -290,6 +312,7 @@ var profile = function() {
   var apply = function() {
     //dynaloader.set_delegate('profile_apply', calc.recalculate_all, function() {
     var d = profiles[selected];
+    postprocess_cost = {};
 
     if (d == undefined) return;
     strain_interface.set_gui(d.strain);

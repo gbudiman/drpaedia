@@ -1,4 +1,5 @@
 var calc = function() {
+  var calc_all_timeout = setTimeout(null, 250);
   var data = {
     'skills-acquired': 0,
     'skills-planned': 0,
@@ -12,17 +13,20 @@ var calc = function() {
     //if (dynaloader.has_delegations('initial_load')) { return; }
     if (!dynaloader.get_gil('ok_to_update_gui')) return;
     
-    recalculate('skills-planned');
-    recalculate('skills-acquired');
-    recalculate_purchased_stats();
-    recalculate_planned_stats();
-    recalculate_purchased_profession();
-    recalculate_planned_profession();
-    recalculate_top_level('skills');
-    recalculate_top_level('stats');
-    recalculate_top_level('prof');
+    clearTimeout(calc_all_timeout);
+    calc_all_timeout = setTimeout(function() {
+      recalculate('skills-planned');
+      recalculate('skills-acquired');
+      recalculate_purchased_stats();
+      recalculate_planned_stats();
+      recalculate_purchased_profession();
+      recalculate_planned_profession();
+      recalculate_top_level('skills');
+      recalculate_top_level('stats');
+      recalculate_top_level('prof');
 
-    recalculate_tally();
+      recalculate_tally();
+    }, 250);
   }
 
   var recalculate_skills = function() {
