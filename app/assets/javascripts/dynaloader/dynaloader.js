@@ -93,6 +93,7 @@ var dynaloader = (function() {
               load_message('Attaching chainsaws').then(function() {
                 tooling.attach();
                 load_message('Drying up ocean').then(function() {
+                  profile.port_old_cookies();
                   profile.load();
                   load_message('Setting up siege').then(function() {
                     profile_interface.build();
