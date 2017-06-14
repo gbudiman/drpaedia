@@ -9,6 +9,8 @@ var profile = function() {
 
   var postprocess_cost = {};
 
+  var remote_timeout = setTimeout(null, 0);
+
   var empty_default = {
     profiles: {
       default: {
@@ -45,9 +47,9 @@ var profile = function() {
     var cookies = get_old_cookies();
     var transform = function(data) {
       var splits = data.split('|')
-      var hp = parseInt(splits[0]);
-      var mp = parseInt(splits[1]);
-      var strain = splits[2].trim();
+      var hp = parseInt(splits[0] || 0);
+      var mp = parseInt(splits[1] || 0);
+      var strain = (splits[2] || '').trim();
       var professions = {
         advanced: {},
         concentration: {},
@@ -57,8 +59,8 @@ var profile = function() {
       var acqs = {};
       var plans = {};
       
-      $.each(splits[3].trim().split(','), function(_junk, _x) {
-        var x = _x.trim();
+      $.each((splits[3] || '').trim().split(','), function(_junk, _x) {
+        var x = (_x || '').trim();
         if (profession_basic.is_profession(x)) {
           professions.selected[x] = true;
         } else if (profession_conc.is_profession(x)) {
@@ -68,7 +70,7 @@ var profile = function() {
         }
       })
 
-      $.each(splits[4].trim().split(','), function(_junk, x) {
+      $.each((splits[4] || '').trim().split(','), function(_junk, x) {
         if (x.length < 2) return true;
         acqs[x] = {
           alt: false,
@@ -76,7 +78,7 @@ var profile = function() {
         }
       });
 
-      $.each(splits[5].trim().split(','), function(_junk, x) {
+      $.each((splits[5] || '').trim().split(','), function(_junk, x) {
         if (x.length < 2) return true;
         plans[x] = {
           alt: false,
@@ -84,10 +86,10 @@ var profile = function() {
         }
       });
 
-      var adv_ack = (parseInt(splits[6]) == 1) ? true : false;
-      var inf = parseInt(splits[8])
+      var adv_ack = (parseInt(splits[6] || 0) == 1) ? true : false;
+      var inf = parseInt(splits[8] || 0);
 
-      $.each(splits[7].trim().split(','), function(_junk, x) {
+      $.each((splits[7] || '').trim().split(','), function(_junk, x) {
         var skill_id = x.slice(0, 2);
         var skill_cost = parseInt(x.slice(2));
 
@@ -232,6 +234,11 @@ var profile = function() {
         console.log('Saving all...');
         console.log($.jStorage.get('all'));
       }
+
+      clearTimeout(remote_timeout);
+      remote_timeout = setTimeout(function() {
+        console.log('sending request to server');
+      }, 1000);
     }
   }
 
