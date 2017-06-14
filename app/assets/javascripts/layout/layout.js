@@ -29,10 +29,12 @@ var layout = (function() {
 
   var set = function() {
     var height = $(window).height();
+    var width = $(window).width();
     var cut = $('nav.navbar').outerHeight();
     var max_height = height - cut - 1;
     $('#main-left').css('height', max_height + 'px');
     $('#main-right').css('height', max_height + 'px');
+    $('#config-button').css('max-width', (width * 0.4) + 'px');
   }
 
   return {

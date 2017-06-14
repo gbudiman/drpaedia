@@ -147,6 +147,16 @@ input.input-stat.input-sm {
 .xp-block {
 }
 
+#config-button {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#profile-rename {
+  max-width: 80%;
+  text-overflow: ellipsis;
+}
+
 .drop-box {
   padding-right: 2px;
   padding-top: 4px;
