@@ -491,6 +491,23 @@ var profile = function() {
     return h;
   }
 
+  var get_skill_list = function(x) {
+    var h = {};
+    var pack = (x == 'planned' ? pack_plan() : pack_acq());
+
+    $.each(pack, function(junk, x) {
+      if (x.skill != undefined) {
+        var skill_name = skills.get_name(x.skill);
+        h[skill_name] = {
+          xp: x.cost,
+          mp: skills.get_mp(skill_name)
+        }
+      }
+    });
+
+    return h;
+  }
+
   var has_skill = function(name) {
     var all_skills = get_all_skills()
     var names = Array.isArray(name) ? name : [name];
@@ -514,12 +531,14 @@ var profile = function() {
     get_current: function() { return profiles[selected]; },
     get_current_professions: get_current_professions,
     get_all_skills: get_all_skills,
+    get_skill_list: get_skill_list,
     has_skill: has_skill,
     get_postprocess_cost: function() { return postprocess_cost; },
     get_current_name: function() { return selected; },
     get_old_name: function() { return old_profile; },
     get_master: function() { return $.jStorage.get('all'); },
     get_deleted: function() { return deleted; },
+    get_strain: function() { return pack_strain(); },
     get_primary: get_primary,
     set_primary: set_primary,
     rename: rename,

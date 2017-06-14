@@ -28,3 +28,12 @@
 #filter-adv-list {
   display: none;
 }
+
+#profession-adv-select-container > .btn-group > .dropdown-menu {
+  max-width: 100%;
+}
+
+.toggle-group > .btn {
+  padding-top: 8px;
+  padding-bottom: 0px;
+}

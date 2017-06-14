@@ -18,8 +18,13 @@ var strains = (function() {
     return data;
   }
 
+  var get_innate = function(strain) {
+    return data[strain].specs.advantages.concat(data[strain].specs.disadvantages);
+  }
+
   return {
     build: build,
-    data: get_data
+    data: get_data,
+    get_innate: get_innate
   }
 })()

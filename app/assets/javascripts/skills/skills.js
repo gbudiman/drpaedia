@@ -9,6 +9,7 @@ var skills = (function() {
   var build = function() {
     data = {};
     var r = dynaloader.raw();
+    var mp = r.skill_mp_cost;
 
     $.each(r.skill_cat, function(k, v) {
       if (r.skill_group[k] != undefined) {
@@ -38,7 +39,8 @@ var skills = (function() {
             shorthand: r.skill_list[sub_k],
             type: type,
             conditions: v,
-            psi_level: psi_level
+            psi_level: psi_level,
+            mp_cost: mp[sub_k]
           }
 
           skill_hash[r.skill_list[sub_k]] = prepend + sub_k;
@@ -47,7 +49,8 @@ var skills = (function() {
         data[k] = {
           shorthand: r.skill_list[k],
           type: 'normal',
-          conditions: v
+          conditions: v,
+          mp_cost: mp[k]
         }
 
         skill_hash[r.skill_list[k]] = k;
@@ -58,7 +61,8 @@ var skills = (function() {
       data[k] = {
         shorthand: r.skill_list[k],
         type: 'conc',
-        conditions: v
+        conditions: v,
+        mp_cost: mp[k]
       }
 
       skill_hash[r.skill_list[k]] = k;
@@ -68,7 +72,8 @@ var skills = (function() {
       data[k] = {
         shorthand: r.skill_list[k],
         type: 'adv',
-        conditions: v
+        conditions: v,
+        mp_cost: mp[k]
       }
 
       skill_hash[r.skill_list[k]] = k;
@@ -174,6 +179,10 @@ var skills = (function() {
     })
 
     return min;
+  }
+
+  var get_mp = function(skill) {
+    return data[skill].mp_cost;
   }
 
   var get_all_possible_costs = function(skill) {
@@ -374,6 +383,7 @@ var skills = (function() {
     data: get_data,
     get_config: get_config,
     get_cost: get_cost,
+    get_mp: get_mp,
     get_all_possible_costs: get_all_possible_costs,
     get_code: function(x) { return data[x].shorthand; },
     get_all_code: function() { return skill_hash; },

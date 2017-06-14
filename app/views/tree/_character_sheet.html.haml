@@ -1,0 +1,61 @@
+%div{class: 'modal fade', id: 'character-sheet'}
+  %div{class: 'modal-dialog'}
+    %div{class: 'modal-content'}
+      %div{class: 'modal-header'}
+        %button{type: 'button', class: 'close', 'data-dismiss' => 'modal'}
+          %span &times;
+        %h4{class: 'modal-title'} Character Sheet
+      %div{class: 'modal-body'}
+        %table{class: 'table table-condensed table-striped', id: 'cs-profs'}
+          %tbody
+
+        %table{class: 'table table-condensed table-striped', id: 'cs-stats'}
+          %thead
+            %tr
+              %th Stat
+              %th{class: 'align-right'} Base
+              %th{class: 'align-right'} Addition
+              %th{class: 'align-right'} Total
+          %tbody
+            %tr
+              %td HP
+              %td{id: 'cs-stat-hp-base', class: 'align-right'}
+              %td{id: 'cs-stat-hp-addition', class: 'align-right'}
+              %td{id: 'cs-stat-hp-total', class: 'align-right'}
+            %tr
+              %td MP
+              %td{id: 'cs-stat-mp-base', class: 'align-right'}
+              %td{id: 'cs-stat-mp-addition', class: 'align-right'}
+              %td{id: 'cs-stat-mp-total', class: 'align-right'}
+            %tr
+              %td Infection
+              %td{id: 'cs-stat-ip-base', class: 'align-right'}
+              %td{id: 'cs-stat-ip-reduction', class: 'align-right'}
+              %td{id: 'cs-stat-ip-total', class: 'align-right'}
+
+        %table{class: 'table table-condensed table-striped', id: 'cs-acquired'}
+          %thead
+            %tr
+              %th{class: 'col-xs-8'} Acquired Skills
+              %th{class: 'col-xs-2 align-right'} MP
+              %th{class: 'col-xs-2 align-right'} XP
+        %table{class: 'table table-condensed table-striped', id: 'cs-planned'}
+          %thead
+            %tr
+              %th{class: 'col-xs-8'} Planned Skills
+              %th{class: 'col-xs-2 align-right'} MP
+              %th{class: 'col-xs-2 align-right'} XP
+        %table{class: 'table table-condensed table-striped', id: 'cs-graphical'}
+          %thead
+            %tr
+              %th{class: 'col-xs-8'} Skill Pool
+              %th{class: 'col-xs-2 align-right'} MP
+              %th{class: 'col-xs-2 align-right'} XP
+        %table{class: 'table table-condensed table-striped', id: 'cs-lores'}
+          %thead
+            %tr
+              %th{class: 'col-xs-8'} Lore Pool
+              %th{class: 'col-xs-2 align-right'} MP
+              %th{class: 'col-xs-2 align-right'} XP
+      %div{class: 'modal-footer'}
+        %button{type: 'button', class: 'btn btn-default', 'data-dismiss' => 'modal'} Close

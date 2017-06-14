@@ -81,6 +81,7 @@ var dynaloader = (function() {
       dynaloader.set_gil('ok_to_save', false);
       dynaloader.set_gil('ok_to_update_gui', false);
 
+      character_sheet.attach();
       strains.build();
       load_message('Irradiating wastelands').then(function() {
         profession_basic.build();

@@ -144,6 +144,9 @@ input.input-stat.input-sm {
   font-weight: bold;
 }
 
+.extrapad {
+  margin-top: 4px;
+}
 .xp-block {
 }
 
@@ -155,6 +158,10 @@ input.input-stat.input-sm {
 #profile-rename {
   max-width: 80%;
   text-overflow: ellipsis;
+}
+
+.align-right {
+  text-align: right;
 }
 
 .drop-box {
