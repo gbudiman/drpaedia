@@ -254,9 +254,10 @@ var dragdrop = (function() {
     }
 
     if (non_skill_trigger == null) {
-      non_skill_trigger = obj;
-
-      if (!masked) highlight(obj, true);
+      if (!masked) {
+        highlight(obj, true);
+        non_skill_trigger = obj;
+      }
     } else {
       highlight(non_skill_trigger, false);
       var pc = get_parent_container(obj);
