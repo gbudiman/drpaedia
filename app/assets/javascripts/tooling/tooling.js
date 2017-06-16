@@ -99,14 +99,17 @@ var tooling = function() {
 
     obj.find('.glyphicon-refresh').on('click', function() {
       alternate($(this).parent());
+      return false;
     })
 
     obj.find('.glyphicon-minus').on('click', function() {
       adjust($(this).parent(), -1);
+      return false;
     })
 
     obj.find('.glyphicon-plus').on('click', function() {
       adjust($(this).parent(), 1);
+      return false;
     })
 
     obj.find('.group-collapsible').on('click', function() {
@@ -157,7 +160,11 @@ var tooling = function() {
         }
         popover_caller = $(this);
         popover_caller.popover('toggle');
+
+        return false;
       })
+
+      return false;
     })
 
     if (!obj.hasClass('skill')) {

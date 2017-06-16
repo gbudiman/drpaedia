@@ -3,6 +3,7 @@ var dragdrop = (function() {
   var last_trigger = null;
   var right_side_selected = false;
   var debug = false;
+  var non_skill_trigger = null;
 
   var attach = function() {
     $('div[data-accessible]').on('click', function() {
@@ -12,6 +13,16 @@ var dragdrop = (function() {
 
     $('#skills-acquired').on('click', function() { drop($(this)); });
     $('#skills-planned').on('click', function() { drop($(this)); });
+
+    $('div.tool-checkin-planner').on('click', function() { select_non_skill($(this)); });
+    $('div.tool-stat-planner').on('click', function() { select_non_skill($(this)); });
+    $('div.tool-prof-planner').on('click', function() { select_non_skill($(this)); });
+
+
+    $('div.tool-separator').on('click', function() {
+      select_non_skill($(this), true);
+    })
+
     //$('#skill-pool').find('[data-accessible]').on('click', function() { drop_alphabetically($(this)); })
   }
 
@@ -221,6 +232,43 @@ var dragdrop = (function() {
     return Object.keys(selected).length > 0;
   }
 
+  var select_non_skill = function(obj, _masked) {
+    var masked = _masked != undefined && _masked;
+
+    var highlight = function(target, val) {
+      if (val) {
+        target.addClass('bg-warning')
+      } else {
+        target.removeClass('bg-warning');
+      }
+
+      highlight_droppable_plan(val);
+    }
+
+    var highlight_droppable_plan = function(val) {
+      if (val) {
+        $('#skills-planned').find('.tool-separator').addClass('bg-primary tool-droppable');
+      } else {
+        $('#skills-planned').find('.tool-separator').removeClass('bg-primary tool-droppable');
+      }
+    }
+
+    if (non_skill_trigger == null) {
+      non_skill_trigger = obj;
+
+      if (!masked) highlight(obj, true);
+    } else {
+      highlight(non_skill_trigger, false);
+      var pc = get_parent_container(obj);
+      if (pc.attr('id') == 'skills-planned') {
+        obj.after(non_skill_trigger);
+        tooling.auto_indent($('#skills-planned'));
+        profile.save_all();
+        non_skill_trigger = null;
+      }
+    }
+  }
+
   var select = function(id, is_selected) {
     var obj = $('#' + id);
     var current_trigger = get_parent_container(obj).attr('id');
@@ -298,6 +346,7 @@ var dragdrop = (function() {
 
     selected = {};
     last_trigger = null;
+    non_skill_trigger = null;
     //right_side_selected = false;
     notifier.select(null);
     skill_popup.hide();

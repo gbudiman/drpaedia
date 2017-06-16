@@ -12,6 +12,14 @@
   font-weight: bold;
 }
 
+.tool-checkin-planner, .tool-prof-planner, .tool-stat-planner {
+  cursor: pointer;
+}
+
+.tool-droppable {
+  cursor: pointer;
+}
+
 #tool-acq-group-base {
   display: none;
 }
