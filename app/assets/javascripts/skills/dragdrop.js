@@ -232,6 +232,14 @@ var dragdrop = (function() {
     return Object.keys(selected).length > 0;
   }
 
+  var highlight_droppable_plan = function(val) {
+    if (val) {
+      $('#skills-planned').find('.tool-separator').addClass('bg-primary tool-droppable');
+    } else {
+      $('#skills-planned').find('.tool-separator').removeClass('bg-primary tool-droppable');
+    }
+  }
+
   var select_non_skill = function(obj, _masked) {
     var masked = _masked != undefined && _masked;
 
@@ -245,13 +253,7 @@ var dragdrop = (function() {
       highlight_droppable_plan(val);
     }
 
-    var highlight_droppable_plan = function(val) {
-      if (val) {
-        $('#skills-planned').find('.tool-separator').addClass('bg-primary tool-droppable');
-      } else {
-        $('#skills-planned').find('.tool-separator').removeClass('bg-primary tool-droppable');
-      }
-    }
+    
 
     if (non_skill_trigger == null) {
       if (!masked) {
@@ -344,6 +346,8 @@ var dragdrop = (function() {
     $.each(selected, function(k, v) {
       $('#' + k).removeClass('bg-warning');
     })
+
+    highlight_droppable_plan(false);
 
     selected = {};
     last_trigger = null;

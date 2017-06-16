@@ -605,6 +605,8 @@ var tooling = function() {
         next = next.next();
       }
 
+      auto_indent_all();
+      dragdrop.deselect_all();
       calc.recalculate_all();
       profile.save_all();
     })
@@ -635,6 +637,7 @@ var tooling = function() {
           x.remove();
         }
       })
+
 
       dragdrop.drop_to_pool(to_pool);
       calc.recalculate_all();
