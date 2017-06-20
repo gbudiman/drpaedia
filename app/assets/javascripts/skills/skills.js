@@ -69,12 +69,23 @@ var skills = (function() {
         }
 
         $.each(r.skill_group[k], function(sub_k, sub_v) {
-          data[prepend + sub_k] = {
-            shorthand: r.skill_list[sub_k],
-            type: type,
-            conditions: v,
-            psi_level: psi_level,
-            mp_cost: mp[sub_k]
+          var w = data[prepend + sub_k];
+
+          if (w == undefined) {
+            data[prepend + sub_k] = {
+              shorthand: r.skill_list[sub_k],
+              type: type,
+              conditions: v,
+              psi_level: psi_level,
+              mp_cost: mp[sub_k]
+            }
+          } else {
+            var mod = data[prepend + sub_k].conditions;
+
+            $.each(v, function(mk, mv) {
+              if (mk.match(/^innate/)) return true;
+              mod.mk = mv;
+            })
           }
 
           skill_hash[r.skill_list[sub_k]] = prepend + sub_k;

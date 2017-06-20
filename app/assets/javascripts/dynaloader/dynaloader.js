@@ -97,7 +97,6 @@ var dynaloader = (function() {
                 tooling.attach();
                 load_message('Drying up ocean').then(function() {
                   profile.port_old_cookies();
-                  console.log($.jStorage.get('all'));
                   profile.load();
                   load_message('Setting up siege').then(function() {
                     profile_interface.build();
