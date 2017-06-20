@@ -1,17 +1,38 @@
 var profession_conc = (function() {
   var all = {};
   var selected = {};
+  var planned = {};
   var limit = 2;
 
-  var add = function(x) {
-    selected[x] = true;
+  var add = function(x, _is_planned) {
+    var is_planned = _is_planned == undefined ? false : _is_planned;
+
+    if (is_planned) {
+      planned[x] = true;
+    } else {
+      selected[x] = true;
+    }
+
     profession_conc_interface.update_profession_added(x);
-    verify_count();
+
+    if (!is_planned) {
+      verify_count();
+    }
+
     skills.update_availability(false);
+  }
+
+  var apply_plan = function(x) {
+    if (planned[x] != undefined) {
+      delete planned[x];
+      selected[x] = true;
+    }
   }
 
   var remove = function(x) {
     delete selected[x];
+    delete planned[x];
+
     profession_conc_interface.update_profession_removed(x);
     verify_count();
     skills.update_availability(true);
@@ -71,11 +92,13 @@ var profession_conc = (function() {
 
   return {
     add: add,
+    apply_plan: apply_plan,
     build: build,
     get_purchaseable: get_purchaseable,
     is_profession: is_profession,
     remove: remove,
     reset: reset,
-    selected: function() { return selected; }
+    selected: function() { return selected; },
+    planned: function() { return planned; }
   }
 })()

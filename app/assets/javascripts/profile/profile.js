@@ -282,14 +282,16 @@ var profile = function() {
       force_save_all();
     }
 
-    switch_to(selected);
-    //dynaloader.set_gil('ok_to_save', false, reset);
-    //dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
-
     if (debug) {
       console.log('Loaded:');
       console.log(v);
     }
+    
+    switch_to(selected);
+    //dynaloader.set_gil('ok_to_save', false, reset);
+    //dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
+
+    
 
     return { profiles: profiles, config: config }
   }
@@ -357,13 +359,17 @@ var profile = function() {
       if (post) postprocess_cost[x.skill] = x.cost;
     })
 
+    skills.evaluate_planned();
+    console.log('-- eval called');
+
     apply_advanced_lock();
 
     tooling.compute_group($('#skills-acquired'));
     tooling.compute_group($('#skills-planned'));
 
     filterview.apply_all();
-    skills.update_availability();
+    skills.update_availability(true);
+    skills.validate();
 
     profession_conc_interface.validate_existing();
     profession_basic.verify_count();

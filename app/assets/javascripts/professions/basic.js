@@ -3,12 +3,23 @@ var profession_basic = (function() {
   var restricted = {};
   var selected = {};
   var forgotten = {};
+  var planned = {};
   var limit = 3;
 
-  var add = function(x) {
-    selected[x] = true;
+  var add = function(x, _is_planned) {
+    var is_planned = _is_planned == undefined ? false : _is_planned;
+
+    if (is_planned) {
+      planned[x] = true;
+    } else {
+      selected[x] = true;
+    }
     profession_basic_interface.update_profession_added(x);
-    verify_count();
+
+    if (!is_planned) {
+      verify_count();
+    }
+
     skills.update_availability(false);
   }
 
@@ -17,6 +28,13 @@ var profession_basic = (function() {
     forgotten[x] = true;
     verify_count();
     skills.update_availability(true);
+  }
+
+  var apply_plan = function(x) {
+    if (planned[x] != undefined) {
+      delete planned[x];
+      selected[x] = true;
+    }
   }
 
   var remove = function(x) {
@@ -28,6 +46,7 @@ var profession_basic = (function() {
   var remove_delegate_update = function(x) {
     delete selected[x];
     delete forgotten[x];
+    delete planned[x];
     profession_basic_interface.update_profession_removed(x);
   }
 
@@ -148,8 +167,13 @@ var profession_basic = (function() {
     return h;
   }
 
+  var plan_clear = function() {
+    planned = {};
+  }
+
   return {
     add: add,
+    apply_plan: apply_plan,
     forget: forget,
     remove: remove,
     unforget: unforget,
@@ -159,6 +183,7 @@ var profession_basic = (function() {
     is_profession: is_profession,
     restricted: get_restricted,
     selected: get_selected,
+    planned: function() { return planned; },
     forgotten: function() { return forgotten; },
     update_strain_change: update_strain_change,
     get_purchaseable: get_purchaseable,

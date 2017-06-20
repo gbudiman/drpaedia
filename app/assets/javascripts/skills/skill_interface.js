@@ -54,6 +54,33 @@ var skill_interface = (function() {
 
   }
 
+  var mark_planned = function(planned) {
+    $.each(planned, function(k, v) {
+      $.each(v, function(skcode, _junk) {
+        var target = $('#' + skcode);
+          //.find('.plan-marker').remove()
+        if (target.find('.plan-marker').length == 0) {
+          target.find('.skill-name')
+            .after('<span class="plan-marker">*</span>')
+        }
+      })
+    })
+  }
+
+  var unmark_planned = function(data) {
+    $.each(data, function(k, v) {
+      $.each(v, function(skcode, _junk) {
+        $('#' + skcode).find('.plan-marker').remove();
+      })
+    })
+  }
+
+  var unmark_profession = function(data) {
+    $.each(data, function(skcode, _junk) {
+      $('#' + skcode).find('.plan-marker').remove();
+    })
+  }
+
   var traverse_to_parent = function(id) {
     return generic.traverse_to_parent(id);
   }
@@ -232,6 +259,9 @@ var skill_interface = (function() {
     apply_filters: apply_filters,
     build: build,
     get_all_unselected: get_all_unselected,
+    mark_planned: mark_planned,
+    unmark_planned: unmark_planned,
+    unmark_profession: unmark_profession,
     display: display,
     remove: remove,
     reset_all: reset_all,

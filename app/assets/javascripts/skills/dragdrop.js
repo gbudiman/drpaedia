@@ -61,7 +61,7 @@ var dragdrop = (function() {
     return obj;
   }
 
-  var drop = function(obj, prepend) {
+  var drop = function(_obj, prepend) {
     //console.log('dropping to ' + obj.attr('id'));
 
     //console.log(last_trigger + ' <> ' + obj.attr('id'));
@@ -70,8 +70,8 @@ var dragdrop = (function() {
     if ($('#' + last_trigger).parent().attr('id') == obj.attr('id')) return;
 */
 
+    var obj = _obj == undefined ? $('<div/>') : _obj;
     var drop_to_pool = obj.attr('id') == 'skill-pool';
-
     var parent_container = obj;
     $.each(selected, function(id, v) {
       var to_append = $('#' + id);

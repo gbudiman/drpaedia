@@ -5,6 +5,40 @@ var skills = (function() {
   var skill_hash = {};
   var counters = {};
   var countered = {};
+  var planned = {};
+  var by_profession = {};
+
+  var cache_available = {};
+  var cache_update = {};
+
+  var add_to_cache = function(x) {
+    if (cache_available[x] == undefined) {
+      cache_update[x] = true;
+      //console.log('adding ' + x);
+    }
+  }
+
+  var overwrite_cache = function() {
+    Object.assign(cache_available, cache_update);
+  }
+
+  var get_by_profession = function(x) {
+    if (by_profession[x] == undefined) {
+      build_by_profession(x);
+    }
+
+    return by_profession[x];
+  }
+
+  var build_by_profession = function(x) {
+    by_profession[x] = {};
+
+    $.each(data, function(k, d) {
+      if (d.conditions[x] != undefined) {
+        by_profession[x][get_code(k)] = true;
+      }
+    })
+  }
 
   var build = function() {
     data = {};
@@ -141,6 +175,49 @@ var skills = (function() {
     }
   }
 
+  var evaluate_planned = function() {
+    var get_planned_professions = function() {
+      planned = {};
+
+      $('#skills-planned').find('.tool-prof-select').each(function() {
+        var p = $(this).val();
+        planned[p] = {};
+      })
+    }
+
+    var clear_current_plan = function() {
+      $.each(planned, function(k, v) {
+        if (profession_basic.is_profession(k)) {
+          profession_basic.remove(k);
+        } else if (profession_conc.is_profession(k)) {
+          profession_conc.remove(k)
+        }
+      })
+
+      skill_interface.unmark_planned(planned);
+    }
+
+    clear_current_plan();
+    get_planned_professions();
+
+    $.each(planned, function(k, v) {
+      if (profession_basic.is_profession(k)) {
+        profession_basic.add(k, true);
+      } else if (profession_conc.is_profession(k)) {
+        profession_conc.add(k, true);
+      }
+
+      planned[k] = get_by_profession(k);
+    })
+
+    skill_interface.mark_planned(planned);
+  }
+
+  var apply_plan = function(x) {
+    skill_interface.unmark_profession(planned[x]);
+    delete planned[x];
+  }
+
   var strain_match = function(a) {
     var is_found = false;
     $.each(a, function(i, x) {
@@ -158,8 +235,10 @@ var skills = (function() {
     professions = Object.assign({}, 
                                 profession_basic.selected(), 
                                 profession_conc.selected(),
-                                profession_adv.selected());
-
+                                profession_adv.selected(),
+                                profession_basic.planned(),
+                                profession_conc.planned())
+    
     return {
       strain: strain,
       professions: professions
@@ -223,44 +302,53 @@ var skills = (function() {
     
   }
 
-  var update_availability = function(reset_all) {
+  var update_availability = function(reset_all, _only_materialized) {
+    var only_materialized = _only_materialized == undefined ? false : _only_materialized;
     //dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
-    animate_pool_loading(function() {
-      dynaloader.set_gil('ok_to_update_gui', false, function() {
-        get_config();
-        skill_popup.hide();
-        var to_pool = new Array();
-        if (reset_all) { skill_interface.reset_all(); }
-        $.each(data, function(k, v) {
-          var constraint = constraint_satisfied(v);
+    return new Promise(function(resolve, reject) {
+      animate_pool_loading(function() {
+        dynaloader.set_gil('ok_to_update_gui', false, function() {
+          cache_update = {};
+          var h = get_config();
+          skill_popup.hide();
+          var to_pool = new Array();
+          if (reset_all) skill_interface.reset_all(); 
+          $.each(data, function(k, v) {
+            var constraint = constraint_satisfied(v);
 
-          if (constraint.is_satisfied) {
-            skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
-          } else {
-            //console.log(k + ' is no longer satisfied');
-            skill_interface.remove(v.shorthand);
-            to_pool.push(v.shorthand);
-          }
+            if (constraint.is_satisfied) {
+              skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
+              //add_to_cache(skills.get_code(k));
+            } else {
+              //console.log(k + ' is no longer satisfied');
+              skill_interface.remove(v.shorthand);
+              to_pool.push(v.shorthand);
+            }
+          })
+
+          // console.log(to_pool);
+          // $.each(to_pool, function(i, x) {
+          //   console.log('dropping to pool');
+          //   dragdrop.drop_to_pool(x);
+          // })
+
+          dragdrop.drop_to_pool(to_pool);
+          
+
+          skill_interface.apply_filters();
+          //overwrite_cache();
+
+          resolve(true);
         })
 
-        // console.log(to_pool);
-        // $.each(to_pool, function(i, x) {
-        //   console.log('dropping to pool');
-        //   dragdrop.drop_to_pool(x);
-        // })
-
-        dragdrop.drop_to_pool(to_pool);
-        
-
-        skill_interface.apply_filters();
+        //console.log(' !!! UA.sort() ');
+        skill_interface.sort_pool();
+        //console.log(' !!! update completed');
+        //tooling.auto_indent($('#skills-acquired'));
+        //tooling.auto_indent($('#skills-planned'));
+        tooling.auto_indent_all();
+        resolve(false);
       })
-
-      //console.log(' !!! UA.sort() ');
-      skill_interface.sort_pool();
-      //console.log(' !!! update completed');
-      //tooling.auto_indent($('#skills-acquired'));
-      //tooling.auto_indent($('#skills-planned'));
-      tooling.auto_indent_all();
     })
   }
 
@@ -280,6 +368,7 @@ var skills = (function() {
     var all_valid = true
     var messages = {};
 
+    get_config();
     $.each(all, function(k, _junk) {
       var valid_prof_t = validate_by_profession(data[k].conditions, all);
       var valid_strain_t = validate_by_strain(data[k].conditions, all);
@@ -303,10 +392,9 @@ var skills = (function() {
       all_valid = all_valid && (valid_strain_t.cond || valid_prof_t.cond);  
 
       if (valid_strain_t.cond || valid_prof_t.cond) {
-        messages = {};
+        delete messages[k];
       }
     })
-
 
     notifier.skill_preq_missing(all_valid, messages);
     notifier.psis_preq_missing();
@@ -377,17 +465,25 @@ var skills = (function() {
     }
   }
 
+  var get_code = function(x) {
+    return data[x].shorthand;
+  }
+
   return {
     build: build,
     constraint_satisfied: constraint_satisfied,
     data: get_data,
+    evaluate_planned: evaluate_planned,
     get_config: get_config,
     get_cost: get_cost,
     get_mp: get_mp,
     get_all_possible_costs: get_all_possible_costs,
-    get_code: function(x) { return data[x].shorthand; },
+    get_code: get_code,
     get_all_code: function() { return skill_hash; },
     get_name: function(x) { return skill_hash[x]; },
+    get_delta: function() { return cache_update; },
+    apply_plan: apply_plan,
+    get_by_profession: get_by_profession,
     get_interaction: get_interaction,
     has_tier: has_tier,
     hash: get_hash,

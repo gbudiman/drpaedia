@@ -268,6 +268,7 @@ var tooling = function() {
     $(s).insertAfter(anchor);
 
     _obj.find('.tool-prof-select').on('change', function() {
+      skills.evaluate_planned();
       profile.save_all();
     })
     //anchor.next().selectpicker();
@@ -331,18 +332,21 @@ var tooling = function() {
       target.text('Conc');
       obj.find('.tool-prof-xp').text('30');
       rebuild_prof_list(obj);
+      skills.evaluate_planned();
       compute_group($('#skills-planned'));
       calc.recalculate_planned_profession();
     } else if (target.text() == 'Conc') {
       target.text('Forget');
       obj.find('.tool-prof-xp').text('10');
       rebuild_prof_list(obj);
+      skills.evaluate_planned();
       compute_group($('#skills-planned'));
       calc.recalculate_planned_profession();
     } else if (target.text() == 'Forget') {
       target.text('Basic');
       obj.find('.tool-prof-xp').text('10');
       rebuild_prof_list(obj);
+      skills.evaluate_planned();
       compute_group($('#skills-planned'));
       calc.recalculate_planned_profession();
     }
@@ -595,6 +599,11 @@ var tooling = function() {
     obj.on('click', function() {
       var cached = popover_caller.parent();
       var next = cached.next();
+      var is_planned_profession = false;
+
+      if (cached.hasClass('tool-prof-planner')) {
+        is_planned_profession = true;
+      }
 
       popover_caller.popover('hide');
       popover_caller.parent().remove();
@@ -603,6 +612,10 @@ var tooling = function() {
         if (!next.hasClass('tool-highlight')) break;
         next.removeClass('tool-highlight');
         next = next.next();
+      }
+
+      if (is_planned_profession) {
+        skills.evaluate_planned();
       }
 
       auto_indent_all();
@@ -707,6 +720,13 @@ var tooling = function() {
       } else {
         $('[data-prof="' + sel + '"').trigger('click');
         $('[data-conc="' + sel + '"').trigger('click');
+
+        profession_basic.apply_plan(sel);
+        profession_conc.apply_plan(sel);
+        skills.apply_plan(sel);
+
+        //skills.evaluate_planned();
+
       }
 
       return true;
