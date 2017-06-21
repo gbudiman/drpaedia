@@ -200,7 +200,8 @@ var dragdrop = (function() {
       current_obj = current_obj.prev();
 
       if (current_obj.length == 0) {
-        return null;
+        return obj.parent();
+        //return null;
       }
 
       current_id = current_obj.attr('id');

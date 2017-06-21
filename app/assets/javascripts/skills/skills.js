@@ -187,32 +187,42 @@ var skills = (function() {
     }
   }
 
-  var evaluate_planned = function() {
+  var evaluate_planned = function(init) {
     var get_planned_professions = function() {
-      planned = {};
+      var metaplan = {};
+      //planned = {};
 
       $('#skills-planned').find('.tool-prof-select').each(function() {
         var p = $(this).val();
-        planned[p] = {};
+        //planned[p] = {};
+        metaplan[p] = {};
       })
+
+      return metaplan;
     }
 
     var clear_current_plan = function() {
+      var metaplan = init == undefined ? get_planned_professions() : init;
+
       $.each(planned, function(k, v) {
-        if (profession_basic.is_profession(k)) {
-          profession_basic.remove(k);
-        } else if (profession_conc.is_profession(k)) {
-          profession_conc.remove(k)
+        if (metaplan[k] == undefined) {
+          if (profession_basic.is_profession(k)) {
+            profession_basic.remove(k);
+          } else if (profession_conc.is_profession(k)) {
+            profession_conc.remove(k)
+          }
         }
       })
 
       skill_interface.unmark_planned(planned);
+      planned = metaplan;
     }
 
     clear_current_plan();
-    get_planned_professions();
+    //get_planned_professions();
 
     $.each(planned, function(k, v) {
+      console.log(' -- eval added ' + k);
       if (profession_basic.is_profession(k)) {
         profession_basic.add(k, true);
       } else if (profession_conc.is_profession(k)) {
@@ -320,6 +330,7 @@ var skills = (function() {
     return new Promise(function(resolve, reject) {
       animate_pool_loading(function() {
         dynaloader.set_gil('ok_to_update_gui', false, function() {
+          //console.log(' -- UA begin');
           cache_update = {};
           var h = get_config();
           skill_popup.hide();
@@ -351,6 +362,7 @@ var skills = (function() {
           //overwrite_cache();
 
           resolve(true);
+          //console.log(' -- UA completed');
         })
 
         //console.log(' !!! UA.sort() ');

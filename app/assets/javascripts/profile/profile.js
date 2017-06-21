@@ -321,6 +321,18 @@ var profile = function() {
     profile_interface.update_selected(selected);
   }
 
+  var precompute_planned_professions = function(d) {
+    var h = {};
+
+    $.each(d, function(i, x) {
+      if (x.prof != undefined) {
+        h[x.selected] = {};
+      }
+    })
+
+    skills.evaluate_planned(h)
+  ;}
+
   var apply = function() {
     //dynaloader.set_delegate('profile_apply', calc.recalculate_all, function() {
     var d = profiles[selected];
@@ -354,13 +366,12 @@ var profile = function() {
       if (post) postprocess_cost[x.skill] = x.cost;
     })
 
+    precompute_planned_professions(d.plan);
+
     $.each(d.plan, function(i, x) {
       var post = apply_rightside(x, 'skills-planned');
       if (post) postprocess_cost[x.skill] = x.cost;
     })
-
-    skills.evaluate_planned();
-    console.log('-- eval called');
 
     apply_advanced_lock();
 
