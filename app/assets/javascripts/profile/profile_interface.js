@@ -51,7 +51,7 @@ var profile_interface = function() {
       var counter = 0;
       var exist = profiles[new_name + counter.toString()] != undefined;
 
-      console.log(profiles);
+      //console.log(profiles);
       while (exist) {
         counter++;
         exist = profiles[new_name + counter.toString()] != undefined;
@@ -60,9 +60,6 @@ var profile_interface = function() {
       var final_profile_name = new_name + counter.toString();
 
       profile.create_empty(final_profile_name);
-      update_list();
-      update_selected(final_profile_name);
-
       event.preventDefault();
     })
   }

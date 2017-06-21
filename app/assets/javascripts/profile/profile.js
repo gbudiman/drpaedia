@@ -33,8 +33,15 @@ var profile = function() {
   var create_empty = function(new_value) {
     profiles[new_value] = default_prefs;
     if (config.primary == undefined) config.primary = new_value;
-    switch_to(new_value);
-    save_all();
+
+    $('#skill-pool').animate({
+      opacity: 0.5
+    }, 50, function() {
+      switch_to(new_value);
+      save_all();
+      profile_interface.update_list();
+      profile_interface.update_selected(new_value);
+    })
   }
 
   var get_old_cookies = function() {
@@ -193,11 +200,16 @@ var profile = function() {
     }
 
     if (name == selected) {
-      switch_to(config.primary);
+      $('#skill-pool').animate({
+        opacity: 0.5
+      }, 50, function() {
+        switch_to(config.primary);
+        save_all();
+      })
     }
 
 
-    save_all();
+    
   }
 
   var undelete = function(name) {
