@@ -196,7 +196,7 @@ var notifier = function() {
       $(this).off('click').on('click', function() {
         var skill_name = $(this).attr('data-name');
         var skill_id = skills.get_code(skill_name);
-        console.log('clicked ' + skill_name + ' ' + skill_id);
+        manager.log('clicked ' + skill_name + ' ' + skill_id);
         dragdrop.drop_selective(skill_id, $('#skills-acquired'));
         return false;
       })

@@ -84,7 +84,7 @@ var filterview = (function() {
       }
     })
 
-    console.log('filterview:apply ' + update_count + ' updated');
+    manager.log('filterview:apply ' + update_count + ' updated');
 
     $.each(open_state, function(_junk, val) {
       if (val) {

@@ -277,9 +277,9 @@ var dragdrop = (function() {
     var obj = $('#' + id);
     var current_trigger = get_parent_container(obj).attr('id');
 
-    console.log('Select triggered on skill ID ' + id + ' [' + is_selected + ']');
-    console.log('Last <> Curr: ' + last_trigger + ' <> ' + current_trigger);
-    console.log('Has selected: ' + has_selected());
+    manager.log('Select triggered on skill ID ' + id + ' [' + is_selected + ']');
+    manager.log('Last <> Curr: ' + last_trigger + ' <> ' + current_trigger);
+    manager.log('Has selected: ' + has_selected());
     // if (is_selected) {
     //   _select(obj, id, false);
     // } else {

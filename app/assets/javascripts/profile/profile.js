@@ -27,7 +27,7 @@ var profile = function() {
   var copy_current_to = function(new_value) {
     profiles[new_value] = profiles[selected];
     $.jStorage.set('all', { profiles: profiles, config: config });
-    if (debug) console.log($.jStorage.get('all'));
+    if (debug) manager.log($.jStorage.get('all'));
   }
 
   var create_empty = function(new_value) {
@@ -243,13 +243,13 @@ var profile = function() {
       config.timestamp = Date.now();
       $.jStorage.set('all', { profiles: profiles, config: config });
       if (debug) {
-        console.log('Saving all...');
-        console.log($.jStorage.get('all'));
+        manager.log('Saving all...');
+        manager.log($.jStorage.get('all'));
       }
 
       clearTimeout(remote_timeout);
       remote_timeout = setTimeout(function() {
-        console.log('sending request to server');
+        manager.log('sending request to server');
       }, 1000);
     }
   }
@@ -274,7 +274,7 @@ var profile = function() {
 
     selected = new_value;
     $.jStorage.set('all', { profiles: profiles, config: config });
-    if (debug) console.log($.jStorage.get('all'));
+    if (debug) manager.log($.jStorage.get('all'));
     profile_interface.update_selected(new_value);
     old_profile = new_value;
   }
@@ -295,8 +295,8 @@ var profile = function() {
     }
 
     if (debug) {
-      console.log('Loaded:');
-      console.log(v);
+      manager.log('Loaded:');
+      manager.log(v);
     }
     
     switch_to(selected);
@@ -324,11 +324,14 @@ var profile = function() {
     selected = new_value;
 
     dynaloader.set_gil('ok_to_sort', false);
-    dynaloader.set_gil('ok_to_save', false, reset);
+    dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, reset);
     dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
     dynaloader.set_gil('ok_to_sort', true);
-    skill_interface.sort_pool();
-
+    dynaloader.set_gil('ok_to_save', false, function() {
+      skills.update_availability();
+      skill_interface.sort_pool();
+    })
+    
     old_profile = selected;
     profile_interface.update_selected(selected);
   }

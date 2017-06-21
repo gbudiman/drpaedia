@@ -452,6 +452,8 @@ var tooling = function() {
   }
 
   var auto_collapse = function(obj) {
+    if (dynaloader.get_gil('ok_to_sort') == false) return;
+    manager.log('-- auto collapse');
     $.each(obj.children(), function() {
       var that = $(this);
       if (is_group(that)) {
@@ -463,6 +465,8 @@ var tooling = function() {
   }
 
   var exec_indent = function(obj) {
+    if (dynaloader.get_gil('ok_to_sort') == false) return;
+    manager.log('-- exec indent');
     if (obj.attr('id') != 'skills-acquired' && obj.attr('id') != 'skills-planned') {
       obj = obj.parent();
     }
@@ -503,6 +507,8 @@ var tooling = function() {
   }
 
   var compute_group = function(obj) {
+    if (dynaloader.get_gil('ok_to_sort') == false) return;
+    manager.log('-- compute group')
     var state = 'out';
     var anchor = null;
     var checkin = 0;

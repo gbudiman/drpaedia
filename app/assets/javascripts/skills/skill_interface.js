@@ -197,7 +197,7 @@ var skill_interface = (function() {
     if (!dynaloader.get_gil('ok_to_sort') || !dynaloader.get_gil('ok_to_update_gui')) return;
     clearTimeout(timeout_sort);
     timeout_sort = setTimeout(function() {
-      console.log('sort pool called');
+      manager.log('sort pool called');
 
       var items = $('#skill-pool').children();
       items.sort(function(a, b) {

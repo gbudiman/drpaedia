@@ -324,12 +324,13 @@ var skills = (function() {
   }
 
   var update_availability = function(reset_all, _only_materialized) {
+    if (dynaloader.get_gil('ok_to_update_gui') == false) return;
     var only_materialized = _only_materialized == undefined ? false : _only_materialized;
     //dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
     return new Promise(function(resolve, reject) {
       animate_pool_loading(function() {
         dynaloader.set_gil('ok_to_update_gui', false, function() {
-          //console.log(' -- UA begin');
+          manager.log(' -- UA begin');
           cache_update = {};
           var h = get_config();
           skill_popup.hide();

@@ -64,15 +64,12 @@ var character_sheet = (function() {
         var skill_name = skills.get_name(skill_id);
 
         if (skill_name == undefined) return true;
-        //console.log(skill_id);
-        //console.log(skill_name);
+
         _data.skills[type][skill_name] = {
           xp: xp_cost,
           mp: skills.get_mp(skill_name)
         }
       })
-
-      console.log(_data.skills[type])
     } else {
       _data.skills[type] = profile.get_skill_list(type);
     }

@@ -56,9 +56,6 @@ var profession_adv = (function() {
         var skill_code = x.skill;
         var skill_name = lookup[skill_code];
 
-        if (skill_name == undefined) {
-          console.log('UNDEF: ' + skill_code);
-        }
         h.skills.push(skill_name);
         if (skill_name.match(/^Lore/)) {
           h.lore_count++;

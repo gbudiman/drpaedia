@@ -23,7 +23,7 @@
 = render 'tooling_template'
 
 %div{class: 'footer'}
-  %div{class: 'credits'} DRpaedia 0.7.7
+  %div{class: 'credits'} DRpaedia 0.7.8
 
   %div{id: 'disqus_thread', class: 'col-xs-12'}
   :javascript
@@ -59,6 +59,7 @@
 = stylesheet_link_tag 'notifier/style'
 = stylesheet_link_tag 'profile/style'
 = stylesheet_link_tag 'animate'
+= javascript_include_tag 'dynaloader/manager'
 = javascript_include_tag 'layout/layout'
 = javascript_include_tag 'profile/profile_interface'
 = javascript_include_tag 'profile/profile'
