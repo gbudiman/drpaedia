@@ -31,5 +31,6 @@ Rails.application.config.assets.precompile += %w( style.css
                                                   jstorage.*
                                                   AgentGirl.js
                                                   SParser.js
+                                                  printThis.js
                                                   bootstrap-toggle*
                                                   animate.css)

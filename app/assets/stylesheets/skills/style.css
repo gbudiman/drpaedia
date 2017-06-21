@@ -46,6 +46,20 @@
 #skills-acquired .skill-name, #skills-planned .skill-name {
   width: 50%;
 }
+
+#cs-print {
+  cursor: pointer;
+}
+
+@media print {
+  .row.main {
+    display: none;
+  }
+
+  .footer {
+    display: none;
+  }
+}
 /*.skill-cost {
   margin-top: 1px;
 }*/

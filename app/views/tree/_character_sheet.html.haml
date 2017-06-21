@@ -4,7 +4,13 @@
       %div{class: 'modal-header'}
         %button{type: 'button', class: 'close', 'data-dismiss' => 'modal'}
           %span &times;
-        %h4{class: 'modal-title'} Character Sheet
+        %h4{class: 'modal-title'} 
+          Character Sheet
+          %span{class: 'glyphicon glyphicon-print', id: 'cs-print'}
+        %div{class: 'form-inline'}
+          %input{type: 'checkbox', id: 'cs-check-planned'} Planned
+          %input{type: 'checkbox', id: 'cs-check-pool'} Skill Pool
+          %input{type: 'checkbox', id: 'cs-check-lore'} Lore Pool
       %div{class: 'modal-body'}
         %table{class: 'table table-condensed table-striped', id: 'cs-profs'}
           %tbody

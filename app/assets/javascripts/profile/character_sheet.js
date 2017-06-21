@@ -14,6 +14,26 @@ var character_sheet = (function() {
     $('#generate-character-sheet').on('click', function() {
       generate();
     })
+
+    $('#cs-print').on('click', function() {
+      $('#character-sheet').printThis({
+        printContainer: false
+      });
+    })
+
+    $('#cs-check-planned').on('click', evaluate_filter);
+    $('#cs-check-pool').on('click', evaluate_filter);
+    $('#cs-check-lore').on('click', evaluate_filter);
+  }
+
+  var evaluate_filter = function() {
+    var show_planned = $('#cs-check-planned').prop('checked');
+    var show_pool = $('#cs-check-pool').prop('checked');
+    var show_lore = $('#cs-check-lore').prop('checked');
+
+    show_planned ? $('#cs-planned').show() : $('#cs-planned').hide();
+    show_pool ? $('#cs-graphical').show() : $('#cs-graphical').hide();
+    show_lore ? $('#cs-lores').show() : $('#cs-lores').hide();
   }
 
   var generate_stats = function() {
@@ -98,6 +118,7 @@ var character_sheet = (function() {
     generate_strain_skills();
 
     write();
+    evaluate_filter();
 
     $('#character-sheet').modal('show');
   }
