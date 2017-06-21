@@ -83,8 +83,9 @@ var skills = (function() {
             var mod = data[prepend + sub_k].conditions;
 
             $.each(v, function(mk, mv) {
-              if (mk.match(/^innate/)) return true;
-              mod.mk = mv;
+              if (!mk.match(/^innate/)) {
+                mod[mk] = mv;
+              }
             })
           }
 
