@@ -58,6 +58,10 @@
   background-color: #d9534f;
 }
 
+.badge-checkin {
+  background-color: #33b5e5;
+}
+
 .cond-disabled {
   text-decoration: line-through;
   color: #aaa;
