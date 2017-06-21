@@ -50,6 +50,12 @@
   margin-top: 1px;
 }*/
 
+.brand.dropdown-menu {
+  margin-top: -20px;
+  margin-left: 8px;
+  font-size: 125%;
+}
+
 .badge-success {
   background-color: #5cb83c;
 }

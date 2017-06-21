@@ -2,7 +2,19 @@
   %div{class: 'container-fluid navbar-container'}
     %div{class: 'row row-main'}
       %div{class: 'navbar-header col-xs-4 navbar-brand-main'}
-        %a{class: 'navbar-brand navbar-brand-main'} DRpaedia
+        /%a{class: 'navbar-brand navbar-brand-main'} DRpaedia
+        %a{class: 'navbar-brand navbar-brand-main dropdown-toggle', 'data-toggle': 'dropdown', href: '#'} 
+          DRpaedia
+          %span{class: 'caret'}
+        %ul{class: 'brand dropdown-menu'}
+          %li
+            %a{href: 'https://github.com/gbudiman/drpaedia', target: '_github'}
+              Github
+              %span{class: 'glyphicon glyphicon-new-window'}
+          %li
+            %a{href: 'https://www.patreon.com/gbudiman', target: '_patreon'} 
+              Patreon
+              %span{class: 'glyphicon glyphicon-new-window'}
       %div{class: 'navbar-header col-xs-2 navbar-minmax'}
         %a{class: 'navbar-brand text-right navbar-minmax pull-right', href: '#', id: 'minmax'} << Max
       %div{class: 'navbar-header pull-right'}

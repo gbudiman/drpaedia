@@ -222,7 +222,6 @@ var skills = (function() {
     //get_planned_professions();
 
     $.each(planned, function(k, v) {
-      console.log(' -- eval added ' + k);
       if (profession_basic.is_profession(k)) {
         profession_basic.add(k, true);
       } else if (profession_conc.is_profession(k)) {
