@@ -326,25 +326,56 @@ var skills = (function() {
   var update_availability = function(reset_all, _only_materialized) {
     if (dynaloader.get_gil('ok_to_update_gui') == false) return;
     var only_materialized = _only_materialized == undefined ? false : _only_materialized;
+
+    var batch_render = function(queue) {
+      var qkeys = Object.keys(queue);
+      var key_length = qkeys.length;
+
+      for (var i = 0; i < key_length; i++) {
+        var shorthand = qkeys[i];
+        var val = queue[shorthand];
+
+        switch (val.mode) {
+          case 'display': 
+            skill_interface.display(shorthand, val.costs, val.is_open);
+            break;
+          case 'remove':
+            skill_interface.remove(shorthand);
+            break
+        }
+      }
+    }
+
     //dynaloader.set_delegate('initial_load', calc.recalculate_all, function() {
     return new Promise(function(resolve, reject) {
       animate_pool_loading(function() {
         dynaloader.set_gil('ok_to_update_gui', false, function() {
           manager.log(' -- UA begin');
-          cache_update = {};
           var h = get_config();
-          skill_popup.hide();
           var to_pool = new Array();
+          var render_queue = {};
+
+          skill_popup.hide();
+          
           if (reset_all) skill_interface.reset_all(); 
+
           $.each(data, function(k, v) {
             var constraint = constraint_satisfied(v);
 
             if (constraint.is_satisfied) {
-              skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
+              //skill_interface.display(v.shorthand, constraint.possible_costs, constraint.is_open);
+
               //add_to_cache(skills.get_code(k));
+              render_queue[v.shorthand] = {
+                mode: 'display',
+                costs: constraint.possible_costs,
+                is_open: constraint.is_open
+              }
             } else {
               //console.log(k + ' is no longer satisfied');
-              skill_interface.remove(v.shorthand);
+              //skill_interface.remove(v.shorthand);
+
+              render_queue[v.shorthand] = { mode: 'remove' }
               to_pool.push(v.shorthand);
             }
           })
@@ -355,6 +386,7 @@ var skills = (function() {
           //   dragdrop.drop_to_pool(x);
           // })
 
+          batch_render(render_queue);
           dragdrop.drop_to_pool(to_pool);
           
 
