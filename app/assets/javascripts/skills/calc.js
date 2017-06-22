@@ -49,13 +49,14 @@ var calc = function() {
     var norm = Object.keys(profession_basic.selected()).length - 1;
     var forgotten = Object.keys(profession_basic.forgotten()).length;
     var conc = Object.keys(profession_conc.selected()).length;
+    var adv = Object.keys(profession_adv.selected()).length;
 
     if (profile.get_current() != undefined) {
       if (profile.get_current()['strain'] == 'Remnants') norm--;
     }
     norm = norm < 0 ? 0 : norm;
     
-    data['profs-acquired'] = 10 * (norm + forgotten * 2) + 30 * conc;
+    data['profs-acquired'] = 10 * (norm + forgotten * 2) + 30 * conc + 10 * adv;
     $('#xp-prof-acquired').text(data['profs-acquired']);
     recalculate_top_level('prof');
     recalculate_tally();
