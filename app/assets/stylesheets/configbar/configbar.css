@@ -33,6 +33,14 @@
   max-width: 100%;
 }
 
+#what-link {
+  cursor: pointer;
+}
+
+#connection-status {
+  display: none;
+}
+
 .toggle-group > .btn {
   padding-top: 8px;
   padding-bottom: 0px;

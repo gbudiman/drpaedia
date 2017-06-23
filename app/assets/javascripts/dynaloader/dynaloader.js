@@ -105,6 +105,7 @@ var dynaloader = (function() {
                     dynaloader.set_gil('ok_to_animate', true);
                     dynaloader.set_gil('ok_to_sort', true);
 
+                    remote.get_status();
                     //skills.update_availability();
                     load_message('Finalizing...').then(function() {
                       notifier.set_timeout(250);

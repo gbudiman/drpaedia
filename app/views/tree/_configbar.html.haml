@@ -1,7 +1,16 @@
 %div{id: 'config-bar'}
   %div{class: 'config-indent'}
     %div{class: 'config-header'} Current Profile
-    %div{class: 'btn-group container col-xs-12'}
+    %div{id: 'connection-status'} 
+      Connected
+      %a{href: '#', id: 'disconnect-fb'} Disconnect?
+    %div{class: 'col-xs-12 extrapad', id: 'fblink-container'}
+      %button{type: 'button', class: 'btn btn-primary', id: 'link-to-fb'}
+        %span{class: 'glyphicon glyphicon-transfer'} &nbsp;
+        %span{id: 'link-to-fb-text'} Sync
+      &nbsp;
+      %span{class: 'glyphicon glyphicon-question-sign', id: 'what-link'}
+    %div{class: 'btn-group container col-xs-12 extrapad'}
       %button{type: 'button', class: 'btn btn-primary', id: 'profile-rename'} 
         %span{class: 'glyphicon glyphicon-pencil'} &nbsp;
         Default

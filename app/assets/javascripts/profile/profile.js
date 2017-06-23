@@ -558,6 +558,7 @@ var profile = function() {
     create_empty: create_empty,
     load: load,
     store: store,
+    get_root: function() { return $.jStorage.get('all'); },
     get_all: function() { return profiles; },
     get_deleted: function() { return deleted; },
     get_current: function() { return profiles[selected]; },

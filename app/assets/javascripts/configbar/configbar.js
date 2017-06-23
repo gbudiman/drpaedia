@@ -7,6 +7,39 @@ var configbar = (function() {
       initialize_arrow();
       event.preventDefault();
     });
+
+    $('#what-link').on('click', function() {
+      $('#modal-fblink').modal('show');
+      return false;
+    })
+
+    $('#modal-fblink').modal({
+      show: false
+    })
+
+    $('#link-to-fb').on('click', function() {
+      var $this = $(this);
+      $this.text('Synchronizing...');
+      $this.prop('disabled', true);
+      FB.login(function(response) {
+        if (response.status == 'connected') {
+          remote.show_login_button(false);
+          remote.show_connection_status(true);
+          remote.do_handshake('facebook', response.authResponse);
+        } else {
+          remote.show_login_error_button();
+          remote.show_connection_status(false);
+        }
+      }, {scope: 'email'});
+    })
+
+    $('#disconnect-fb').on('click', function(event) {
+      FB.logout(function(response) {
+        remote.show_login_button(true);
+        remote.show_connection_status(false);
+      })
+      event.preventDefault();
+    })
   }
 
   var toggle = function() {

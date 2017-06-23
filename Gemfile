@@ -40,6 +40,9 @@ gem 'haml-rails'
 gem 'awesome_print'
 gem 'rspec-rails'
 gem 'bootstrap-sass'
+gem 'figaro'
+gem 'omniauth-facebook'
+gem 'devise'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
