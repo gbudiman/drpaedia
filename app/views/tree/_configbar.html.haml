@@ -1,9 +1,14 @@
 %div{id: 'config-bar'}
   %div{class: 'config-indent'}
-    %div{class: 'config-header'} Current Profile
-    %div{id: 'connection-status'} 
-      Connected
-      %a{href: '#', id: 'disconnect-fb'} Disconnect?
+    %div{class: 'config-header'} 
+      Profile
+      %span{id: 'connection-status'} 
+        Offline
+    %div{class: 'btn-group container col-xs-12 extrapad', id: 'disconnect-fb-group'}
+      %button{type: 'button', class: 'btn btn-primary', id: 'disconnect-fb'}
+        Disconnect
+      %button{type: 'button', class: 'btn btn-primary'}
+        %span{class: 'glyphicon glyphicon-cog', id: 'configure-remote'}
     %div{class: 'col-xs-12 extrapad', id: 'fblink-container'}
       %button{type: 'button', class: 'btn btn-primary', id: 'link-to-fb'}
         %span{class: 'glyphicon glyphicon-transfer'} &nbsp;

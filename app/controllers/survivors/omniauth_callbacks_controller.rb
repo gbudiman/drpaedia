@@ -15,7 +15,7 @@ class Survivors::OmniauthCallbacksController < Devise::OmniauthCallbacksControll
         handshake: 'error'
       }
     else
-      render 'survivor/callback_autoclose'
+      render 'survivor/callback_autoclose_loggedin'
     end
   end
 end

@@ -3,7 +3,7 @@ class SessionController < ApplicationController
     sign_out
     session['current_user'] = nil
 
-    render 'survivor/callback_autoclose'
+    render 'survivor/callback_autoclose_loggedout'
   end
 
   def current

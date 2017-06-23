@@ -88,6 +88,15 @@ var remote = function() {
     //       break;
     //   }
     // });
+    check_signed_in().then(function(is_connected) {
+      if (is_connected) {
+        show_login_button(false);
+        show_connection_status(true);
+      } else {
+        show_login_button(true);
+        show_connection_status(false);
+      }
+    })
   }
 
   var show_login_error_button = function() {
@@ -99,16 +108,18 @@ var remote = function() {
     if (val) {
       $('#fblink-container').show();
       $('#link-to-fb-text').text('Sync?');
+      $('#disconnect-fb-group').hide();
     } else {
       $('#fblink-container').hide();
+      $('#disconnect-fb-group').show();
     }
   }
 
   var show_connection_status = function(val) {
     if (val) {
-      $('#connection-status').show();
+      $('#connection-status').text('Connected');
     } else {
-      $('#connection-status').hide();
+      $('#connection-status').text('Offline');
     }
   }
 
