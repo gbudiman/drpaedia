@@ -24,6 +24,18 @@ var profile = function() {
     prefs: { advanced_acknowledged: false }
   }
 
+  var sync = function(data) {
+    deleted = {};
+    config = data.config;
+    selected = config.primary;
+    profiles = data.profiles;
+
+    $.jStorage.set('all', { profiles: profiles, config: config });
+    switch_to(selected);
+    profile_interface.update_list();
+    profile_interface.update_selected(selected);
+  }
+
   var copy_current_to = function(new_value) {
     profiles[new_value] = profiles[selected];
     $.jStorage.set('all', { profiles: profiles, config: config });
@@ -250,6 +262,7 @@ var profile = function() {
       clearTimeout(remote_timeout);
       remote_timeout = setTimeout(function() {
         manager.log('sending request to server');
+        remote._simulate_upload();
       }, 1000);
     }
   }
@@ -440,8 +453,8 @@ var profile = function() {
 
   var wipe = function() {
     $.jStorage.set('all', null);
-    load();
-    save_all();
+    //load();
+    //save_all();
   }
 
   var pack_strain = function() {
@@ -580,6 +593,7 @@ var profile = function() {
     save_all_delayed: save_all_delayed,
     set_pref: set_pref,
     soft_delete: soft_delete,
+    sync: sync,
     undelete: undelete,
     set_acknowledge: set_acknowledge,
     switch_to: switch_to,

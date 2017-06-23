@@ -18,26 +18,28 @@ var configbar = (function() {
     })
 
     $('#link-to-fb').on('click', function() {
-      var $this = $(this);
-      $this.text('Synchronizing...');
-      $this.prop('disabled', true);
-      FB.login(function(response) {
-        if (response.status == 'connected') {
-          remote.show_login_button(false);
-          remote.show_connection_status(true);
-          remote.do_handshake('facebook', response.authResponse);
-        } else {
-          remote.show_login_error_button();
-          remote.show_connection_status(false);
-        }
-      }, {scope: 'email'});
+      remote._simulate_login();
+      // var $this = $(this);
+      // $this.text('Synchronizing...');
+      // $this.prop('disabled', true);
+      // FB.login(function(response) {
+      //   if (response.status == 'connected') {
+      //     remote.show_login_button(false);
+      //     remote.show_connection_status(true);
+      //     remote.do_handshake('facebook', response.authResponse);
+      //   } else {
+      //     remote.show_login_error_button();
+      //     remote.show_connection_status(false);
+      //   }
+      // }, {scope: 'email'});
     })
 
     $('#disconnect-fb').on('click', function(event) {
-      FB.logout(function(response) {
-        remote.show_login_button(true);
-        remote.show_connection_status(false);
-      })
+      remote._simulate_logout()
+      // FB.logout(function(response) {
+      //   remote.show_login_button(true);
+      //   remote.show_connection_status(false);
+      // })
       event.preventDefault();
     })
   }

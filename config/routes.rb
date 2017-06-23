@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   root                                                   to: 'tree#index'
   post          '/sync/upstream',                        to: 'survivor#upstream'
+  get           '/sync/downstream',                      to: 'survivor#downstream'
   get           '/session/destroy',                      to: 'session#destroy'
   get           '/session/current',                      to: 'session#current'
   #get          '/survivors/auth/facebook/callback',      to: 'session#create'
