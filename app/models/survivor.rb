@@ -103,7 +103,6 @@ class Survivor < ApplicationRecord
       end
     end
 
-    ap result
     return result
   end
 end

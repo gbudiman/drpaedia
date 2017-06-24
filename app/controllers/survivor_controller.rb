@@ -52,12 +52,19 @@ class SurvivorController < ApplicationController
     guest_id = params[:guest_id].to_i
 
     profile = Profile.find_by(survivor_id: survivor_id, name: profile_name)
-    multicast = Multicast.find_or_create_by(profile_id: profile.id, survivor_id: guest_id)
+    multicast = Multicast.find_or_initialize_by(profile_id: profile.id, survivor_id: guest_id)
 
-    if multicast
-      render json: { success: true, id: multicast.id }
+    if multicast.id == nil
+      multicast.save
+
+      if multicast.id != nil
+        render json: { success: 'created', id: multicast.id }
+      else
+        render status: 500, json: { success: 'failed' }
+      end
     else
-      render status: 500, json: { success: false }
+      multicast.save
+      render json: { success: 'exist', id: multicast.id }
     end
   end
 

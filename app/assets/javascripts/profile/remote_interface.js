@@ -39,20 +39,35 @@ var remote_interface = function() {
             guest_id: guest_id
           }
         }).done(function(response) {
-          if (response.success) {
+          if (response.success == 'created') {
             $this.typeahead('val', '');
+            mark_duplicate(null);
             mark_successfully_shared($this, response.id, suggestion.name);
+          } else if (response.success == 'exist') {
+            $this.typeahead('val', 'Already shared');
+            $this.select();
+            mark_duplicate(response.id);
           }
         })
       })
     });
   }
 
+  var mark_duplicate = function(id) {
+    $('#sharing-settings').find('.shared-duplicate').each(function() {
+      $(this).removeClass('shared-duplicate');
+    })
+
+    if (id != null) {
+      $('#sharing-settings').find('[data-id="' + id + '"]').parent().addClass('shared-duplicate');
+    }
+  }
+
   var build_shared_profiles = function(data) {
     var master_record = ''
     $.each(data, function(profile, d) {
       var left_side = '<div class="col-xs-4">' + profile + '</div>';
-      var right_side = '<div class="col-xs-8" data-profile-name="' + profile + '">';
+      var right_side = '<div class="col-xs-8 row" data-profile-name="' + profile + '">';
 
       $.each(d, function(_junk, mcast) {
         right_side +=    '<div class="col-xs-12">'
@@ -64,8 +79,8 @@ var remote_interface = function() {
       })
 
       right_side +=      '<div class="col-xs-12">'
-                 +          '<div class="col-xs-8 input-group input-group-sm share-cell">'
-                 +            '<input tyle="text" class="form-control survivor-typeahead" />'
+                 +          '<div class="col-xs-12 input-group input-group-sm share-cell">'
+                 +            '<input tyle="text" class="form-control survivor-typeahead" placeholder="Type some name" />'
                  +          '</div>'
                  +       '</div>';
 
@@ -109,7 +124,6 @@ var remote_interface = function() {
 
     cached.before(replacement);
 
-    console.log(cached);
     cached.parent().find('.profile-unshare').show().off('click').on('click', function() {
       unshare($(this));
     });

@@ -93,12 +93,21 @@ a.navbar-brand.navbar-brand-main {
   height: 128px;
 }
 
+.shared-duplicate {
+  font-weight: bold;
+  color: #803838;
+}
+
 .share-cell {
   display: inline-flex;
 }
 
 .profile-shared, .profile-unshare {
   display: none;
+}
+
+.profile-unshare {
+  cursor: pointer;
 }
 
 .editable.editable-disabled {
