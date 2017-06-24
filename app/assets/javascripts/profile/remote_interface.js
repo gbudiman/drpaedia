@@ -162,17 +162,64 @@ var remote_interface = function() {
           +  '<div class="col-xs-8">'
           +    d.strain + ' '
           +    Object.keys(d.professions).join(', ') + '<br />'
-          +    'HP: +' + d.hp + ' MP: +' + d.mp + ' Inf: -' + d.inf
+          +    'HP: +' + d.hp + ' MP: +' + d.mp + ' Inf: -' + d.inf + '<br />'
+          +    'Acquired: ' + d.acq + ' | Planned: ' + d.plan
           +  '</div></div>';
       })
 
       return t;
     }
 
+    var compare_equal = function(a, b) {
+      var is_equal = true;
+
+      if (Object.keys(a).length != Object.keys(b).length) return false;
+      $.each(a, function(name, _junk) {
+        if (b[name] == undefined) {
+          is_equal = false;
+          return false;
+        }
+      })
+
+      if (is_equal == false) return false;
+
+      $.each(b, function(name, _junk) {
+        if (a[name] == undefined) {
+          is_equal = false;
+          return false;
+        }
+      })
+
+      if (is_equal == false) return false;
+      // At this point, we know each stream contains identical profiles
+
+      var granular_compare = function(xa, xb, prop) {
+        return xa[prop] == xb[prop];
+      }
+
+      $.each(a, function(name, _data) {
+        var cmp_a = a[name];
+        var cmp_b = b[name];
+
+        $.each(['xp', 'hp', 'mp', 'inf', 'acq', 'plan'], function(_junk, prop) {
+          is_equal &= granular_compare(cmp_a, cmp_b, prop);
+        })
+
+        if (is_equal == false) return false;
+      })
+
+      if (is_equal == false) return false;
+
+      return true;
+    }
+
+    console.log(local);
     if (local_utime != server_utime) {
-      $('#conflict-sync-local-data').empty().append(prepare(local, local_utime, local_utime > server_utime));
-      $('#conflict-sync-server-data').empty().append(prepare(server, server_utime, server_utime > local_utime));
-      $('#modal-sync-conflict').modal('show');
+      if (compare_equal(local, server) == false) {
+        $('#conflict-sync-local-data').empty().append(prepare(local, local_utime, local_utime > server_utime));
+        $('#conflict-sync-server-data').empty().append(prepare(server, server_utime, server_utime > local_utime));
+        $('#modal-sync-conflict').modal('show');
+      }
     }
   }
 

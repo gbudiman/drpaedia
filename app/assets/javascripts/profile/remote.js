@@ -23,9 +23,10 @@ var remote = function() {
       }
     }).done(function(response) {
       if (response.response == 'synchronized') {
-        console.log('Upstream synchronized');
+        manager.log('Upstream synchronized');
       } else if (response.response == 'disconnected') {
       } else if (response.response == 'check') {
+        manager.log('Check compare');
         var m = profile.compute_metadata(response.comparison);
         remote_interface.update_sync_conflict(downstream_profile.metadata, 
                                               m,

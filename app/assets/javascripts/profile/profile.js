@@ -635,16 +635,30 @@ var profile = function() {
     }
 
     $.each(h.profiles, function(key, val) {
-      metadata[key] = {
-        acq: val.acq.length,
-        professions: Object.assign({}, val.professions.advanced,
-                                       val.professions.concentration,
-                                       val.professions.selected),
-        hp: val.stats.hp,
-        mp: val.stats.mp,
-        inf: val.stats.inf,
-        strain: val.strain,
-        xp: compute_acq(val)
+      if (val.acq == undefined) {
+        metadata[key] = {
+          acq: 0,
+          plan: 0,
+          professions: {},
+          hp: 0,
+          mp: 0,
+          inf: 0,
+          strain: 'No Selection',
+          xp: 0
+        }
+      } else {
+        metadata[key] = {
+          acq: val.acq.length,
+          plan: val.plan.length,
+          professions: Object.assign({}, val.professions.advanced,
+                                         val.professions.concentration,
+                                         val.professions.selected),
+          hp: val.stats.hp,
+          mp: val.stats.mp,
+          inf: val.stats.inf,
+          strain: val.strain,
+          xp: compute_acq(val)
+        }
       }
     })
 

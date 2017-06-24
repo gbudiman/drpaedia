@@ -275,10 +275,11 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
+  callback_prepend = Rails.env == 'development' ? 'http://localhost:3000' : 'http://drpedia-test.herokuapp.com'
   config.omniauth :facebook,
                   Rails.application.secrets.facebook_app_id,
                   Rails.application.secrets.facebook_app_secret,
                   scope: 'email,public_profile',
                   info_field: 'email,name,link',
-                  callback_url: 'http://drpedia-test.herokuapp.com/survivors/auth/facebook/callback'
+                  callback_url: callback_prepend + '/survivors/auth/facebook/callback'
 end
