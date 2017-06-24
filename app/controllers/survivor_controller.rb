@@ -70,4 +70,12 @@ class SurvivorController < ApplicationController
   def get_shared_profile
     render json: Survivor.find(session['current_user']['id']).get_shared_profile
   end
+
+  def list_guest_profiles
+    render json: Multicast.list_guest_profiles(guest_id: session['current_user']['id'])
+  end
+
+  def fetch_profile
+    render json: Profile.find(params[:id].to_i)
+  end
 end

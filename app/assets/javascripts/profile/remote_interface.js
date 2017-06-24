@@ -28,11 +28,9 @@ var remote_interface = function() {
         source: bloodhoundSuggestions
       }).on('typeahead:select', function(e, suggestion) {
         var $this = $(this);
-        console.log(suggestion);
         var profile_name = get_profile_name($this);
         var guest_id = suggestion.id;
 
-        console.log(profile_name);
         $.ajax({
           method: 'POST',
           url: '/profile/share',
@@ -41,7 +39,6 @@ var remote_interface = function() {
             guest_id: guest_id
           }
         }).done(function(response) {
-          console.log(response)
           if (response.success) {
             $this.typeahead('val', '');
             mark_successfully_shared($this, response.id, suggestion.name);

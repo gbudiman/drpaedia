@@ -88,6 +88,19 @@ var configbar = (function() {
       remote._simulate_download();
       $('#modal-sync-conflict').modal('close');
     })
+
+    $('#profiles-dropdown').on('click', function() {
+      fetch_guest_profiles();
+    })
+  }
+
+  var fetch_guest_profiles = function() {
+    $.ajax({
+      method: 'GET',
+      url: '/profile/list_guests'
+    }).done(function(response) {
+      profile_interface.append_guest_profiles(response);
+    })
   }
 
   var toggle = function() {
@@ -117,6 +130,7 @@ var configbar = (function() {
 
   return {
     attach: attach,
+    fetch_guest_profiles: fetch_guest_profiles,
     initialize_arrow: initialize_arrow
   }
 })()

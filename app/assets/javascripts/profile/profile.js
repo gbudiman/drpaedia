@@ -11,6 +11,9 @@ var profile = function() {
 
   var remote_timeout = setTimeout(null, 0);
 
+  var is_read_only = false;
+  var injected_profile = null;
+
   var empty_default = {
     profiles: {
       default: {
@@ -245,7 +248,7 @@ var profile = function() {
   }
 
   var save_all = function() {
-    if (dynaloader.get_gil('ok_to_save') && dynaloader.get_gil('ok_to_delayed_save')) {
+    if (dynaloader.get_gil('ok_to_save') && dynaloader.get_gil('ok_to_delayed_save') && !is_read_only) {
       var caller = arguments.callee.caller.toString();
       console.log(caller);
       store();
@@ -329,7 +332,19 @@ var profile = function() {
     calc.recalculate_all();
   }
 
-  var switch_to = function(new_value) {
+  var inject = function(data) {
+    injected_profile = data;
+  }
+
+  var switch_to = function(new_value, _read_only) {
+    if (_read_only == undefined || _read_only == false) {
+      is_read_only = false;
+      //profile_interface.enable_editable_name(true);
+    } else {
+      is_read_only = true;
+      //profile_interface.enable_editable_name(false);
+    }
+
     old_profile = selected;
     selected = new_value;
 
@@ -344,7 +359,7 @@ var profile = function() {
     })
     
     old_profile = selected;
-    profile_interface.update_selected(selected);
+    profile_interface.update_selected(selected, is_read_only);
 
     setTimeout(function() {
       dynaloader.set_gil('ok_to_delayed_save', true);
@@ -365,7 +380,7 @@ var profile = function() {
 
   var apply = function() {
     //dynaloader.set_delegate('profile_apply', calc.recalculate_all, function() {
-    var d = profiles[selected];
+    var d = is_read_only ? injected_profile : profiles[selected];
     postprocess_cost = {};
 
     if (d == undefined) return;
@@ -418,7 +433,7 @@ var profile = function() {
   }
 
   var apply_advanced_lock = function() {
-    var ack = profiles[selected].prefs.advanced_acknowledged;
+    var ack = (is_read_only ? injected_profile : profiles[selected]).prefs.advanced_acknowledged;
     profession_adv_interface.hide_unlock(ack);
 
     if (ack == false) {
@@ -588,6 +603,7 @@ var profile = function() {
     get_deleted: function() { return deleted; },
     get_strain: function() { return pack_strain(); },
     get_primary: get_primary,
+    inject: inject,
     set_primary: set_primary,
     rename: rename,
     port_old_cookies: port_old_cookies,

@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get           '/session/current',                      to: 'session#current'
   get           '/survivor/search',                      to: 'survivor#search'
   get           '/profile/shared',                       to: 'survivor#get_shared_profile'
+  get           '/profile/list_guests',                  to: 'survivor#list_guest_profiles'
+  get           '/profile/fetch',                        to: 'survivor#fetch_profile'
   post          '/survivor/name/edit',                   to: 'survivor#edit_name'
   post          '/profile/share',                        to: 'survivor#share_profile'
   post          '/profile/unshare',                      to: 'survivor#unshare_profile'

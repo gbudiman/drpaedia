@@ -44,6 +44,18 @@ class Survivor < ApplicationRecord
                                 data: profile_data)
       end
 
+      profile_to_delete = Array.new
+      Profile.where(survivor_id: self.id).each do |r|
+        profile_id = r.id
+        profile_name = r.name
+
+        if data[:profiles][profile_name.to_sym] == nil
+          profile_to_delete.push(r.id)
+        end
+      end
+
+      Profile.where(id: profile_to_delete).destroy_all
+
       self.profile_timestamp = timestamp
       self.primary_profile = primary
       save

@@ -1,4 +1,6 @@
 var profile_interface = function() {
+  var editable_has_been_setup = false;
+
   var build = function() {
     attach();
     update_list();
@@ -10,6 +12,7 @@ var profile_interface = function() {
       unsavedclass: null,
       validate: validate_profile_name,
       container: 'body',
+      
     }).on('save', function(e, params) {
       var new_value = params.newValue.trim();
       profile.rename(new_value);
@@ -34,6 +37,8 @@ var profile_interface = function() {
     }).on('shown.bs.modal', function(e) {
       //$('#modal-copy-input').focus();
     });
+
+    editable_has_been_setup = true;
   }
 
   var attach_copy_button = function() {
@@ -121,6 +126,7 @@ var profile_interface = function() {
     $(s).insertAfter(anchor);
     attach_profile_load();
     attach_profile_set_primary();
+    configbar.fetch_guest_profiles();
   }
 
   var attach_profile_set_primary = function() {
@@ -229,8 +235,71 @@ var profile_interface = function() {
     })
   }
 
-  var update_selected = function(new_value) {
-    $('#profile-rename').html('<span class="glyphicon glyphicon-pencil"></span>&nbsp; ' + new_value);
+  var unanchor_profiles = function() {
+    $('#profile-dropdown').find('.anchor-active').each(function() {
+      $(this).removeClass('anchor-active');
+    })
+  }
+
+  var append_guest_profiles = function(data) {
+    var activate = function() {
+      $('#profile-dropdown').find('.guest-profile-clickable').off('click').on('click', function() {
+        var id = $(this).attr('data-id');
+        var name = $(this).text();
+
+        $.ajax({
+          method: 'GET',
+          url: '/profile/fetch',
+          data: {
+            id: id
+          }
+        }).done(function(response) {
+          profile.inject(response.data);
+          profile.switch_to(name, true);
+          unanchor_profiles();
+        })
+
+        return false;
+      })
+    }
+
+    $('#guest-profile-separator').remove();
+    if (Object.keys(data).length > 0) {
+      $('#profile-dropdown').append('<li role="separator" class="divider" id="guest-profile-separator"></li>');
+    }
+
+    $('#profile-dropdown').find('.guest-profile').remove();
+
+    var raw = '';
+    $.each(data, function(id, name) {
+      raw += '<li class="guest-profile">'
+          +    '<span>'
+          +      '<a href="#" class="guest-profile-clickable" data-id="' + id + '">'
+          +        name
+          +      '</a>'
+          +    '</span>'
+          +  '</li>';
+    })
+
+    $('#profile-dropdown').append(raw);
+    activate();
+  }
+
+  var update_selected = function(new_value, _is_read_only) {
+    var is_read_only = _is_read_only == undefined ? false : _is_read_only;
+
+    console.log('USEL ' + is_read_only);
+    if (is_read_only) {
+      $('#profile-rename').html(new_value);
+      if (editable_has_been_setup) {
+        $('#profile-rename').editable('disable');
+      }
+    } else {
+      $('#profile-rename').html('<span class="glyphicon glyphicon-pencil"></span>&nbsp; ' + new_value);
+      if (editable_has_been_setup) {
+        $('#profile-rename').editable('enable');
+      }
+    }
     $('#config-button').find('.profile-name').text('Profile: ' + new_value);
     configbar.initialize_arrow();
   }
@@ -251,6 +320,7 @@ var profile_interface = function() {
 
   return {
     build: build,
+    append_guest_profiles: append_guest_profiles,
     update_list: update_list,
     update_selected: update_selected,
   }

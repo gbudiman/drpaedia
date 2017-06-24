@@ -101,6 +101,12 @@ a.navbar-brand.navbar-brand-main {
   display: none;
 }
 
+.editable.editable-disabled {
+  border: 1px solid #383838 !important;
+  color: #fff !important;
+  background-color: #aaa;
+}
+
 input.input-stat.input-sm {
   height: 30px;
 }
