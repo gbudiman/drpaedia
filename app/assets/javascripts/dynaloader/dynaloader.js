@@ -112,6 +112,7 @@ var dynaloader = (function() {
                       notifier.set_timeout(250);
                       skill_interface.set_timeout(250);
                       clear_message();
+                      remote._simulate_upload(true);
                     });
                   });
                 });
