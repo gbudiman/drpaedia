@@ -1,0 +1,25 @@
+%div{class: 'modal fade', id: 'modal-remote-config'}
+  %div{class: 'modal-dialog'}
+    %div{class: 'modal-content'}
+      %div{class: 'modal-header text-center'} 
+        %h4 Online Profile Settings
+      %div{class: 'modal-body'}
+        %div{class: 'row'}
+          %div{class: 'col-xs-4'}
+            %h4 Friendly Name
+          %div{class: 'col-xs-8'}
+            %h4
+              %span{id: 'remote-friendly-name'} Friendly Name
+          %div{class: 'col-xs-12 text-muted'}
+            This name is what your friends will see when you share your profile and also how they will find you
+            
+        %div{class: 'row'}
+        %h4 Shared Profiles
+        %hr
+        %div{id: 'sharing-settings', class: 'row'}
+          %div{class: 'col-xs-6'}
+            A
+          %div{class: 'col-xs-6'}
+            B
+      %div{class: 'modal-footer'}
+        %button{type: 'button', class: 'btn btn-default', 'data-dismiss': 'modal'} Close

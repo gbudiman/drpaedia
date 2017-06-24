@@ -46,7 +46,8 @@ var remote = function() {
         method: 'GET',
         url: 'session/current'
       }).done(function(response) {
-        console.log(response.signed_in);
+        console.log(response);
+        remote_interface.update_friendly_name(response.friendly_name);
         resolve(response.signed_in);
       })
     })

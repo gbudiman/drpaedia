@@ -42,6 +42,36 @@ var configbar = (function() {
       // })
       event.preventDefault();
     })
+
+    $('#modal-remote-config').modal({
+
+    }).on('shown.bs.modal', function() {
+      $('body').css('padding-right', 0);
+    }).on('hidden.bs.modal', function() {
+      $('body').css('padding-right', 0);
+    })
+
+
+    $('#configure-remote').on('click', function() {
+      $('#modal-remote-config').modal('show');
+    })
+
+    $('#remote-friendly-name').editable({
+      placement: 'bottom',
+      container: '#modal-remote-config',
+      viewport: '#modal-remote-config',
+      validate: function(value) {
+        if (value.trim() == '') {
+          return 'Cannot be empty'
+        }
+      },
+      url: '/survivor/name/edit',
+      pk: -1,
+      name: 'whatever',
+      ajaxOptions: {
+        type: 'post'
+      }
+    })
   }
 
   var toggle = function() {

@@ -6,6 +6,7 @@
 = render 'fbinfo'
 = render 'navbar'
 = render 'configbar'
+= render 'remote_config'
 
 %div{class: 'row main'}
   %div{class: 'col-xs-6', id: 'main-left'}
@@ -61,6 +62,7 @@
 = stylesheet_link_tag 'notifier/style'
 = stylesheet_link_tag 'profile/style'
 = stylesheet_link_tag 'animate'
+= javascript_include_tag 'profile/remote_interface'
 = javascript_include_tag 'profile/remote'
 = javascript_include_tag 'dynaloader/manager'
 = javascript_include_tag 'layout/layout'

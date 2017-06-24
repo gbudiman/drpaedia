@@ -24,4 +24,14 @@ class SurvivorController < ApplicationController
       response: Survivor.find(session['current_user']['id']).compose_downstream
     }
   end
+
+  def edit_name
+    #ap params
+    begin 
+      Survivor.find(session['current_user']['id']).update(friendly_name: params[:value])
+      render json: { success: true, new_value: params[:value] }
+    rescue ActiveRecord::RecordNotUnique
+      render status: 500, plain: 'That name has been used'
+    end
+  end
 end

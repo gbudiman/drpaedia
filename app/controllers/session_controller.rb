@@ -7,8 +7,12 @@ class SessionController < ApplicationController
   end
 
   def current
+    current_user = Survivor.find(session['current_user']['id'])
+    session['current_user']['friendly_name'] = current_user.friendly_name
+    
     render json: {
-      signed_in: session['devise.facebook_data'] == nil ? false : true
+      signed_in: session['devise.facebook_data'] == nil ? false : true,
+      friendly_name: session['current_user']['friendly_name']
     }
   end
 end
