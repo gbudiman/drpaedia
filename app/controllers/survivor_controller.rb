@@ -13,16 +13,29 @@ class SurvivorController < ApplicationController
     profile_data = params[:profile_data] == 'null' ? @@null_profile 
                                                    : JSON.parse(params[:profile_data]).deep_symbolize_keys
 
+    fresh_login = params[:fresh_login]
+
     if session['current_user'] == nil
       render json: {
         response: 'disconnected'
       }
     else
-      response = Survivor.find(session['current_user']['id']).sync(data: profile_data)
+      response = Survivor.find(session['current_user']['id']).compose_downstream
 
-      render json: {
-        response: response
-      }
+      if fresh_login == 'true'
+        response = Survivor.find(session['current_user']['id']).compose_downstream
+
+        render json: {
+          response: 'check',
+          comparison: response
+        }
+      elsif fresh_login == 'false'
+        response = Survivor.find(session['current_user']['id']).sync(data: profile_data)
+
+        render json: {
+          response: response
+        }
+      end
     end
   end
 

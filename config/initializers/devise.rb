@@ -280,5 +280,5 @@ Devise.setup do |config|
                   Rails.application.secrets.facebook_app_secret,
                   scope: 'email,public_profile',
                   info_field: 'email,name,link',
-                  callback_url: 'http://localhost:3000/survivors/auth/facebook/callback'
+                  callback_url: 'http://drpedia-test.herokuapp.com/survivors/auth/facebook/callback'
 end

@@ -592,13 +592,73 @@ var profile = function() {
     return result;
   }
 
+  var get_root = function() {
+    var h_root = $.jStorage.get('all');
+
+    return {
+      transmit: h_root,
+      metadata: compute_metadata(h_root)
+    }
+  }
+
+  var compute_metadata = function(h) {
+    var metadata = {};
+
+    var compute_acq = function(v) {
+      var acq = v.acq;
+      var stats = v.stats;
+      var professions = v.professions;
+      var strain = v.strain;
+      var is_remnant = strain == 'Remnants';
+      var basic_prof = Object.keys(professions.selected).length - 1;
+
+      if (is_remnant) {
+        basic_prof -= 1;
+      }
+
+      if (basic_prof < 0) basic_prof = 0;
+
+      var xp = 0;
+
+      $.each(acq, function(i, x) {
+        xp += x.cost;
+      })
+
+      xp += stats.hp;
+      xp += stats.mp;
+      xp += Object.keys(professions.advanced).length * 10;
+      xp += Object.keys(professions.concentration).length * 30;
+      xp += Object.keys(professions.forgotten).length * 10;
+      xp += basic_prof * 10;
+
+      return xp;
+    }
+
+    $.each(h.profiles, function(key, val) {
+      metadata[key] = {
+        acq: val.acq.length,
+        professions: Object.assign({}, val.professions.advanced,
+                                       val.professions.concentration,
+                                       val.professions.selected),
+        hp: val.stats.hp,
+        mp: val.stats.mp,
+        inf: val.stats.inf,
+        strain: val.strain,
+        xp: compute_acq(val)
+      }
+    })
+
+    return metadata;
+  }
+
   return {
     apply: apply,
     copy_current_to: copy_current_to,
     create_empty: create_empty,
     load: load,
     store: store,
-    get_root: function() { return $.jStorage.get('all'); },
+    get_root: get_root,
+    compute_metadata: compute_metadata,
     get_all: function() { return profiles; },
     get_deleted: function() { return deleted; },
     get_current: function() { return profiles[selected]; },

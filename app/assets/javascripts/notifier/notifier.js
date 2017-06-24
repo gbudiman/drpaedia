@@ -26,6 +26,23 @@ var notifier = function() {
     })
   }
 
+  var notify_synced = function(x) {
+    $.notify({
+      message: x 
+    }, {
+      type: 'success',
+      animate: {
+          enter: 'animated fadeInRight',
+          exit: 'animated fadeOutRight'
+      },
+      template: '<div data-notify="container" id="skill-notify" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+                  '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                  '<img data-notify="icon" class="img-circle pull-left">' +
+                  '<span data-notify="message">{2}</span>' +
+                '</div>',
+    })
+  }
+
   var select = function(i) {
     // if (dynaloader.has_delegations('initial_load')) { return; }
     if (!dynaloader.get_gil('ok_to_update_gui')) return;
@@ -386,6 +403,7 @@ var notifier = function() {
     adv_preq_missing: adv_preq_missing,
     conc_preq_missing: conc_preq_missing,
     notify_read_only: notify_read_only,
+    notify_synced: notify_synced,
     select: select,
     skill_preq_missing: skill_preq_missing,
     psis_preq_missing: psis_preq_missing,

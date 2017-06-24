@@ -65,7 +65,7 @@ class Survivor < ApplicationRecord
   def compose_downstream
     return {
       config: {
-        timestamp: (Time.now.to_f * 1000).to_i,
+        timestamp: (self.profile_timestamp.to_f * 1000).to_i,
         primary: self.primary_profile
       },
       profiles: Profile.compose_downstream(survivor_id: self.id)

@@ -9,19 +9,28 @@ var remote = function() {
     window.open('/survivors/auth/facebook', 'login_aux', 'scrollbars=0, resizable=0, height=512, width=512');
   }
 
-  var _simulate_upload = function() {
+  var _simulate_upload = function(_fresh_login) {
+    var downstream_profile = profile.get_root();
+    var fresh_login = _fresh_login == undefined ? false : _fresh_login;
+
     $.ajax({
       method: 'POST',
       url: '/sync/upstream',
       csrf: get_csrf(),
       data: {
-        profile_data: JSON.stringify(profile.get_root())
+        profile_data: JSON.stringify(downstream_profile.transmit),
+        fresh_login: fresh_login
       }
     }).done(function(response) {
       if (response.response == 'synchronized') {
         console.log('Upstream synchronized');
       } else if (response.response == 'disconnected') {
-
+      } else if (response.response == 'check') {
+        var m = profile.compute_metadata(response.comparison);
+        remote_interface.update_sync_conflict(downstream_profile.metadata, 
+                                              m,
+                                              downstream_profile.transmit.config.timestamp,
+                                              response.comparison.config.timestamp);
       } else {
 
         profile.sync(response.response);
@@ -136,6 +145,8 @@ var remote = function() {
     }
   }
 
+
+
   return {
     _simulate_download: _simulate_download,
     _simulate_login: _simulate_login,
@@ -146,6 +157,7 @@ var remote = function() {
     get_csrf: get_csrf,
     get_status: get_status,
     show_login_button: show_login_button,
-    show_connection_status: show_connection_status
+    show_connection_status: show_connection_status,
+    
   }
 }()

@@ -4,8 +4,18 @@
       %div{class: 'modal-header text-center'} 
         %h4 Sync Conflict
       %div{class: 'modal-body'}
-        %button{type: 'button', class: 'btn btn-primary', id: 'sync-upstream'} Sync Upstream
-        %div Choose this if you believe your device is more up-to-date
+        %div{class: 'row'}
+          %div{class: 'col-xs-4'}
+            %button{type: 'button', class: 'btn btn-primary', id: 'sync-upstream'} Sync Upstream
+          %div{class: 'col-xs-8'}
+            Choose this if you believe your device is more up-to-date. This will upload data from your device to the server
+        %div{class: 'row'}
+          %div{id: 'conflict-sync-local-data', class: 'col-xs-12'}
         %hr
-        %button{type: 'button', class: 'btn btn-primary', id: 'sync-downstream'} Sync Downstream
-        %div Choose this if you just logged in to a new device. This will download data from server to your device
+        %div{class: 'row'}
+          %div{class: 'col-xs-4'}
+            %button{type: 'button', class: 'btn btn-primary', id: 'sync-downstream'} Sync Downstream
+          %div{class: 'col-xs-8'}
+            Choose this if you just logged in to a new device. This will download data from server to your device
+        %div{class: 'row'}
+          %div{id: 'conflict-sync-server-data', class: 'col-xs-12'}

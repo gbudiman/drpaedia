@@ -288,7 +288,6 @@ var profile_interface = function() {
   var update_selected = function(new_value, _is_read_only) {
     var is_read_only = _is_read_only == undefined ? false : _is_read_only;
 
-    console.log('USEL ' + is_read_only);
     if (is_read_only) {
       $('#profile-rename').html(new_value);
       if (editable_has_been_setup) {

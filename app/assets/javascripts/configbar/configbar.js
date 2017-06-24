@@ -81,12 +81,14 @@ var configbar = (function() {
 
     $('#sync-upstream').on('click', function() {
       remote._simulate_upload();
-      $('#modal-sync-conflict').modal('close');
+      $('#modal-sync-conflict').modal('hide');
+      notifier.notify_synced('Server data has been synchronized');
     })
 
     $('#sync-downstream').on('click', function() {
       remote._simulate_download();
-      $('#modal-sync-conflict').modal('close');
+      $('#modal-sync-conflict').modal('hide');
+      notifier.notify_synced('Your local data has been synchronized');
     })
 
     $('#profiles-dropdown').on('click', function() {

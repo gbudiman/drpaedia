@@ -143,8 +143,42 @@ var remote_interface = function() {
     })
   }
 
+  var update_sync_conflict = function(local, server, local_utime, server_utime) {
+    var prepare = function(data, utime, most_recent) {
+      var p_time = new Date(utime);
+      var sorted_keys = Object.keys(data).sort();
+      var t = 'Last update: ' + p_time + '<br />';
+      
+      if (most_recent) {
+        t += '<span class="text-success"><strong>(most recent)</strong></span><br />';
+      }
+
+      $.each(sorted_keys, function(_junk, k) {
+        d = data[k];
+        t += '<hr><div class="row"><div class="col-xs-4">'
+          +    k + '<br />'
+          +    'XP: ' + d.xp
+          +  '</div>'
+          +  '<div class="col-xs-8">'
+          +    d.strain + ' '
+          +    Object.keys(d.professions).join(', ') + '<br />'
+          +    'HP: +' + d.hp + ' MP: +' + d.mp + ' Inf: -' + d.inf
+          +  '</div></div>';
+      })
+
+      return t;
+    }
+
+    if (local_utime != server_utime) {
+      $('#conflict-sync-local-data').empty().append(prepare(local, local_utime, local_utime > server_utime));
+      $('#conflict-sync-server-data').empty().append(prepare(server, server_utime, server_utime > local_utime));
+      $('#modal-sync-conflict').modal('show');
+    }
+  }
+
   return {
     build_shared_profiles: build_shared_profiles,
-    update_friendly_name: update_friendly_name
+    update_friendly_name: update_friendly_name,
+    update_sync_conflict: update_sync_conflict
   }
 }()
