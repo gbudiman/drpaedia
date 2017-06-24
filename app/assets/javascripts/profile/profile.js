@@ -13,6 +13,7 @@ var profile = function() {
 
   var is_read_only = false;
   var injected_profile = null;
+  var read_only_warned = false;
 
   var empty_default = {
     profiles: {
@@ -248,9 +249,17 @@ var profile = function() {
   }
 
   var save_all = function() {
-    if (dynaloader.get_gil('ok_to_save') && dynaloader.get_gil('ok_to_delayed_save') && !is_read_only) {
+    if (dynaloader.get_gil('ok_to_save') && dynaloader.get_gil('ok_to_delayed_save')) {
+      if (is_read_only) {
+        if (!read_only_warned) {
+          notifier.notify_read_only();
+        }
+        
+        read_only_warned = true;
+        return;
+      }
+
       var caller = arguments.callee.caller.toString();
-      console.log(caller);
       store();
       config.timestamp = Date.now();
       $.jStorage.set('all', { profiles: profiles, config: config });
@@ -342,6 +351,7 @@ var profile = function() {
       //profile_interface.enable_editable_name(true);
     } else {
       is_read_only = true;
+      read_only_warned = false;
       //profile_interface.enable_editable_name(false);
     }
 
