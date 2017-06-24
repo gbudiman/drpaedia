@@ -59,4 +59,39 @@ class Survivor < ApplicationRecord
       profiles: Profile.compose_downstream(survivor_id: self.id)
     }
   end
+
+  def search query:
+    result = Array.new
+    Survivor
+      .where('id != ?', self.id)
+      .where('friendly_name ILIKE :query', query: "#{query}%").each do |row|
+      result.push({id: row.id, name: row.friendly_name})
+    end
+
+    return result
+  end
+
+  def get_shared_profile
+    result = Hash.new
+    Profile
+      .joins('LEFT JOIN multicasts ON multicasts.profile_id = profiles.id')
+      .joins('LEFT JOIN survivors ON multicasts.survivor_id = survivors.id')
+      .where('profiles.survivor_id = :owner_id', owner_id: self.id)
+      .select('profiles.name AS profile_name', 
+              'multicasts.id AS multicast_id',
+              'survivors.friendly_name AS guest_name').each do |row|
+
+      result[row.profile_name] ||= Array.new
+
+      if row.multicast_id
+        result[row.profile_name].push({
+          multicast_id: row.multicast_id,
+          guest_name: row.guest_name
+        })
+      end
+    end
+
+    ap result
+    return result
+  end
 end

@@ -57,6 +57,15 @@ var remote = function() {
     
   }
 
+  var build_shared_profiles = function() {
+    $.ajax({
+      method: 'GET',
+      url: '/profile/shared'
+    }).done(function(response) {
+      remote_interface.build_shared_profiles(response);
+    })
+  }
+
   // var do_handshake = function(provider, auth) {
   //   $.ajax({
   //     method: 'POST',
@@ -132,6 +141,7 @@ var remote = function() {
     _simulate_login: _simulate_login,
     _simulate_logout: _simulate_logout,
     _simulate_upload: _simulate_upload,
+    build_shared_profiles: build_shared_profiles,
     check_signed_in: check_signed_in,
     get_csrf: get_csrf,
     get_status: get_status,

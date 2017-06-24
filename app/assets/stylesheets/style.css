@@ -93,6 +93,14 @@ a.navbar-brand.navbar-brand-main {
   height: 128px;
 }
 
+.share-cell {
+  display: inline-flex;
+}
+
+.profile-shared, .profile-unshare {
+  display: none;
+}
+
 input.input-stat.input-sm {
   height: 30px;
 }

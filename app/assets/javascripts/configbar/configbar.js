@@ -53,6 +53,8 @@ var configbar = (function() {
 
 
     $('#configure-remote').on('click', function() {
+      remote.check_signed_in();
+      remote.build_shared_profiles();
       $('#modal-remote-config').modal('show');
     })
 

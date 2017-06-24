@@ -41,4 +41,33 @@ class SurvivorController < ApplicationController
       render status: 500, plain: 'That name has been used'
     end
   end
+
+  def search
+    render json: Survivor.find(session['current_user']['id']).search(query: params[:q])
+  end
+
+  def share_profile
+    survivor_id = session['current_user']['id']
+    profile_name = params[:profile_name]
+    guest_id = params[:guest_id].to_i
+
+    profile = Profile.find_by(survivor_id: survivor_id, name: profile_name)
+    multicast = Multicast.find_or_create_by(profile_id: profile.id, survivor_id: guest_id)
+
+    if multicast
+      render json: { success: true, id: multicast.id }
+    else
+      render status: 500, json: { success: false }
+    end
+  end
+
+  def unshare_profile
+    Multicast.find(params[:id].to_i).destroy
+
+    render json: { success: true }
+  end
+
+  def get_shared_profile
+    render json: Survivor.find(session['current_user']['id']).get_shared_profile
+  end
 end

@@ -17,9 +17,14 @@
         %h4 Shared Profiles
         %hr
         %div{id: 'sharing-settings', class: 'row'}
-          %div{class: 'col-xs-6'}
-            A
-          %div{class: 'col-xs-6'}
-            B
+          / %div{class: 'col-xs-4'}
+          /   %h4 A
+          / %div{class: 'col-xs-8'}
+          /   %div{class: 'col-xs-8 input-group input-group-sm share-cell', 'data-profile-name': 'default'}
+          /     %input{type: 'text', class: 'form-control survivor-typeahead'}
+          /     %h5 
+          /       %span{class: 'glyphicon glyphicon-share profile-shared'}
+          /     %h5
+          /       %span{class: 'glyphicon glyphicon-remove profile-unshare'}
       %div{class: 'modal-footer'}
         %button{type: 'button', class: 'btn btn-default', 'data-dismiss': 'modal'} Close

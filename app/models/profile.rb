@@ -20,8 +20,6 @@ class Profile < ApplicationRecord
       results[row.name] = row.data
     end
 
-    ap results
-
     return results
   end
 end
