@@ -44,7 +44,7 @@ var configbar = (function() {
     })
 
     $('#modal-remote-config').modal({
-
+      show: false
     }).on('shown.bs.modal', function() {
       $('body').css('padding-right', 0);
     }).on('hidden.bs.modal', function() {
@@ -71,6 +71,20 @@ var configbar = (function() {
       ajaxOptions: {
         type: 'post'
       }
+    })
+
+    $('#modal-sync-conflict').modal({
+      show: false
+    })
+
+    $('#sync-upstream').on('click', function() {
+      remote._simulate_upload();
+      $('#modal-sync-conflict').modal('close');
+    })
+
+    $('#sync-downstream').on('click', function() {
+      remote._simulate_download();
+      $('#modal-sync-conflict').modal('close');
     })
   }
 

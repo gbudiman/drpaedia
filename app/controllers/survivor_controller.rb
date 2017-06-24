@@ -12,11 +12,18 @@ class SurvivorController < ApplicationController
     #profile_data = JSON.parse(params[:profile_data] == 'null' ? '' : params[:profile])
     profile_data = params[:profile_data] == 'null' ? @@null_profile 
                                                    : JSON.parse(params[:profile_data]).deep_symbolize_keys
-    response = Survivor.find(session['current_user']['id']).sync(data: profile_data)
 
-    render json: {
-      response: response
-    }
+    if session['current_user'] == nil
+      render json: {
+        response: 'disconnected'
+      }
+    else
+      response = Survivor.find(session['current_user']['id']).sync(data: profile_data)
+
+      render json: {
+        response: response
+      }
+    end
   end
 
   def downstream

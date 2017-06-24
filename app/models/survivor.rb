@@ -17,7 +17,7 @@ class Survivor < ApplicationRecord
 
   def sync data:
     upstream_last_update = self.profile_timestamp
-    downstream_last_update = Time.at(data[:config][:timestamp] / 1000)
+    downstream_last_update = Time.at((data[:config][:timestamp] || 0) / 1000)
 
     ap upstream_last_update
     ap downstream_last_update

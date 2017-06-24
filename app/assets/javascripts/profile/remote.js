@@ -6,7 +6,7 @@ var remote = function() {
     //   }
     //   //do_handshake('facebook', response.authResponse);
     // }, {scope: 'email'})
-    window.open('/survivors/auth/facebook', 'login_aux', 'scrollbars=0, resizable=0, height=256, width=384');
+    window.open('/survivors/auth/facebook', 'login_aux', 'scrollbars=0, resizable=0, height=512, width=512');
   }
 
   var _simulate_upload = function() {
@@ -19,8 +19,11 @@ var remote = function() {
       }
     }).done(function(response) {
       if (response.response == 'synchronized') {
-        console.log('Upstream syncrhonized');
+        console.log('Upstream synchronized');
+      } else if (response.response == 'disconnected') {
+
       } else {
+
         profile.sync(response.response);
         //console.log('Need to syncrhonize downstream');
       }
@@ -32,12 +35,12 @@ var remote = function() {
       method: 'GET',
       url: '/sync/downstream'
     }).done(function(response) {
-      console.log(response);
+      profile.sync(response.response);
     })
   }
 
   var _simulate_logout = function() {
-    window.open('/session/destroy', 'logout_aux', 'scrollbars=0, resizable=0, height=256, width=384');
+    window.open('/session/destroy', 'logout_aux', 'scrollbars=0, resizable=0, height=512, width=512');
   }
 
   var check_signed_in = function() {
@@ -46,7 +49,7 @@ var remote = function() {
         method: 'GET',
         url: 'session/current'
       }).done(function(response) {
-        console.log(response);
+        //console.log(response);
         remote_interface.update_friendly_name(response.friendly_name);
         resolve(response.signed_in);
       })

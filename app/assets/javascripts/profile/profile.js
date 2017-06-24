@@ -219,9 +219,6 @@ var profile = function() {
         save_all();
       })
     }
-
-
-    
   }
 
   var undelete = function(name) {
@@ -248,9 +245,9 @@ var profile = function() {
   }
 
   var save_all = function() {
-    //var caller = arguments.callee.caller.toString();
-    if (dynaloader.get_gil('ok_to_save')) {
-      // console.log(caller);
+    if (dynaloader.get_gil('ok_to_save') && dynaloader.get_gil('ok_to_delayed_save')) {
+      var caller = arguments.callee.caller.toString();
+      console.log(caller);
       store();
       config.timestamp = Date.now();
       $.jStorage.set('all', { profiles: profiles, config: config });
@@ -336,6 +333,7 @@ var profile = function() {
     old_profile = selected;
     selected = new_value;
 
+    dynaloader.set_gil('ok_to_delayed_save', false);
     dynaloader.set_gil('ok_to_sort', false);
     dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, reset);
     dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
@@ -347,6 +345,10 @@ var profile = function() {
     
     old_profile = selected;
     profile_interface.update_selected(selected);
+
+    setTimeout(function() {
+      dynaloader.set_gil('ok_to_delayed_save', true);
+    }, 500);
   }
 
   var precompute_planned_professions = function(d) {

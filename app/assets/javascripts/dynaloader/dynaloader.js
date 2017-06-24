@@ -7,6 +7,7 @@ var dynaloader = (function() {
     ok_to_update_gui: false,
     ok_to_animate: false,
     ok_to_sort: false,
+    ok_to_delayed_save: false
   }
 
   var set_gil = function(key, value, func) {
