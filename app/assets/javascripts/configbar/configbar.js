@@ -53,9 +53,9 @@ var configbar = (function() {
 
 
     $('#configure-remote').on('click', function() {
+      $('#modal-remote-config').modal('show');
       remote.check_signed_in();
       remote.build_shared_profiles();
-      $('#modal-remote-config').modal('show');
     })
 
     $('#remote-friendly-name').editable({

@@ -13,6 +13,7 @@ var character_sheet = (function() {
 
     $('#generate-character-sheet').on('click', function() {
       generate();
+      return false;
     })
 
     $('#cs-print').on('click', function() {
