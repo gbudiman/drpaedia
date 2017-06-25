@@ -19,9 +19,6 @@ class Survivor < ApplicationRecord
     upstream_last_update = self.profile_timestamp
     downstream_last_update = Time.at((data[:config][:timestamp] || 0) / 1000)
 
-    ap upstream_last_update
-    ap downstream_last_update
-
     if upstream_last_update == nil || downstream_last_update > upstream_last_update
       update_upstream data: data, 
                       timestamp: downstream_last_update, 
@@ -50,7 +47,7 @@ class Survivor < ApplicationRecord
         profile_name = r.name
 
         if data[:profiles][profile_name.to_sym] == nil
-          profile_to_delete.push(r.id)
+          profile_to_delete.push(profile_id)
         end
       end
 

@@ -42,8 +42,9 @@ var profile = function() {
 
   var copy_current_to = function(new_value) {
     profiles[new_value] = profiles[selected];
-    $.jStorage.set('all', { profiles: profiles, config: config });
-    if (debug) manager.log($.jStorage.get('all'));
+    //$.jStorage.set('all', { profiles: profiles, config: config });
+    //if (debug) manager.log($.jStorage.get('all'));
+    save_all();
   }
 
   var create_empty = function(new_value) {
@@ -54,9 +55,9 @@ var profile = function() {
       opacity: 0.5
     }, 50, function() {
       switch_to(new_value);
-      save_all();
       profile_interface.update_list();
       profile_interface.update_selected(new_value);
+      save_all();
     })
   }
 
@@ -222,6 +223,8 @@ var profile = function() {
         switch_to(config.primary);
         save_all();
       })
+    } else {
+      save_all();
     }
   }
 
@@ -295,8 +298,9 @@ var profile = function() {
     }
 
     selected = new_value;
-    $.jStorage.set('all', { profiles: profiles, config: config });
-    if (debug) manager.log($.jStorage.get('all'));
+    //$.jStorage.set('all', { profiles: profiles, config: config });
+    //if (debug) manager.log($.jStorage.get('all'));
+    save_all();
     profile_interface.update_selected(new_value);
     old_profile = new_value;
   }

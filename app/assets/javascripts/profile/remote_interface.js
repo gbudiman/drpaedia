@@ -220,7 +220,6 @@ var remote_interface = function() {
       return true;
     }
 
-    console.log(local);
     if (local_utime != server_utime) {
       if (compare_equal(local, server) == false) {
         $('#conflict-sync-local-data').empty().append(prepare(local, local_utime, local_utime > server_utime));
