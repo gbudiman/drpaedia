@@ -318,7 +318,7 @@ var profile_interface = function() {
         $('#profile-rename').editable('enable');
       }
     }
-    $('#config-button').find('.profile-name').text('Profile: ' + new_value);
+    $('#config-button').find('.profile-name').text(new_value);
     configbar.initialize_arrow();
   }
 

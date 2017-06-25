@@ -18,12 +18,12 @@ var layout = (function() {
       state = 'right-full';
       $('#main-left').hide();
       $('#main-right').removeClass('col-xs-6').addClass('col-xs-12');
-      $('#minmax').text('> Half <');
+      $('#minmax').html('&rsaquo; Half &lsaquo;');
     } else if (state == 'right-full') {
       state = 'half';
       $('#main-left').show();
       $('#main-right').removeClass('col-xs-12').addClass('col-xs-6');
-      $('#minmax').text('<< Max');
+      $('#minmax').html('&laquo; Max');
     }
   }
 

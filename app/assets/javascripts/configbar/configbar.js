@@ -133,9 +133,9 @@ var configbar = (function() {
   var initialize_arrow = function() {
     var target = $('#config-button').find('.profile-arrow');
     if (state == 'opened') {
-      target.text(' >> ');
+      target.html('&raquo; ');
     } else {
-      target.text(' << ');
+      target.html('&laquo; ');
     }
   }
 
