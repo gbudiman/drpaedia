@@ -62,6 +62,7 @@ var configbar = (function() {
       placement: 'bottom',
       container: '#modal-remote-config',
       viewport: '#modal-remote-config',
+      mode: 'inline',
       validate: function(value) {
         if (value.trim() == '') {
           return 'Cannot be empty'
@@ -73,6 +74,8 @@ var configbar = (function() {
       ajaxOptions: {
         type: 'post'
       }
+    }).on('save', function(e, params) {
+      remote_interface.update_example_name(params.newValue);
     })
 
     $('#modal-sync-conflict').modal({

@@ -1,6 +1,11 @@
 var remote_interface = function() {
   var update_friendly_name = function(x) {
     $('#remote-friendly-name').editable('setValue', x);
+    update_example_name(x);
+  }
+
+  var update_example_name = function(x) {
+    $('#example-friendly-name').text(x + '/<my_profile>');
   }
 
   var attach_typeahead = function() {
@@ -233,6 +238,7 @@ var remote_interface = function() {
     prebuild_shared_profiles: prebuild_shared_profiles,
     build_shared_profiles: build_shared_profiles,
     update_friendly_name: update_friendly_name,
+    update_example_name: update_example_name,
     update_sync_conflict: update_sync_conflict
   }
 }()
