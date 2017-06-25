@@ -404,6 +404,7 @@ var skills = (function() {
         //tooling.auto_indent($('#skills-planned'));
         tooling.auto_indent_all();
         resolve(false);
+        validate();
       })
     })
   }
@@ -462,10 +463,19 @@ var skills = (function() {
     $.each(professions, function(p, _junk) {
       if (obj[p] != undefined) {
         var eval = validate_condition(obj[p].preq, all);
+
         cond = cond || eval.cond;
         message = eval.missing;
       }
     });
+
+    $.each(Object.keys(message), function(_junk, skill_name) {
+      var constraint = constraint_satisfied(data[skill_name]);
+
+      if (constraint.is_satisfied == false) {
+        delete message[skill_name];
+      }
+    })
 
     return {
       cond: cond,
