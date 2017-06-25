@@ -188,6 +188,7 @@ var remote_interface = function() {
 
       if (is_equal == false) return false;
 
+
       $.each(b, function(name, _junk) {
         if (a[name] == undefined) {
           is_equal = false;
@@ -196,6 +197,7 @@ var remote_interface = function() {
       })
 
       if (is_equal == false) return false;
+      manager.log('CEQ: profile count are equal');
       // At this point, we know each stream contains identical profiles
 
       var granular_compare = function(xa, xb, prop) {
@@ -208,6 +210,7 @@ var remote_interface = function() {
 
         $.each(['xp', 'hp', 'mp', 'inf', 'acq', 'plan'], function(_junk, prop) {
           is_equal &= granular_compare(cmp_a, cmp_b, prop);
+          manager.log('CEQ: profile check: ' + prop + ' is equal: ' + is_equal);
         })
 
         if (is_equal == false) return false;

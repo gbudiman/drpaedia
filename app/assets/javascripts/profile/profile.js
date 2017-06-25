@@ -621,7 +621,7 @@ var profile = function() {
       var xp = 0;
 
       $.each(acq, function(i, x) {
-        xp += x.cost;
+        if (x.cost != undefined) xp += x.cost;
       })
 
       xp += stats.hp;
