@@ -77,6 +77,10 @@ var configbar = (function() {
 
     $('#modal-sync-conflict').modal({
       show: false
+    }).on('shown.bs.modal', function() {
+      $('body').css('padding-right', 0);
+    }).on('hidden.bs.modal', function() {
+      $('body').css('padding-right', 0);
     })
 
     $('#sync-upstream').on('click', function() {
