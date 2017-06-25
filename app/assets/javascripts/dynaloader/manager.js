@@ -1,5 +1,5 @@
 var manager = (function() {
-  var enabled = true;
+  var enabled = false;
 
   var log = function(x) {
     if (enabled) console.log(x);
