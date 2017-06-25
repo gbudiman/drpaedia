@@ -57,28 +57,8 @@ var dynaloader = (function() {
     $('#modal-loader').modal('hide');
   }
 
-  var load_remote = function() {
-    $('#modal-loader').modal({
-
-    })
-    $.when(get_json('advanced_cat'),
-           get_json('concentration_cat'),
-           get_json('profession_advanced'),
-           get_json('profession_concentration_group'),
-           get_json('profession_concentration_hierarchy'),
-           get_json('profession_concentrations'),
-           get_json('profession_extension'),
-           get_json('professions'),
-           get_json('skill_cat'),
-           get_json('skill_countered'),
-           get_json('skill_counters'),
-           get_json('skill_group'),
-           get_json('skill_list'),
-           get_json('skill_mp_cost'),
-           get_json('strain_restriction'),
-           get_json('strain_specs'),
-           get_json('strain_stats'),
-           get_json('strains')).done(function() {
+  var master_build = function() {
+    return new Promise(function(resolve, reject) {
       dynaloader.set_gil('ok_to_save', false);
       dynaloader.set_gil('ok_to_update_gui', false);
 
@@ -113,6 +93,7 @@ var dynaloader = (function() {
                       skill_interface.set_timeout(250);
                       clear_message();
                       remote._simulate_upload(true);
+                      resolve(true);
                     });
                   });
                 });
@@ -120,8 +101,48 @@ var dynaloader = (function() {
             });
           });
         });
-      });  
+      });
+    });
+  }
+
+  var load_remote = function() {
+    $('#modal-loader').modal({
+
     })
+
+    raw_data = $.jStorage.get('raw_data', {});
+
+    if (Object.keys(raw_data).length == 0) {
+      $.when(get_json('advanced_cat'),
+             get_json('concentration_cat'),
+             get_json('profession_advanced'),
+             get_json('profession_concentration_group'),
+             get_json('profession_concentration_hierarchy'),
+             get_json('profession_concentrations'),
+             get_json('profession_extension'),
+             get_json('professions'),
+             get_json('skill_cat'),
+             get_json('skill_countered'),
+             get_json('skill_counters'),
+             get_json('skill_group'),
+             get_json('skill_list'),
+             get_json('skill_mp_cost'),
+             get_json('strain_restriction'),
+             get_json('strain_specs'),
+             get_json('strain_stats'),
+             get_json('strains')).done(function() {
+
+        console.log('retrieved server data');
+        master_build().then(function(resolve, reject) {         
+          if (resolve) {
+            $.jStorage.set('raw_data', raw_data);
+          }
+        })
+      })
+    } else {
+      console.log('cached data loaded');
+      master_build();
+    }
   }
 
   var get_json = function(path) {
