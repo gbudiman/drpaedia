@@ -1,4 +1,5 @@
 var remote = function() {
+  var is_connected = false;
   var _simulate_login = function() {
     // FB.login(function(response) {
     //   if (response.status == 'connected') {
@@ -68,6 +69,7 @@ var remote = function() {
   }
 
   var build_shared_profiles = function() {
+    remote_interface.prebuild_shared_profiles();
     $.ajax({
       method: 'GET',
       url: '/profile/shared'
@@ -141,8 +143,11 @@ var remote = function() {
   var show_connection_status = function(val) {
     if (val) {
       $('#connection-status').text('Connected');
+      is_connected = true;
     } else {
       $('#connection-status').text('Offline');
+      profile_interface.remove_guest_profiles();
+      is_connected = false;
     }
   }
 
@@ -153,6 +158,7 @@ var remote = function() {
     _simulate_login: _simulate_login,
     _simulate_logout: _simulate_logout,
     _simulate_upload: _simulate_upload,
+    is_connected: function() { return is_connected; },
     build_shared_profiles: build_shared_profiles,
     check_signed_in: check_signed_in,
     get_csrf: get_csrf,

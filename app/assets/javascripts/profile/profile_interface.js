@@ -241,11 +241,30 @@ var profile_interface = function() {
     })
   }
 
+  var remove_guest_profiles = function() {
+    $('#guest-profile-separator').remove();
+    $('#profile-dropdown').find('.guest-profile').remove();
+  }
+
+  var preappend_guest_profiles = function() {
+    $('#guest-profile-separator').remove();
+    $('#profile-dropdown').append('<li role="separator" class="divider" id="guest-profile-separator"></li>');
+    $('#profile-dropdown').find('.guest-profile').remove();
+    $('#profile-dropdown')
+      .append('<li class="guest-profile">'
+            +   '<span><a>Fetching data...</a></span>'
+            + '</li>');
+  }
+
   var append_guest_profiles = function(data) {
     var activate = function() {
       $('#profile-dropdown').find('.guest-profile-clickable').off('click').on('click', function() {
         var id = $(this).attr('data-id');
         var name = $(this).text();
+
+        $('#skill-pool').animate({
+          opacity: 0.5
+        }, 50);
 
         $.ajax({
           method: 'GET',
@@ -319,7 +338,9 @@ var profile_interface = function() {
 
   return {
     build: build,
+    preappend_guest_profiles: preappend_guest_profiles,
     append_guest_profiles: append_guest_profiles,
+    remove_guest_profiles: remove_guest_profiles,
     update_list: update_list,
     update_selected: update_selected,
   }

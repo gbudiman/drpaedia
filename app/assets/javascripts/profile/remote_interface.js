@@ -63,6 +63,11 @@ var remote_interface = function() {
     }
   }
 
+  var prebuild_shared_profiles = function() {
+    $('#sharing-settings').empty()
+      .append('<div class="col-xs-12"><h5>Fetching data...</h5></div>');
+  }
+
   var build_shared_profiles = function(data) {
     var master_record = ''
     $.each(data, function(profile, d) {
@@ -224,6 +229,7 @@ var remote_interface = function() {
   }
 
   return {
+    prebuild_shared_profiles: prebuild_shared_profiles,
     build_shared_profiles: build_shared_profiles,
     update_friendly_name: update_friendly_name,
     update_sync_conflict: update_sync_conflict

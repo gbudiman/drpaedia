@@ -92,11 +92,16 @@ var configbar = (function() {
     })
 
     $('#profiles-dropdown').on('click', function() {
-      fetch_guest_profiles();
+      if (remote.is_connected()) {
+        fetch_guest_profiles();
+      } else {
+        profile_interface.remove_guest_profiles();
+      }
     })
   }
 
   var fetch_guest_profiles = function() {
+    profile_interface.preappend_guest_profiles();
     $.ajax({
       method: 'GET',
       url: '/profile/list_guests'
