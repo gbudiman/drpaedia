@@ -36,7 +36,7 @@ var dragdrop = (function() {
 
   var highlight_drop_handle = function(mask) {
     var enable = Object.keys(selected).length > 0;
-    disable_rightside_interactivity(enable);
+    disable_rightside_interactivity(enable, false);
     if (enable) {
       $('#skill-pool').addClass('drop-highlight');
       $('#skills-acquired').addClass('drop-highlight');
@@ -54,9 +54,15 @@ var dragdrop = (function() {
     }
   }
 
-  var disable_rightside_interactivity = function(val) {
+  var disable_rightside_interactivity = function(val, plan_only) {
+    var target = ['#skills-planned'];
+
+    if (plan_only == false) {
+      target.push('#skills-acquired');
+    }
+
     if (val) {
-      $.each(['#skills-planned', '#skills-acquired'], function(_junk, _x) {
+      $.each(target, function(_junk, _x) {
         var x = $(_x);
         x.find('.glyphicon-arrow-up').hide();
         x.find('.glyphicon-arrow-down').hide();
@@ -71,7 +77,7 @@ var dragdrop = (function() {
         x.find('.tool-editable').editable('disable');
       });
     } else {
-      $.each(['#skills-planned', '#skills-acquired'], function(_junk, _x) {
+      $.each(target, function(_junk, _x) {
         var x = $(_x);
         x.find('.glyphicon-arrow-up').show();
         x.find('.glyphicon-arrow-down').show();
@@ -287,6 +293,7 @@ var dragdrop = (function() {
       }
 
       highlight_droppable_plan(val);
+      disable_rightside_interactivity(val, true);
     }
 
     
