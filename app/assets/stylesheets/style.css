@@ -39,6 +39,11 @@ hr {
 
 .navbar-container {
   max-width: 640px;
+  
+}
+
+.navbar-height-clamp {
+  height: 36px;
 }
 
 .navbar-brand-main {

@@ -35,7 +35,8 @@ var dragdrop = (function() {
   }
 
   var highlight_drop_handle = function(mask) {
-    enable = Object.keys(selected).length > 0;
+    var enable = Object.keys(selected).length > 0;
+    disable_rightside_interactivity(enable);
     if (enable) {
       $('#skill-pool').addClass('drop-highlight');
       $('#skills-acquired').addClass('drop-highlight');
@@ -50,6 +51,40 @@ var dragdrop = (function() {
       $('#skills-acquired').removeClass('drop-highlight');
       $('#skills-planned').removeClass('drop-highlight');
       $('.tool-separator').removeClass('drop-highlight-group');
+    }
+  }
+
+  var disable_rightside_interactivity = function(val) {
+    if (val) {
+      $.each(['#skills-planned', '#skills-acquired'], function(_junk, _x) {
+        var x = $(_x);
+        x.find('.glyphicon-arrow-up').hide();
+        x.find('.glyphicon-arrow-down').hide();
+        x.find('.badge.pull-right').hide();
+        x.find('.glyphicon-option-horizontal').hide();
+        x.find('.glyphicon-menu-up').hide()
+        x.find('.glyphicon-menu-down').hide()
+        x.find('.glyphicon-minus').hide();
+        x.find('.glyphicon-plus').hide();
+        x.find('.glyphicon-refresh').hide();
+        x.find('span.pull-right').hide();
+        x.find('.tool-editable').editable('disable');
+      });
+    } else {
+      $.each(['#skills-planned', '#skills-acquired'], function(_junk, _x) {
+        var x = $(_x);
+        x.find('.glyphicon-arrow-up').show();
+        x.find('.glyphicon-arrow-down').show();
+        x.find('.badge.pull-right').show();
+        x.find('.glyphicon-option-horizontal').show();
+        x.find('.glyphicon-menu-up').show()
+        x.find('.glyphicon-menu-down').show()
+        x.find('.glyphicon-minus').show();
+        x.find('.glyphicon-plus').show();
+        x.find('.glyphicon-refresh').show();
+        x.find('span.pull-right').show();
+        x.find('.tool-editable').editable('enable');
+      });
     }
   }
 

@@ -1,9 +1,9 @@
 %nav{class: 'navbar navbar-inverse navbar-fixed-top navbar-xs'}
-  %div{class: 'container-fluid navbar-container'}
-    %div{class: 'row row-main'}
+  %div{class: 'container-fluid navbar-container navbar-height-clamp'}
+    %div{class: 'row row-main navbar-height-clamp'}
       %div{class: 'navbar-header col-xs-4 navbar-brand-main'}
         /%a{class: 'navbar-brand navbar-brand-main'} DRpaedia
-        %a{class: 'navbar-brand navbar-brand-main dropdown-toggle', 'data-toggle': 'dropdown', href: '#'} 
+        %a{class: 'navbar-brand navbar-brand-main dropdown-toggle navbar-height-clamp', 'data-toggle': 'dropdown', href: '#'} 
           DRpaedia
           %span{class: 'caret'}
         %ul{class: 'brand dropdown-menu'}
@@ -15,9 +15,9 @@
             %a{href: 'https://www.patreon.com/gbudiman', target: '_patreon'} 
               Patreon
               %span{class: 'glyphicon glyphicon-new-window'}
-      %div{class: 'navbar-header col-xs-2 navbar-minmax'}
+      %div{class: 'navbar-header col-xs-2 navbar-minmax navbar-height-clamp'}
         %a{class: 'navbar-brand text-right navbar-minmax pull-right', href: '#', id: 'minmax'} &laquo; Max
-      %div{class: 'navbar-header pull-right'}
+      %div{class: 'navbar-header pull-right navbar-height-clamp'}
         %a{class: 'navbar-brand', href: '#', id: 'config-button'}
           %span{class: 'profile-arrow'}
           %span{class: 'profile-name'} Loading...

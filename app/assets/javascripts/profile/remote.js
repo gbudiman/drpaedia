@@ -69,13 +69,17 @@ var remote = function() {
   }
 
   var build_shared_profiles = function() {
-    remote_interface.prebuild_shared_profiles();
-    $.ajax({
-      method: 'GET',
-      url: '/profile/shared'
-    }).done(function(response) {
-      remote_interface.build_shared_profiles(response);
+    return new Promise(function(resolve, reject) {
+      remote_interface.prebuild_shared_profiles();
+      $.ajax({
+        method: 'GET',
+        url: '/profile/shared'
+      }).done(function(response) {
+        remote_interface.build_shared_profiles(response);
+        resolve(true);
+      })
     })
+    
   }
 
   // var do_handshake = function(provider, auth) {
