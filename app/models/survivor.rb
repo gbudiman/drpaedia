@@ -102,4 +102,17 @@ class Survivor < ApplicationRecord
 
     return result
   end
+
+  def self.list_profiles
+    result = {}
+    Survivor
+      .joins('LEFT JOIN profiles ON survivors.id = profiles.survivor_id')
+      .select('survivors.friendly_name AS survivor_name,
+               profiles.name AS profile_name').each do |row|
+      result[row.survivor_name] ||= Array.new
+      result[row.survivor_name].push(row.profile_name)
+    end
+
+    ap result
+  end
 end
