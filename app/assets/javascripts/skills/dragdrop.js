@@ -66,14 +66,14 @@ var dragdrop = (function() {
         var x = $(_x);
         x.find('.glyphicon-arrow-up').hide();
         x.find('.glyphicon-arrow-down').hide();
-        x.find('.badge.pull-right').hide();
+        //x.find('.badge.pull-right').hide();
         x.find('.glyphicon-option-horizontal').hide();
         x.find('.glyphicon-menu-up').hide()
         x.find('.glyphicon-menu-down').hide()
         x.find('.glyphicon-minus').hide();
         x.find('.glyphicon-plus').hide();
         x.find('.glyphicon-refresh').hide();
-        x.find('span.pull-right').hide();
+        //x.find('span.pull-right').hide();
         x.find('.tool-editable').editable('disable');
       });
     } else {
@@ -81,14 +81,14 @@ var dragdrop = (function() {
         var x = $(_x);
         x.find('.glyphicon-arrow-up').show();
         x.find('.glyphicon-arrow-down').show();
-        x.find('.badge.pull-right').show();
+        //x.find('.badge.pull-right').show();
         x.find('.glyphicon-option-horizontal').show();
         x.find('.glyphicon-menu-up').show()
         x.find('.glyphicon-menu-down').show()
         x.find('.glyphicon-minus').show();
         x.find('.glyphicon-plus').show();
         x.find('.glyphicon-refresh').show();
-        x.find('span.pull-right').show();
+        //x.find('span.pull-right').show();
         x.find('.tool-editable').editable('enable');
       });
     }
