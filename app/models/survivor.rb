@@ -117,4 +117,18 @@ class Survivor < ApplicationRecord
 
     ap result
   end
+
+  def self.list_shares 
+    Multicast
+      .joins('INNER JOIN profiles ON multicasts.profile_id = profiles.id')
+      .joins('INNER JOIN survivors ON profiles.survivor_id = survivors.id')
+      .joins('INNER JOIN survivors AS guests ON multicasts.survivor_id = guests.id')
+      .select('survivors.friendly_name AS owner',
+              'guests.friendly_name AS guest')
+      .all
+      .group('survivors.friendly_name, guests.friendly_name')
+      .order('survivors.friendly_name').each do |row|
+      puts "#{row.owner} => #{row.guest}"
+    end
+  end
 end
