@@ -1,4 +1,6 @@
 class Survivor < ApplicationRecord
+  include ActionView::Helpers::DateHelper
+
   devise :omniauthable, omniauth_providers: [:facebook]
   validates :provider, :friendly_name, presence: true
 
@@ -108,9 +110,10 @@ class Survivor < ApplicationRecord
     Survivor
       .joins('LEFT JOIN profiles ON survivors.id = profiles.survivor_id')
       .select('survivors.friendly_name AS survivor_name,
+               survivors.updated_at AS last_update,
                profiles.name AS profile_name').each do |row|
-      result[row.survivor_name] ||= Array.new
-      result[row.survivor_name].push(row.profile_name)
+      result[row.survivor_name] ||= { last_update: time_ago_in_words(row.last_update), profiles: Array.new }
+      result[row.survivor_name][:profiles].push(row.profile_name)
     end
 
     ap result
