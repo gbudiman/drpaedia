@@ -72,6 +72,8 @@ var filterview = (function() {
     var has_result = false;
     var update_count = 0;
 
+    //console.log('GIL: ' + dynaloader.get_gil('ok_to_update_gui'));
+
     $.each(cache, function(id, _junk) {
       var new_state = get_state_is_open(id);
       var last_state = open_state[id];
