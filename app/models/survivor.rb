@@ -23,7 +23,8 @@ class Survivor < ApplicationRecord
     if upstream_last_update == nil || downstream_last_update > upstream_last_update
       update_upstream data: data, 
                       timestamp: downstream_last_update, 
-                      primary: data[:config][:primary]
+                      primary: data[:config][:primary],
+                      normally_synced: true
 
 
       ap 'Upstream'
@@ -34,7 +35,7 @@ class Survivor < ApplicationRecord
     end
   end
 
-  def update_upstream data:, timestamp:, primary:
+  def update_upstream data:, timestamp:, primary:, normally_synced:
     ActiveRecord::Base.transaction do
       data[:profiles].each do |profile_name, profile_data|
         Profile.update_upstream(survivor_id: self.id,
@@ -56,6 +57,7 @@ class Survivor < ApplicationRecord
 
       self.profile_timestamp = timestamp
       self.primary_profile = primary
+      self.normally_synced = normally_synced
       save
     end
   end
@@ -64,7 +66,8 @@ class Survivor < ApplicationRecord
     return {
       config: {
         timestamp: (self.profile_timestamp.to_f * 1000).to_i,
-        primary: self.primary_profile
+        primary: self.primary_profile,
+        normally_synced: self.normally_synced
       },
       profiles: Profile.compose_downstream(survivor_id: self.id)
     }

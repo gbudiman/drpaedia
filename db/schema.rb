@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170622231035) do
+ActiveRecord::Schema.define(version: 20170703092812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,15 +35,16 @@ ActiveRecord::Schema.define(version: 20170622231035) do
   end
 
   create_table "survivors", id: :bigserial, force: :cascade do |t|
-    t.string   "provider",          null: false
+    t.string   "provider",                         null: false
     t.string   "uid"
     t.string   "token"
     t.datetime "expiration"
-    t.string   "friendly_name",     null: false
+    t.string   "friendly_name",                    null: false
     t.string   "primary_profile"
     t.datetime "profile_timestamp"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.boolean  "normally_synced",   default: true
     t.index ["friendly_name"], name: "index_survivors_on_friendly_name", unique: true, using: :btree
     t.index ["provider", "uid"], name: "index_survivors_on_provider_and_uid", unique: true, using: :btree
   end

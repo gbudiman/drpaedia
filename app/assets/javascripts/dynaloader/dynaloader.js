@@ -132,7 +132,7 @@ var dynaloader = (function() {
              get_json('strain_stats'),
              get_json('strains')).done(function() {
 
-        console.log('retrieved server data');
+        manager.log('retrieved server data');
         master_build().then(function(resolve, reject) {         
           if (resolve) {
             $.jStorage.set('raw_data', raw_data);
@@ -140,7 +140,7 @@ var dynaloader = (function() {
         })
       })
     } else {
-      console.log('cached data loaded');
+      manager.log('cached data loaded');
       master_build();
     }
   }

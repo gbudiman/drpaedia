@@ -25,7 +25,13 @@ var profile = function() {
   }
 
   var default_prefs = {
-    prefs: { advanced_acknowledged: false }
+    prefs: { advanced_acknowledged: false,
+             normally_synced: false }
+  }
+
+  var set_normally_synced = function(val) {
+    config.normally_synced = val;
+    save_all();
   }
 
   var sync = function(data) {
@@ -323,6 +329,11 @@ var profile = function() {
     if (debug) {
       manager.log('Loaded:');
       manager.log(v);
+    }
+
+    if (config.normally_synced && remote.is_connected() == false) {
+      console.log('!!! here called');
+      remote._simulate_login();
     }
     
     switch_to(selected);
@@ -698,6 +709,7 @@ var profile = function() {
     save_all: save_all,
     save_all_delayed: save_all_delayed,
     set_pref: set_pref,
+    set_normally_synced: set_normally_synced,
     soft_delete: soft_delete,
     sync: sync,
     undelete: undelete,
