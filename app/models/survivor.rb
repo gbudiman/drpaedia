@@ -1,4 +1,3 @@
-
 class Survivor < ApplicationRecord
   devise :omniauthable, omniauth_providers: [:facebook]
   validates :provider, :friendly_name, presence: true

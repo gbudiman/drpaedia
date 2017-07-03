@@ -32,6 +32,9 @@ var configbar = (function() {
       //     remote.show_connection_status(false);
       //   }
       // }, {scope: 'email'});
+
+      $(this).prop('disabled', true);
+      $('#link-to-fb-text').text('Connecting...');
     })
 
     $('#disconnect-fb').on('click', function(event) {
@@ -40,6 +43,7 @@ var configbar = (function() {
       //   remote.show_login_button(true);
       //   remote.show_connection_status(false);
       // })
+      $(this).prop('disabled', true).text('Disconnecting...');
       event.preventDefault();
     })
 

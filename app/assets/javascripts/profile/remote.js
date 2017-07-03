@@ -61,8 +61,9 @@ var remote = function() {
         url: 'session/current'
       }).done(function(response) {
         //console.log(response);
+        is_connected = response.signed_in;
         remote_interface.update_friendly_name(response.friendly_name);
-        resolve(response.signed_in);
+        resolve(true);
       })
     })
     
@@ -117,7 +118,7 @@ var remote = function() {
     //       break;
     //   }
     // });
-    check_signed_in().then(function(is_connected) {
+    check_signed_in().then(function() {
       if (is_connected) {
         show_login_button(false);
         show_connection_status(true);
@@ -136,11 +137,13 @@ var remote = function() {
   var show_login_button = function(val) {
     if (val) {
       $('#fblink-container').show();
+      $('#link-to-fb').prop('disabled', false);
       $('#link-to-fb-text').text('Sync?');
       $('#disconnect-fb-group').hide();
     } else {
       $('#fblink-container').hide();
       $('#disconnect-fb-group').show();
+      $('#disconnect-fb').prop('disabled', false).text('Disconnect')
     }
   }
 
