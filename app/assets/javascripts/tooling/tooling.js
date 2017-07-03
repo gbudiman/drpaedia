@@ -27,7 +27,7 @@ var tooling = function() {
     $('#' + type).on('click', function(event) {
       var target = $('#' + target_id);
       var cloned = $('#' + type + '-base').clone(true, true);
-      cloned.removeAttr('id').appendTo(target);
+      cloned.removeAttr('id').prependTo(target);
       activate(cloned);
       auto_indent(target);
       profile.save_all();
