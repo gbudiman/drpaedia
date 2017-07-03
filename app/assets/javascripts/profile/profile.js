@@ -332,8 +332,8 @@ var profile = function() {
     }
 
     if (config.normally_synced && remote.is_connected() == false) {
-      console.log('!!! here called');
-      remote._simulate_login();
+      //remote._simulate_login();
+      $('#link-to-fb').trigger('click');
     }
     
     switch_to(selected);
