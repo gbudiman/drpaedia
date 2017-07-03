@@ -56,13 +56,16 @@ var skill_popup = function() {
           placement: 'auto bottom',
           viewport: traverse_to_parent(id),
           container: traverse_to_parent(id),
-          title: '<span class="text-info"><strong>' 
-               +   skills.get_name(id) 
-               + '</strong></span>'
-               + '<button type="button" class="close">&times;</button>',
+          title: '<div>'
+               +   '<span class="text-info"><strong>' 
+               +     skills.get_name(id) 
+               +     '<span class="pull-right popover-skill-close"><button type="button" class="close">&times;</button></span>'
+               +   '</strong></span>'
+               + '</div>'
+               + '<div class="row"></div>',
           template: '<div class="popover popover-skill" role="tooltip">'
                   +   '<div class="arrow"></div>'
-                  +   '<h3 class="popover-title"></h3>'
+                  +   '<div class="popover-title"></div>'
                   +   '<div class="popover-content"></div>'
                   + '</div>'
           //viewport: '#skill-pool'
