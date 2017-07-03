@@ -112,7 +112,8 @@ class Survivor < ApplicationRecord
       .joins('LEFT JOIN profiles ON survivors.id = profiles.survivor_id')
       .select('survivors.friendly_name AS survivor_name,
                survivors.updated_at AS last_update,
-               profiles.name AS profile_name').each do |row|
+               profiles.name AS profile_name')
+      .order('survivors.updated_at').each do |row|
       result[row.survivor_name] ||= { last_update: row.last_update, profiles: Array.new }
       result[row.survivor_name][:profiles].push(row.profile_name)
     end
