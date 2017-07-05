@@ -142,6 +142,7 @@ var skills = (function() {
     var possible_costs = {};
     var is_open = false;
     var is_disadvantaged = false;
+    var satisfied_profession = {};
 
     if (d.conditions.open != undefined) { 
       is_satisfied = true; 
@@ -156,6 +157,7 @@ var skills = (function() {
     }
 
     if (strain_match(d.conditions.innate)) {
+      satisfied_profession['open'] = true;
       is_satisfied = true;
       possible_costs[3] = true;
     }
@@ -166,6 +168,7 @@ var skills = (function() {
 
     $.each(professions, function(profession, _junk) {
       if (d.conditions[profession] != undefined) {
+        satisfied_profession[profession] = true;
         is_satisfied = true;
         possible_costs[d.conditions[profession].cost] = true;
       }
@@ -184,6 +187,7 @@ var skills = (function() {
       possible_costs: possible_costs,
       is_open: is_open,
       is_disadvantaged: is_disadvantaged,
+      satisfied_profession: satisfied_profession
     }
   }
 
@@ -327,9 +331,25 @@ var skills = (function() {
     if (dynaloader.get_gil('ok_to_update_gui') == false) return;
     var only_materialized = _only_materialized == undefined ? false : _only_materialized;
 
+    var make_inverted_professions = function() {
+      var inv = {};
+      var pos = 0;
+      $.each(professions, function(k, _junk) {
+        if (profession_basic.is_profession(k)) {
+          inv[k] = pos;
+          pos++;
+        }
+      })
+
+      console.log(inv);
+
+      return inv;
+    }
+
     var batch_render = function(queue) {
       var qkeys = Object.keys(queue);
       var key_length = qkeys.length;
+      var inv = make_inverted_professions();
 
       for (var i = 0; i < key_length; i++) {
         var shorthand = qkeys[i];
@@ -337,7 +357,11 @@ var skills = (function() {
 
         switch (val.mode) {
           case 'display': 
-            skill_interface.display(shorthand, val.costs, val.is_open);
+            skill_interface.display(shorthand, 
+                                    val.costs, 
+                                    val.is_open, 
+                                    val.satisfied_profession, 
+                                    inv);
             break;
           case 'remove':
             skill_interface.remove(shorthand);
@@ -369,7 +393,8 @@ var skills = (function() {
               render_queue[v.shorthand] = {
                 mode: 'display',
                 costs: constraint.possible_costs,
-                is_open: constraint.is_open
+                is_open: constraint.is_open,
+                satisfied_profession: constraint.satisfied_profession
               }
             } else {
               //console.log(k + ' is no longer satisfied');

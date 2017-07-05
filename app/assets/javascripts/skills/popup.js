@@ -146,7 +146,12 @@ var skill_popup = function() {
     var professions = config.professions;
 
     $.each(cond.innate, function(i, x) {
-      if (strain == x) { innate_class = 'cond-cheapest'; }
+      if (strain == x) { 
+        innate_class = 'cond-cheapest'; 
+      } else {
+        innate_class = 'cond-disabled';
+      }
+      
       s += '<div class="' + innate_class + '">' + x + ': ' + 3 + '</div>';
       if (innate_class == 'cond-disabled') {
         s += '<div class="' + innate_class + '">' + append_preqs(skill_name, x) + '</div>';

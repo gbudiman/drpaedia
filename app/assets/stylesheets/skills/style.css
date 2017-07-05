@@ -147,6 +147,39 @@
   font-weight: normal;
 }
 
+.row.signet {
+  height: 2px;
+  //margin: 0px -4px -4px -4px;
+  margin-bottom: -4px;
+  margin-left: -4px;
+  margin-right: -4px;
+  //background-color: red;
+}
+
+.signet-cell {
+  height: 2px;
+}
+
+.signet-open {
+  background-color: #d48100;
+}
+
+.signet-0 {
+  background-color: #009d2f;
+}
+
+.signet-1 {
+  background-color: #d41d00;
+}
+
+.signet-2 {
+  background-color: #03438b;
+}
+
+.signet-empty {
+
+}
+
 #skill-pool-no-result {
   display: none;
   text-align: center;

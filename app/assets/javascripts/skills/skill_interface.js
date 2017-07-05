@@ -115,9 +115,49 @@ var skill_interface = (function() {
     $('.btn-alternator').remove();
   }
 
-  var display = function(id, costs, is_open) {
+  var generate_signet = function(obj, satisfied_professions, professions) {
+    var s = '<div class="row signet">';
+    var length = Object.keys(professions).length + 1;
+    var cell_length = 100.00 / length;
+    var bs_col_factor = 'width: ' + cell_length + '%';
+
+    /*$.each(satisfied_professions, function(k, _junk) {
+      if (k == 'open') {
+        var color = '#383838';
+      }
+      s    += '<div class="signet-cell col-xs-3"></div>';
+    })*/
+
+    var open_style = 'style="' + bs_col_factor + '; float: left"';
+    if (satisfied_professions['open'] != undefined) {
+      s    += '<div class="signet-cell signet-open" ' + open_style + '></div>';
+    } else {
+      s    += '<div class="signet-cell signet-empty" ' + open_style + '></div>';
+    }
+
+    $.each(professions, function(prof, order) {
+      var offset = 'left: ' + cell_length * (order + 1) + '%';
+      var style = 'style="' + bs_col_factor + '; ' + offset + '; float: left"';
+      if (satisfied_professions[prof] != undefined) {
+        s  += '<div class="signet-cell signet-' + order + '" ' + style + '></div>';
+      } else {
+        s  += '<div class="signet-cell signet-empty" ' + style + '></div>';
+      }
+    })
+
+
+
+    s    += '</div>';
+    obj.find('.signet').remove();
+    obj.append(s);
+  }
+
+  var display = function(id, costs, is_open, satisfied_professions, professions) {
     var obj = $('#' + id);
     var cost = $('#' + id + '-cost');
+
+    generate_signet(obj, satisfied_professions, professions);
+
 
     obj.attr('data-accessible', true);
     filterview.set(id, 'accessible', true);
@@ -156,7 +196,8 @@ var skill_interface = (function() {
     var cost = $('#' + id + '-cost');
     obj
       .attr('data-accessible', false)
-      .attr('data-discounted', false);
+      .attr('data-discounted', false)
+      .find('.signet').remove();
 
     filterview.set(id, 'accessible', false);
     filterview.set(id, 'discounted', false);
