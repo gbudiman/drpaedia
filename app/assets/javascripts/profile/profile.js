@@ -15,18 +15,20 @@ var profile = function() {
   var injected_profile = null;
   var read_only_warned = false;
 
+  var sanitized = false;
+
   var empty_default = {
     profiles: {
       default: {
         prefs: { advanced_acknowledged: false }
       }
     },
-    config: { primary: 'default' }
+    config: { primary: 'default',
+              normally_synced: false }
   }
 
   var default_prefs = {
-    prefs: { advanced_acknowledged: false,
-             normally_synced: false }
+    prefs: { advanced_acknowledged: false }
   }
 
   var set_normally_synced = function(val) {
@@ -271,6 +273,18 @@ var profile = function() {
       var caller = arguments.callee.caller.toString();
       store();
       config.timestamp = Date.now();
+
+      if (!sanitized) {
+        $.each(profiles, function(profile, data) {
+          if (data.prefs.normally_synced != undefined) {
+            delete data.prefs.normally_synced;
+          }
+
+          sanitized = true;
+        })
+      }
+      
+
       $.jStorage.set('all', { profiles: profiles, config: config });
       if (debug) {
         manager.log('Saving all...');
@@ -351,13 +365,6 @@ var profile = function() {
     if (normally_synced) {
       var is_logged_in = $('#is-logged-in').attr('data-value');
       manager.log('sync status: ' + is_logged_in);
-      /*remote.check_signed_in().then(function() {
-        if (!remote.is_connected()) {
-          console.log('redirecting.. not logged in');
-          window.location.replace('/survivors/auth/facebook');
-        }
-      })*/
-
 
       if (is_logged_in == 'false') {
         window.location.replace('/survivors/auth/facebook');

@@ -341,8 +341,6 @@ var skills = (function() {
         }
       })
 
-      console.log(inv);
-
       return inv;
     }
 
