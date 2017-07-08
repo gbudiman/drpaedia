@@ -155,11 +155,16 @@ var dynaloader = (function() {
     return raw_data;
   }
 
+  var precheck_profile = function() {
+    return profile.precheck();
+  }
+
   return {
     load_remote: load_remote,
     raw: get_raw_data,
     set_gil: set_gil,
     get_gil: get_gil,
-    get_all_gil: function() { return global_interlock; }
+    get_all_gil: function() { return global_interlock; },
+    precheck_profile: precheck_profile
   }
 })()

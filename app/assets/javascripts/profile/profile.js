@@ -344,6 +344,30 @@ var profile = function() {
     return { profiles: profiles, config: config }
   }
 
+  var precheck = function() {
+    var v = $.jStorage.get('all');
+    var normally_synced = v.config.normally_synced;
+
+    if (normally_synced) {
+      var is_logged_in = $('#is-logged-in').attr('data-value');
+      manager.log('sync status: ' + is_logged_in);
+      /*remote.check_signed_in().then(function() {
+        if (!remote.is_connected()) {
+          console.log('redirecting.. not logged in');
+          window.location.replace('/survivors/auth/facebook');
+        }
+      })*/
+
+
+      if (is_logged_in == 'false') {
+        window.location.replace('/survivors/auth/facebook');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   var reset = function() {
     strain_interface.set_gui(null);
     profession_basic_interface.reset();
@@ -714,6 +738,7 @@ var profile = function() {
     undelete: undelete,
     set_acknowledge: set_acknowledge,
     switch_to: switch_to,
-    wipe: wipe
+    wipe: wipe,
+    precheck: precheck
   }
 }()
