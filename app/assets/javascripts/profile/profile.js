@@ -294,7 +294,7 @@ var profile = function() {
       clearTimeout(remote_timeout);
       remote_timeout = setTimeout(function() {
         manager.log('sending request to server');
-        remote._simulate_upload();
+        remote._simulate_upload(remote.get_fresh_login());
       }, 1000);
     }
   }
@@ -360,9 +360,6 @@ var profile = function() {
 
   var precheck = function() {
     var v = $.jStorage.get('all');
-
-    console.log('prechecking ');
-    console.log(v);
     if (v == null) return true;
 
     var normally_synced = v.config.normally_synced;

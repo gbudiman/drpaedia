@@ -1,5 +1,7 @@
 var remote = function() {
   var is_connected = false;
+  var is_fresh_login = false;
+
   var _simulate_login = function() {
     // FB.login(function(response) {
     //   if (response.status == 'connected') {
@@ -158,6 +160,19 @@ var remote = function() {
     }
   }
 
+  var set_fresh_login = function() {
+    is_fresh_login = true;
+  }
+
+  var get_fresh_login = function() {
+    if (is_fresh_login) {
+      is_fresh_login = false;
+      return true;
+    }
+
+    return false;
+  }
+
 
 
   return {
@@ -172,6 +187,7 @@ var remote = function() {
     get_status: get_status,
     show_login_button: show_login_button,
     show_connection_status: show_connection_status,
-    
+    set_fresh_login: set_fresh_login,
+    get_fresh_login: get_fresh_login
   }
 }()
