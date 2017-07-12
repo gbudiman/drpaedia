@@ -97,9 +97,9 @@
 
 :javascript
   if (dynaloader.precheck_profile()) {
+    layout.attach();
+    dynaloader.load_remote();
     $('nav.navbar').show();
     $('.row.main').show();
     $('.footer').show();
-    layout.attach();
-    dynaloader.load_remote();
   }

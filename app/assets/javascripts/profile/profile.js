@@ -360,6 +360,11 @@ var profile = function() {
 
   var precheck = function() {
     var v = $.jStorage.get('all');
+
+    console.log('prechecking ');
+    console.log(v);
+    if (v == null) return true;
+
     var normally_synced = v.config.normally_synced;
 
     if (normally_synced) {
