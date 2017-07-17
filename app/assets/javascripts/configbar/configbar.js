@@ -91,7 +91,8 @@ var configbar = (function() {
     })
 
     $('#sync-upstream').on('click', function() {
-      remote._simulate_upload();
+      //remote._simulate_upload();
+      remote.force_upload();
       $('#modal-sync-conflict').modal('hide');
       notifier.notify_synced('Server data has been synchronized');
     })

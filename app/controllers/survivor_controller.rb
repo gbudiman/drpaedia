@@ -8,10 +8,24 @@ class SurvivorController < ApplicationController
     }
   }
 
+  def sanitize_profile_data d
+    return d == 'null' ? @@null_profile 
+                       : JSON.parse(d).deep_symbolize_keys
+  end
+
+  def force_upstream
+    profile_data = sanitize_profile_data(params[:profile_data])
+
+    response = Survivor.find(session['current_user']['id']).sync(data: profile_data, force_upstream: true)
+
+    render json: {
+      response: response
+    }
+  end
+
   def upstream
     #profile_data = JSON.parse(params[:profile_data] == 'null' ? '' : params[:profile])
-    profile_data = params[:profile_data] == 'null' ? @@null_profile 
-                                                   : JSON.parse(params[:profile_data]).deep_symbolize_keys
+    profile_data = sanitize_profile_data(params[:profile_data])
 
     fresh_login = params[:fresh_login]
 

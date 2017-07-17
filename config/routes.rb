@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   root                                                   to: 'tree#index'
   post          '/sync/upstream',                        to: 'survivor#upstream'
+  post          '/sync/force_upstream',                  to: 'survivor#force_upstream'
   get           '/sync/downstream',                      to: 'survivor#downstream'
   get           '/session/destroy',                      to: 'session#destroy'
   get           '/session/current',                      to: 'session#current'

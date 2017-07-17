@@ -12,6 +12,23 @@ var remote = function() {
     window.open('/survivors/auth/facebook', 'login_aux', 'scrollbars=0, resizable=0, height=512, width=512');
   }
 
+  var force_upload = function() {
+    var downstream_profile = profile.get_root();
+
+    $.ajax({
+      method: 'POST',
+      url: '/sync/force_upstream',
+      csrf: get_csrf(),
+      data: {
+        profile_data: JSON.stringify(downstream_profile.transmit)
+      }
+    }).done(function(response) {
+      if (response.response == 'synchronized') {
+        manager.log('Upstream synchronized');
+      }
+    })
+  }
+
   var _simulate_upload = function(_fresh_login) {
     var downstream_profile = profile.get_root();
     var fresh_login = _fresh_login == undefined ? false : _fresh_login;
@@ -185,6 +202,7 @@ var remote = function() {
     check_signed_in: check_signed_in,
     get_csrf: get_csrf,
     get_status: get_status,
+    force_upload: force_upload,
     show_login_button: show_login_button,
     show_connection_status: show_connection_status,
     set_fresh_login: set_fresh_login,

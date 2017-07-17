@@ -15,22 +15,29 @@ class Survivor < ApplicationRecord
     return res
   end
 
-  def sync data:
+  def sync data:, force_upstream: false
     upstream_last_update = self.profile_timestamp
     downstream_last_update = Time.at((data[:config][:timestamp] || 0) / 1000)
 
-    if upstream_last_update == nil || downstream_last_update > upstream_last_update
-      update_upstream data: data, 
-                      timestamp: downstream_last_update, 
+    if force_upstream
+      update_upstream data: data,
+                      timestamp: downstream_last_update,
                       primary: data[:config][:primary],
                       normally_synced: true
-
-
-      ap 'Upstream'
-      return 'synchronized'      
     else
-      ap 'Downstream'
-      return compose_downstream
+      if upstream_last_update == nil || downstream_last_update > upstream_last_update
+        update_upstream data: data, 
+                        timestamp: downstream_last_update, 
+                        primary: data[:config][:primary],
+                        normally_synced: true
+
+
+        ap 'Upstream'
+        return 'synchronized'      
+      else
+        ap 'Downstream'
+        return compose_downstream
+      end
     end
   end
 
