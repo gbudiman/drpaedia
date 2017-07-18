@@ -71,13 +71,13 @@ var profile_interface = function() {
 
   var update_list = function() {
     var anchor = $('#existing-profile');
-    var master_data = profile.get_master();
+    var master_data = profile.get_all();
     var deleted_profiles = profile.get_deleted();
     var current_selected = profile.get_current_name();
     var primary = profile.get_primary();
     var s = '';
     var active_class;
-    var more_than_one_profile = Object.keys(master_data.profiles).length > 1;
+    var more_than_one_profile = Object.keys(master_data).length > 1;
 
     var set_primary_option = function(x, primary) {
       var is_primary = x == primary;
@@ -94,7 +94,7 @@ var profile_interface = function() {
 
     anchor.nextAll().remove();
 
-    $.each(master_data.profiles, function(x, _junk) {
+    $.each(master_data, function(x, _junk) {
       if (deleted_profiles[x] != undefined) return true;
 
       if (x == current_selected) {
