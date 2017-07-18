@@ -3,6 +3,7 @@ var profession_adv = (function() {
   var update_timeout = setTimeout(null, 0);
   var available = {};
   var selected = {};
+  var limit = 3;
 
   var build = function() {
     profession_adv_interface.build_modal();
@@ -97,13 +98,19 @@ var profession_adv = (function() {
   }
 
   var validate_existing = function() {
+    missing = new Array();
+
     $.each(selected, function(key, _junk) {
       if (!available[key]) {
-        notifier.adv_preq_missing(key);
+        //console.log('notify: ' + key);
+        missing.push(key);
+        //notifier.adv_preq_missing(key);
       } else {
-        notifier.adv_preq_missing('');
+        //notifier.adv_preq_missing('');
       }
     })
+
+    notifier.adv_preq_missing(missing.join(', '));
   }
 
   var is_profession = function(x) {
@@ -116,11 +123,22 @@ var profession_adv = (function() {
   }
 
   var set = function(x) {
-    reset();
-    if (x != 'No Selection') {
+    if (selected[x]) {
+      delete selected[x];
+    } else {
       selected[x] = true;
     }
+
+    validate_count();
     profile.save_all();
+    return selected[x] == undefined ? false : true;
+  }
+
+  var validate_count = function() {
+    var count = Object.keys(selected).length;
+    var overlimit = count - limit;
+
+    profession_adv_interface.update_overlimit(overlimit);
   }
 
   return {
@@ -128,9 +146,11 @@ var profession_adv = (function() {
     data: function() { return data; },
     get_available: function() { return available; },
     is_profession: is_profession,
+    is_selected: function(x) { return selected[x]; },
     reset: reset,
     set: set,
     selected: function() { return selected; },
-    update: update
+    update: update,
+    validate_existing: validate_existing
   }
 })()

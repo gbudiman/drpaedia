@@ -48,7 +48,7 @@
 
     %div{class: 'config-header'} Basic Professions
     %div{id: 'profession-basic-config', class: 'container col-xs-12'}
-      %div{class: 'dropdown'}
+      %div{class: 'dropdown row col-xs-12'}
         %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-basic-profession', 'data-toggle' => 'dropdown'}
           %span{class: 'glyphicon glyphicon-plus'}
           &nbsp
@@ -81,14 +81,29 @@
 
     %div{class: 'row col-xs-12'}
       %hr
+
     %div{class: 'config-header'} Advanced Professions
     %div{class: 'container col-xs-12', id: 'profession-adv-unlock'}
       %button{type: 'button', class: 'btn btn-primary', id: 'adv-unlock'}
         %span{class: 'glyphicon glyphicon-lock'}
         &nbsp; 
         Unlock
-    %div{class: 'container col-xs-12', id: 'profession-adv-select-container'}
-      %select{class: 'selectpicker show-tick', id: 'adv-selector', 'data-width': 'fit', 'data-size': 8}
+    %div{class: 'container', id: 'profession-adv-select-container'}
+      %div{id: 'profession-adv-config', class: 'row'}
+      /%select{class: 'selectpicker show-tick', id: 'adv-selector', 'data-width': 'fit', 'data-size': 8}
+      %div{class: 'dropdown row col-xs-12'}
+        %button{class: 'btn btn-primary dropdown-toggle', type: 'button', id: 'add-prof-adv', 'data-toggle' => 'dropdown'}
+          %span{class: 'glyphicon glyphicon-plus'}
+          &nbsp
+          Add
+          %span{class: 'caret'}
+        %ul{class: 'dropdown-menu', id: 'adv-profession-list'}
+
+      %div{id: 'adv-limit-warning'}
+        Profession limit exceeded. Please remove
+        %span{id: 'adv-overlimit'}0
+        advanced profession
+
       %div{class: 'adv-list-block'}
         %input{'data-toggle': 'toggle', id: 'adv-list-toggle', type: 'checkbox', 'data-on': 'Show List', 'data-off': 'Hide List', 'data-width': '128px'}
 

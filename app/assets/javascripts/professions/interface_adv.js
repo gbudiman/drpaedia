@@ -17,14 +17,31 @@ var profession_adv_interface = (function() {
       $('#modal-unlock-advanced').modal('hide');
       hide_unlock(true);
     })
+
+    $('#adv-prof-adv').on('click', function() {
+      update_dropdown_list();
+    })
   }
 
   var attach_selector = function() {
-    $('#adv-selector').selectpicker({
+    /*$('#adv-selector').selectpicker({
 
     }).on('changed.bs.select', function() {
       update_gui($('#adv-selector').val());
-    });
+    });*/
+
+    $('#adv-profession-list').find('.list-adv').on('click', function(event) {
+      var $this = $(this);
+      var anchor = $this.find('a');
+
+      if ($this.hasClass('disabled') || anchor.hasClass('selected-profession')) {
+        return false;
+      } else {
+        update_gui($(this).attr('data-prof'));
+      }
+
+      event.preventDefault();
+    })
   }
 
   var attach_list_toggle = function() {
@@ -48,9 +65,51 @@ var profession_adv_interface = (function() {
   }
 
   var update_gui = function(val) {
-    set(val);
-    reinitialize_all_select_buttons();
+    var resp = set(val);
     enable_select_button(val, true);
+    //reinitialize_all_select_buttons();
+    //enable_select_button(val, true);
+
+    add_to_config_gui(val, resp);
+  }
+
+  var update_dropdown_list = function() {
+    var s = profession_adv.selected();
+
+    $('#adv-profession-list').find('li[data-prof]').each(function() {
+      var prof = $(this).attr('data-prof');
+      var anchor = $(this).find('a');
+
+      if (s[prof] != undefined) {
+        anchor.addClass('selected-profession');
+      } else {
+        anchor.removeClass('selected-profession');
+      }
+    })
+  }
+
+  var add_to_config_gui = function(name, show) {
+    if (show) {
+      var s = '<div class="purchased-adv-profession col-xs-12">'
+            +   '<span class="adv-prof-name">' + name + '</span>'
+            +   '<span class="pull-right glyphicon glyphicon-remove remove-adv" data-prof="' + name + '"></span>'
+            + '</div>';
+      $('#profession-adv-config').prepend(s);
+    } else {
+      $('#profession-adv-config').find('[data-prof="' + name + '"]').parent().remove();
+    }
+
+    update_dropdown_list();
+
+    $('#profession-adv-config').find('span.glyphicon-remove').on('click', function() {
+      var $this = $(this);
+      var prof = $this.attr('data-prof');
+      profession_adv.set(prof);
+      enable_select_button(prof, true);
+      $this.parent().remove();
+      skills.update_availability(true);
+      update_dropdown_list();
+    })
   }
 
   var set_list_gui = function(val) {
@@ -58,14 +117,20 @@ var profession_adv_interface = (function() {
   }
 
   var build_selector = function(data) {
-    var raw = '<option class="default-no-selection">No Selection</option>';
+    //var raw = '<option class="default-no-selection">No Selection</option>';
+    var raw = '';
 
     $.each(data, function(k, _junk) {
-      raw += '<option value="' + k + '">' + k + '</option>';
+      //raw += '<option value="' + k + '">' + k + '</option>';
+      raw += '<li class="list-adv" data-prof="' + k + '">'
+           +   '<a href="#">'
+           +     k
+           +   '</a>'
+           + '</li>';
     })
 
-    $('#adv-selector').append(raw);
-    $('#adv-selector').selectpicker('refresh');
+    $('#adv-profession-list').append(raw);
+    //$('#adv-selector').selectpicker('refresh');
     attach_selector();
     attach_list_toggle();
   }
@@ -83,9 +148,9 @@ var profession_adv_interface = (function() {
 
     if (value) {
       if (selected[name] == undefined) {
-        o.text('Select').prop('disabled', false).show();
+        o.text('Select').removeClass('btn-danger').show();
       } else {
-        o.text('Selected').prop('disabled', true).show();
+        o.text('Deselect').addClass('btn-danger').show();
       }
     } else {
       o.hide();
@@ -93,14 +158,19 @@ var profession_adv_interface = (function() {
   }
 
   var update_selector = function(data) {
-    var s = $('#adv-selector');
+    var s = $('#adv-profession-list');
     $.each(data, function(k, val) {
-      var o = s.find('option[value="' + k + '"]');
+      var o = s.find('[data-prof="' + k + '"]');
 
-      o.prop('disabled', !val);
+      if (val) {
+        o.removeClass('disabled');
+      } else {
+        o.addClass('disabled');
+      }
+      //o.prop('disabled', !val);
     })
 
-    s.selectpicker('refresh');
+    //s.selectpicker('refresh');
   }
 
   var hide_unlock = function(val) {
@@ -326,19 +396,30 @@ var profession_adv_interface = (function() {
 
   var reset = function() {
     profession_adv.reset();
+    $('#profession-adv-config').empty();
+    update_dropdown_list();
     hide_unlock(false);
   }
 
   var set = function(x) {
-    profession_adv.set(x);
+    var state = profession_adv.set(x);
     skills.update_availability(true);
+    return state;
   }
 
   var set_gui = function(val) {
-    $('#adv-selector').selectpicker('val', val);
+    //$('#adv-selector').selectpicker('val', val);
     update_gui(val);
   }
 
+  var update_overlimit = function(n) {
+    if (n > 0) {
+      $('#adv-limit-warning').show();
+      $('#adv-overlimit').text(n);
+    } else {
+      $('#adv-limit-warning').hide();
+    }
+  }
 
   return {
     build_modal: build_modal,
@@ -351,6 +432,8 @@ var profession_adv_interface = (function() {
     render: render,
     reset: reset,
     set_gui: set_gui,
-    set_list_gui: set_list_gui
+    set_list_gui: set_list_gui,
+    update_overlimit: update_overlimit,
+    update_dropdown_list: update_dropdown_list
   }
 })()

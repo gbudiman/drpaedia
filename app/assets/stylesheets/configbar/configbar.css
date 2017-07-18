@@ -21,7 +21,7 @@
   width: 100%;
 }
 
-.purchased-profession {
+.purchased-profession, .purchased-adv-profession {
   padding-right: 15px;
 }
 
@@ -39,6 +39,10 @@
 
 #connection-status {
   //display: none;
+}
+
+.adv-list-block > .btn {
+  margin-top: 2px;
 }
 
 .toggle-group > .btn {

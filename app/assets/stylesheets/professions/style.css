@@ -1,4 +1,4 @@
-.remove-profession, .remove-conc {
+.remove-profession, .remove-conc, .remove-adv {
   cursor: pointer;
 }
 
@@ -78,7 +78,7 @@
   color: #fff;
 }
 
-#basic-limit-warning {
+#basic-limit-warning, #adv-limit-warning {
   color: red;
   display: none;
 }
@@ -95,6 +95,16 @@
 
 #profession-adv-select-container > .bootstrap-select > .dropdown-menu > .dropdown-menu {
   overflow-x: hidden;
+}
+
+li.list-adv.disabled {
+  text-decoration: line-through;
+  
+}
+
+li.list-adv.disabled > a, li.list-adv.disabled > a:hover {
+  color: #aaa;
+  cursor: default;
 }
 
 #profession-adv-select-container {
