@@ -162,6 +162,26 @@ var skill_interface = (function() {
     obj.attr('data-accessible', true);
     filterview.set(id, 'accessible', true);
 
+    if (!is_open) {
+      obj.attr('data-discounted', true);
+      filterview.set(id, 'discounted', true);
+
+      cost.addClass('badge-success');
+    } else {
+      if (Object.keys(costs).length > 1) {
+        obj.attr('data-discounted', true);
+        filterview.set(id, 'discounted', true);
+
+        cost.addClass('badge-success');
+      } else {
+        obj.attr('data-discounted', false);
+        filterview.set(id, 'discounted', false);
+
+        cost.removeClass('badge-success');
+      }
+    }
+
+    /*
     if (Object.keys(costs).length > 1) {
       obj.attr('data-discounted', true);
       filterview.set(id, 'discounted', true);
@@ -180,7 +200,7 @@ var skill_interface = (function() {
 
         cost.removeClass('badge-success');
       }
-    }
+    }*/
 
     obj.removeClass('skill-infancy');
 
