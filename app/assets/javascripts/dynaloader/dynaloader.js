@@ -143,6 +143,8 @@ var dynaloader = (function() {
       manager.log('cached data loaded');
       master_build();
     }
+
+    get_json('skill_desc');
   }
 
   var get_json = function(path) {

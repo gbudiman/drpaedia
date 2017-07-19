@@ -5,17 +5,19 @@ var skill_beautifier = function() {
       t += format(title, text);
     })
 
-    $('#skill-panel').empty().append(t);
+    return t;
   }
 
   var load_all = function() {
+    $('#skill-panel').empty();
+
     $.ajax({
       method: 'GET',
       url: '/skills/fetch',
       data: { skill_codes: 'all' },
       cache: false
     }).done(function(res) {
-      beautify(res);
+      $('#skill-panel').empty().append(beautify(res));
     })
   }
 
@@ -26,6 +28,10 @@ var skill_beautifier = function() {
   }
 
   var process = function(text) {
+    if (text == undefined) {
+      return '<div class="skill-body">Skill info not available</div>';
+    }
+    
     var p_splits = text.split('{p}');
     var li_splits = new Array();
     var table_splits = new Array();
@@ -85,6 +91,7 @@ var skill_beautifier = function() {
   }
 
   return {
-    load_all: load_all
+    load_all: load_all,
+    process: process
   }
 }()

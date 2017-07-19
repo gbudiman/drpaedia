@@ -108,6 +108,9 @@ var skill_interface = (function() {
     })
     
     $('#skill-pool').append(r);
+    $('#skill-desc').modal({
+      show: false
+    })
     attach_alternator();
   }
 
@@ -316,6 +319,24 @@ var skill_interface = (function() {
     return o;
   }
 
+  var show_description = function(_name) {
+    var name = sanitize(_name);
+    console.log('sanitized skill name is ' + name);
+    var h = dynaloader.raw()['skill_desc'][name];
+    $('#skill-desc-title').text(name);
+    $('#skill-desc-body').html(skill_beautifier.process(h));
+  }
+
+  var sanitize = function(x) {
+    if (x.match(/[IV]+$/)) {
+      return x.replace(/[IV]+$/, '').trim();
+    } else if (x.match(/^Psi [I]+/)) {
+      return x.replace(/^Psi [I]+ \-/, '').trim();
+    }
+
+    return x;
+  }
+
   return {
     apply_filters: apply_filters,
     build: build,
@@ -330,6 +351,7 @@ var skill_interface = (function() {
     clear_alternator: clear_alternator,
     sort_pool: sort_pool,
     set_timeout: function(x) { timeout = x; },
-    get_psis: get_psis
+    get_psis: get_psis,
+    show_description: show_description
   }
 })()

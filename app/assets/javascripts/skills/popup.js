@@ -49,6 +49,7 @@ var skill_popup = function() {
     clearTimeout(timeout);
     if (data[id] == undefined) {
       timeout = setTimeout(function() {
+        var skill_name = skills.get_name(id);
         $('#' + id).popover({
           content: get_details(id),
           trigger: 'manual',
@@ -58,7 +59,8 @@ var skill_popup = function() {
           container: traverse_to_parent(id),
           title: '<div>'
                +   '<span class="text-info"><strong>' 
-               +     skills.get_name(id) 
+               +     skill_name
+               +     '<span class="glyphicon glyphicon-question-sign" data-skill-name="' + skill_name + '"></span>'
                +     '<span class="pull-right popover-skill-close"><button type="button" class="close">&times;</button></span>'
                +   '</strong></span>'
                + '</div>'
@@ -76,6 +78,13 @@ var skill_popup = function() {
             return false;
           })
           $('.popover').off('click').on('click', function() {
+            return false;
+          })
+
+          $('.popover').find('.glyphicon-question-sign').off('click').on('click', function() {
+            skill_interface.show_description($(this).attr('data-skill-name'));
+            $('#skill-desc').modal('show');
+
             return false;
           })
         })
