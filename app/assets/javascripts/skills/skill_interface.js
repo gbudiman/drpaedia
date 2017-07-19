@@ -111,7 +111,7 @@ var skill_interface = (function() {
     $('#skill-desc').modal({
       show: false
     }).on('show.bs.modal', function() {
-      var height = $(window).height() * 0.8;
+      var height = $(window).height() - 96;
       $('#skill-desc-body').css('max-height', height + 'px');
     })
     $('#generate-skill-info').on('click', function() {
