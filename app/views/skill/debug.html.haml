@@ -1,0 +1,8 @@
+%div{class: 'container-fluid', id: 'skill-panel'}
+
+= stylesheet_link_tag 'style'
+= stylesheet_link_tag 'skills/style'
+= javascript_include_tag 'skills/skill_beautifier'
+= javascript_include_tag 'bootstrap-editable.min'
+:javascript
+  skill_beautifier.load_all();

@@ -184,3 +184,27 @@
   display: none;
   text-align: center;
 }
+
+#skill-panel {
+  margin: 0px;
+}
+
+.skill-title {
+  font-size: 125%;
+  background-color: #333;
+  color: #fff;
+  padding: 4px;
+}
+
+.skill-body {
+  padding-top: 4px;
+}
+
+.skill-body > p {
+  text-indent: 24px;
+}
+
+.skill-body > table > thead > tr > th {
+  background-color: #ccc;
+  //color: #ddd;
+}

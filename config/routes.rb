@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   post          '/survivor/name/edit',                   to: 'survivor#edit_name'
   post          '/profile/share',                        to: 'survivor#share_profile'
   post          '/profile/unshare',                      to: 'survivor#unshare_profile'
+  get           '/skills/debug',                         to: 'skill#debug'
+  get           '/skills/fetch',                         to: 'skill#fetch'
   #get          '/survivors/auth/facebook/callback',      to: 'session#create'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
