@@ -110,6 +110,9 @@ var skill_interface = (function() {
     $('#skill-pool').append(r);
     $('#skill-desc').modal({
       show: false
+    }).on('show.bs.modal', function() {
+      var height = $(window).height() * 0.8;
+      $('#skill-desc-body').css('max-height', height + 'px');
     })
     $('#generate-skill-info').on('click', function() {
       skill_beautifier.dump_to_new_window(build_formatted_skill_descs());

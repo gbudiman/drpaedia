@@ -84,11 +84,15 @@ var skill_beautifier = function() {
       var ls_match = li_split.match(/\{table\:(\d+)}/);
       if (ls_match) {
         var column_per_row = parseInt(ls_match[1]);
-        var rightside = li_split.split(/\{table\:\d+\}/)[1];
+        var lr_split = li_split.split(/\{table\:\d+\}/);
+        var leftside = lr_split[0];
+        var rightside = lr_split[1];
         var cells = rightside.split('|||')
 
         var cell_counter = 0;
-        var t = '<table class="table table-striped table-condensed"><thead>';
+        var t = leftside + '<table class="table table-striped table-condensed"><thead>';
+        var equal_width = 100.0 / column_per_row;
+
         $.each(cells, function(i, text) {
           if (cell_counter % column_per_row == 0 && cell_counter != 0) {
             if (cell_counter <= column_per_row) {
@@ -99,7 +103,7 @@ var skill_beautifier = function() {
           }
 
           if (cell_counter < column_per_row) {
-            t += '<th>' + text + '</th>';
+            t += '<th style="width:' + equal_width + '%">' + text + '</th>';
           } else {
             t += '<td>' + text + '</td>';
           }

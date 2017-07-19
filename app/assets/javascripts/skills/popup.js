@@ -60,6 +60,7 @@ var skill_popup = function() {
           title: '<div>'
                +   '<span class="text-info"><strong>' 
                +     skill_name
+               +     '&nbsp;'
                +     '<span class="glyphicon glyphicon-question-sign" data-skill-name="' + skill_name + '"></span>'
                +     '<span class="pull-right popover-skill-close"><button type="button" class="close">&times;</button></span>'
                +   '</strong></span>'

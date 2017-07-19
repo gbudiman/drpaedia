@@ -223,3 +223,8 @@
   text-align: left;
   text-indent: 0;
 }
+
+#skill-desc-body {
+  max-height: 65%;
+  overflow-y: auto;
+}
