@@ -88,6 +88,9 @@ var configbar = (function() {
       $('body').css('padding-right', 0);
     }).on('hidden.bs.modal', function() {
       $('body').css('padding-right', 0);
+    }).on('show.bs.modal', function() {
+      var height = $(window).height() * 0.8;
+      $('#modal-sync-conflict-body').css('max-height', height + 'px');
     })
 
     $('#sync-upstream').on('click', function() {
