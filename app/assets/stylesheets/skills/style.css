@@ -208,3 +208,18 @@
   background-color: #ccc;
   //color: #ddd;
 }
+
+.skill-body > p > table > thead > tr > th {
+  background-color: #ccc;
+  font-size: 12.5px !important;
+  font-weight: bolder;
+  text-align: center;
+  text-indent: 0;
+  vertical-align: middle;
+}
+
+.skill-body > p > table > tbody > tr > td {
+  font-size: 12px !important;
+  text-align: left;
+  text-indent: 0;
+}

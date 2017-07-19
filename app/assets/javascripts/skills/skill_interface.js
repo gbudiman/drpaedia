@@ -111,7 +111,43 @@ var skill_interface = (function() {
     $('#skill-desc').modal({
       show: false
     })
+    $('#generate-skill-info').on('click', function() {
+      skill_beautifier.dump_to_new_window(build_formatted_skill_descs());
+      return false;
+    })
     attach_alternator();
+  }
+
+  var build_formatted_skill_descs = function() {
+    var sd = dynaloader.raw()['skill_desc'];
+    var processed = {};
+    var h_t = {};
+    var t = '';
+    $.each(profile.get_all_skills(), function(_name, _junk) {
+      var name = sanitize(_name);
+
+      if (processed[name] != undefined) {
+
+      } else {
+        var h = sd[name];
+        /*
+        t += '<div class="skill-title">' + name + '</div>';
+        var pre_t = skill_beautifier.process(h);
+
+        t += pre_t;*/
+
+        h_t[name] = skill_beautifier.process(h);
+
+        processed[name] = true;
+      }
+    });
+
+    $.each(Object.keys(h_t).sort(), function(_junk, key) {
+      t += '<div class="skill-title">' + key + '</div>';
+      t += h_t[key];
+    })
+
+    return t;
   }
 
   var clear_alternator = function() {
@@ -321,7 +357,6 @@ var skill_interface = (function() {
 
   var show_description = function(_name) {
     var name = sanitize(_name);
-    console.log('sanitized skill name is ' + name);
     var h = dynaloader.raw()['skill_desc'][name];
     $('#skill-desc-title').text(name);
     $('#skill-desc-body').html(skill_beautifier.process(h));

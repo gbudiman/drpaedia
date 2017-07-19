@@ -1,4 +1,6 @@
 var skill_beautifier = function() {
+  var new_window = null;
+
   var beautify = function(ds) {
     var t = '';
     $.each(ds, function(title, text) {
@@ -6,6 +8,34 @@ var skill_beautifier = function() {
     })
 
     return t;
+  }
+
+  var dump_to_new_window = function(x) {
+    if (new_window == null) {
+      new_window = window.open('', 'skill-descs');
+    } else {
+      new_window.close();
+      new_window = window.open('', 'skill-descs');
+    }
+    var footer_code = new Array();
+
+    $('body').find('link[rel="stylesheet"]').each(function() {
+      footer_code.push($(this).prop('outerHTML'));
+    })
+
+    var content = '<html>'
+                +   '<head>'
+                +     $('head').html()
+                +   '</head>'
+                +   '<body>'
+                +     '<div class="container-fluid">'
+                +       x
+                +     '</div>'
+                +     footer_code.join('')
+                +   '</body>'
+                + '</html>'
+
+    new_window.document.write(content);
   }
 
   var load_all = function() {
@@ -31,7 +61,7 @@ var skill_beautifier = function() {
     if (text == undefined) {
       return '<div class="skill-body">Skill info not available</div>';
     }
-    
+
     var p_splits = text.split('{p}');
     var li_splits = new Array();
     var table_splits = new Array();
@@ -61,7 +91,7 @@ var skill_beautifier = function() {
         var t = '<table class="table table-striped table-condensed"><thead>';
         $.each(cells, function(i, text) {
           if (cell_counter % column_per_row == 0 && cell_counter != 0) {
-            if (cell_counter < column_per_row) {
+            if (cell_counter <= column_per_row) {
               t += '</tr></thead><tbody>';
             } else {
               t += '</tr><tr>';
@@ -92,6 +122,7 @@ var skill_beautifier = function() {
 
   return {
     load_all: load_all,
-    process: process
+    process: process,
+    dump_to_new_window: dump_to_new_window
   }
 }()
