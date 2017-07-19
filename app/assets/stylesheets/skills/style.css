@@ -147,6 +147,10 @@
   font-weight: normal;
 }
 
+#modal-sync-conflict-body {
+  overflow-y: auto;
+}
+
 .row.signet {
   height: 2px;
   //margin: 0px -4px -4px -4px;
