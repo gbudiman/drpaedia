@@ -1,0 +1,32 @@
+%div{class: 'modal fade', id: 'skill-info-config'}
+  %div{class: 'modal-dialog'}
+    %div{class: 'modal-content'}
+      %div{class: 'modal-header'}
+        %button{type: 'button', class: 'close', 'data-dismiss' => 'modal'}
+          %span &times;
+        %h4{class: 'modal-title'} 
+          Skill Info Config
+          
+      %div{class: 'modal-body'}
+        %div{class: 'col-xs-12'}
+
+          %div
+            %label
+              %input{type: 'radio', name: 'infofilter', value: 'acqplan', checked: true} &nbsp; Acquired+Planned only
+          %div
+            %label
+              %input{type: 'radio', name: 'infofilter', value: 'accessible'} &nbsp; Accessible Skills only
+          %div
+            %label
+              %input{type: 'radio', name: 'infofilter', value: 'all'} &nbsp; ALL THE SKILLS!
+          %hr
+          %div
+            %label
+              %input{type: 'checkbox', name: 'with-lore'} &nbsp; Include Lores
+          %div
+            %label
+              %input{type: 'checkbox', name: 'with-psi'} &nbsp; Include Psionics
+
+        %div{class: 'row'}
+      %div{class: 'modal-footer'}
+        %button{type: 'button', class: 'btn btn-primary', id: 'exec-info-generate'} Print

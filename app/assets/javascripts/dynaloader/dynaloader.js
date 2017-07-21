@@ -144,7 +144,14 @@ var dynaloader = (function() {
       master_build();
     }
 
-    get_json('skill_desc');
+    $.ajax({
+      cache: false,
+      url: '/skill_desc.json',
+      dataType: 'json'
+    }).done(function(d) {
+      raw_data.skill_desc = d;
+    })
+    //get_json('skill_desc');
   }
 
   var get_json = function(path) {

@@ -113,12 +113,37 @@ var skill_interface = (function() {
     }).on('show.bs.modal', function() {
       var height = $(window).height() - 96;
       $('#skill-desc-body').css('max-height', height + 'px');
+    }).on('shown.bs.modal', function() {
+      $('body').css('padding-right', 0);
     })
-    $('#generate-skill-info').on('click', function() {
+
+    $('#skill-info-config').modal({
+      show: false
+    }).on('shown.bs.modal', function() {
+      $('body').css('padding-right', 0);
+    })
+
+    $('#generate-skill-info').on('click', function(event) {
+      $('#skill-info-config').modal('show');
+      event.preventDefault();
+    })
+
+    $('#exec-info-generate').on('click', function() {
+      $('#skill-info-config').modal('hide');
       skill_beautifier.dump_to_new_window(build_formatted_skill_descs());
       return false;
     })
     attach_alternator();
+  }
+
+  var get_all_accessible_skills = function() {
+    var h = {};
+    $('div.skill[data-accessible="true"]').each(function() {
+      var t = $(this).find('.skill-name').text();
+      h[t] = true;
+    })
+
+    return h;
   }
 
   var build_formatted_skill_descs = function() {
@@ -126,19 +151,29 @@ var skill_interface = (function() {
     var processed = {};
     var h_t = {};
     var t = '';
-    $.each(profile.get_all_skills(), function(_name, _junk) {
+
+    var filter_config = $('#skill-info-config').find('input[name="infofilter"]:checked').attr('value');
+    var include_lore = $('#skill-info-config').find('input[name="with-lore"]').prop('checked');
+    var include_psi = $('#skill-info-config').find('input[name="with-psi"]').prop('checked');
+
+    var data;
+
+    switch (filter_config) {
+      case 'acqplan': data = profile.get_all_skills(); break;
+      case 'accessible': data = get_all_accessible_skills(); break;
+      case 'all': data = dynaloader.raw()['skill_desc']; break;
+    }
+
+    $.each(data, function(_name, _junk) {
       var name = sanitize(_name);
+
+      if (!include_lore && name.match(/^Lore/) != null) return true;
+      if (!include_psi && name.match(/^Psi/) != null) return true;
 
       if (processed[name] != undefined) {
 
       } else {
         var h = sd[name];
-        /*
-        t += '<div class="skill-title">' + name + '</div>';
-        var pre_t = skill_beautifier.process(h);
-
-        t += pre_t;*/
-
         h_t[name] = skill_beautifier.process(h);
 
         processed[name] = true;
@@ -368,8 +403,6 @@ var skill_interface = (function() {
   var sanitize = function(x) {
     if (x.match(/[IV]+$/)) {
       return x.replace(/[IV]+$/, '').trim();
-    } else if (x.match(/^Psi [I]+/)) {
-      return x.replace(/^Psi [I]+ \-/, '').trim();
     }
 
     return x;
