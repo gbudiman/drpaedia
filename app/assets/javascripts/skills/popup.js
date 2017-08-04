@@ -58,10 +58,10 @@ var skill_popup = function() {
           viewport: traverse_to_parent(id),
           container: traverse_to_parent(id),
           title: '<div>'
+               +   '<span class="glyphicon glyphicon-question-sign skill-info-query pull-left" data-skill-name="' + skill_name + '"></span>'
+               +   '&nbsp; '
                +   '<span class="text-info"><strong>' 
                +     skill_name
-               +     '&nbsp;'
-               +     '<span class="glyphicon glyphicon-question-sign" data-skill-name="' + skill_name + '"></span>'
                +     '<span class="pull-right popover-skill-close"><button type="button" class="close">&times;</button></span>'
                +   '</strong></span>'
                + '</div>'

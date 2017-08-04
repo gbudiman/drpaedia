@@ -77,7 +77,9 @@ var tooling = function() {
       var up = '<span class="glyphicon glyphicon-arrow-up pull-right"></span>';
 
       //obj.prepend(down);
-      obj.children().last().before(up).after(down);
+      //obj.children().last().before(up).after(down);
+      obj.children().last().prev().before(up)
+      obj.children().last().after(down)
       activate(obj);
     } else {
       obj.find('.glyphicon-arrow-up').remove();

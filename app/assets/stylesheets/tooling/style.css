@@ -10,6 +10,10 @@
 
 .tool.tool-separator {
   font-weight: bold;
+  background-color: #ddd;
+  border-top: 1px solid #888;
+  border-bottom: 1px solid #888;
+  //color: white;
 }
 
 .tool-checkin-planner, .tool-prof-planner, .tool-stat-planner {

@@ -121,15 +121,18 @@
 
 .skill-selected {}
 
+.skill-info-query {
+  cursor: pointer;
+}
 .drop-highlight {
   background-color: #dff0d8;
   border-color: #3f5f38;
   cursor: pointer;
 }
 
-.drop-highlight-group {
+.tool.tool-separator.drop-highlight-group {
   background-color: #3071a9;
-  color: white;
+  //color: white;
   cursor: pointer;
 }
 
