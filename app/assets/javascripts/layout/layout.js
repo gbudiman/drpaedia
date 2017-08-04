@@ -1,5 +1,7 @@
 var layout = (function() {
-  state = 'half';
+  var state = 'half';
+  var animation_ms_duration = 500;
+  var animation_serial_delay = animation_ms_duration / 10;
 
   var attach = function() {
     $(window).resize(function() {
@@ -15,14 +17,49 @@ var layout = (function() {
 
   var minmax = function() {
     if (state == 'half') {
+      var slide_out_amount = $('#main-left').width();
       state = 'right-full';
-      $('#main-left').hide();
-      $('#main-right').removeClass('col-xs-6').addClass('col-xs-12');
+      //$('#main-left').hide();
+
+      //$('#main-left').addClass('animated slideOutLeft');
+      $('#main-left').animate({
+        opacity: 0,
+        'margin-left': (-1 * slide_out_amount - 8) + 'px'
+      }, animation_ms_duration)
+
+      $('#main-right').animate({
+        width: 2 * slide_out_amount
+      }, animation_ms_duration, function() {
+        $('#main-right')
+          .removeClass('col-xs-6').addClass('col-xs-12')
+          .css('width', '');
+      });
+      
+      
       $('#minmax').html('&rsaquo; Half &lsaquo;');
     } else if (state == 'right-full') {
       state = 'half';
-      $('#main-left').show();
-      $('#main-right').removeClass('col-xs-12').addClass('col-xs-6');
+      var half_width = $(window).width() / 2;
+
+      $('#main-right').animate({
+        'margin-right': (-1 * half_width) + 'px'
+      }, animation_ms_duration / 2)
+
+      $('#main-right').animate({
+        width: half_width + 'px'
+      }, animation_ms_duration / 2, function() {
+        $('#main-right')
+          .removeClass('col-xs-12').addClass('col-xs-6')
+          .css('width', '')
+      })
+
+      setTimeout(function() {
+        $('#main-left').animate({
+          opacity: 1,
+          'margin-left': 0
+        }, animation_ms_duration)
+      }, animation_serial_delay)
+
       $('#minmax').html('&laquo; Max');
     }
   }
@@ -35,6 +72,11 @@ var layout = (function() {
     $('#main-left').css('height', max_height + 'px');
     $('#main-right').css('height', max_height + 'px');
     $('#config-button').css('max-width', (width * 0.4) + 'px');
+
+    if (state == 'right-full') {
+      var margin_hidden = ($(window).width() / 2 * -1) + 'px';
+      $('#main-left').css('margin-left', margin_hidden);
+    }
   }
 
   return {
