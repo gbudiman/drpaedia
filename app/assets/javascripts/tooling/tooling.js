@@ -27,7 +27,12 @@ var tooling = function() {
     $('#' + type).on('click', function(event) {
       var target = $('#' + target_id);
       var cloned = $('#' + type + '-base').clone(true, true);
+      cloned.hide().show().css('opacity', 0);
+
       cloned.removeAttr('id').prependTo(target);
+      cloned.animate({
+        opacity: 1
+      }, 250);
       activate(cloned);
       auto_indent(target);
       profile.save_all();
@@ -228,11 +233,31 @@ var tooling = function() {
     if ((is_collapsed && exec) || (!is_collapsed && !exec)) {
       // console.log('expanding');
       obj.attr('data-group-is-collapsed', false);
-      $.each(target, function(i, x) { x.show(); })
+      $.each(target, function(i, x) { 
+        //x.show(); 
+        //x.css('margin-top', 0);
+        x.show()
+          .css('opacity', 0)
+          .animate({
+          'margin-top': 0,
+          opacity: 1
+        }, 500)
+      })
     } else {
       // console.log('collapsing');
       obj.attr('data-group-is-collapsed', true);
-      $.each(target, function(i, x) { x.hide(); })
+      //var height_amount = 0;
+      $.each(target, function(i, x) { 
+        //x.hide(); 
+        var height_amount = $(this).outerHeight();
+
+        x.animate({
+          opacity: 0,
+          'margin-top': (-1 * height_amount) + 'px'
+        }, 500, function() {
+          x.hide();
+        })
+      })
     }
 
     if (exec != undefined && exec) {
@@ -580,8 +605,8 @@ var tooling = function() {
   }
 
   var highlight_children = function(obj, val) {
-    if (val) { obj.addClass('bg-primary'); }
-    else { obj.removeClass('bg-primary'); }
+    //if (val) { obj.addClass('bg-primary'); }
+    //else { obj.removeClass('bg-primary'); }
     var current_obj = obj.next();
 
     while (current_obj.length > 0) {
@@ -614,7 +639,11 @@ var tooling = function() {
       }
 
       popover_caller.popover('hide');
-      popover_caller.parent().remove();
+      popover_caller.parent().animate({
+        opacity: 0
+      }, 250, function() {
+        popover_caller.parent().remove();
+      })
 
       while (next.length > 0) {
         if (!next.hasClass('tool-highlight')) break;
@@ -655,7 +684,13 @@ var tooling = function() {
           //dragdrop.drop_to_pool(x.attr('id'));
           x.removeClass('tool-highlight');
         } else {
-          x.remove();
+          //x.remove();
+
+          x.animate({
+            opacity: 0
+          }, 250, function() {
+            x.remove();
+          })
         }
       })
 
