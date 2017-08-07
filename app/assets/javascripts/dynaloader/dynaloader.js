@@ -110,6 +110,7 @@ var dynaloader = (function() {
 
     })
 
+    $.jStorage.deleteKey('raw_data');
     raw_data = $.jStorage.get('raw_data', {});
 
     if (Object.keys(raw_data).length == 0) {

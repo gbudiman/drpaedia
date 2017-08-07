@@ -68,6 +68,7 @@ var skills = (function() {
           
         }
 
+
         $.each(r.skill_group[k], function(sub_k, sub_v) {
           var w = data[prepend + sub_k];
 
@@ -96,7 +97,8 @@ var skills = (function() {
           shorthand: r.skill_list[k],
           type: 'normal',
           conditions: v,
-          mp_cost: mp[k]
+          mp_cost: mp[k],
+          unique: Object.keys(v).filter(x => !x.match(/innate/)).length == 1
         }
 
         skill_hash[r.skill_list[k]] = k;

@@ -89,6 +89,7 @@ var skill_interface = (function() {
     var r = '';
     var p_adv = '<span><sup>ADV</sup></span>';
     var p_conc = '<span><sup>CONC</sup></span>';
+    var p_uniq = '<span><sup>UNIQ</sup></span>';
 
     Object.keys(data).sort().forEach(function(k, i) {
       var shorthand = data[k].shorthand;
@@ -102,6 +103,7 @@ var skill_interface = (function() {
          + '>'
          +   (data[k].type == 'conc' ? p_conc : '')
          +   (data[k].type == 'adv' ? p_adv : '')
+         +   ((data[k].unique || false) == true ? p_uniq : '')
          +   '<span class="skill-name">' + k + '</span>'
          +   '<span class="badge badge-default skill-cost pull-right" id="' + shorthand + '-cost" data-badge="skill-cost"></span>'
          + '</div>';
