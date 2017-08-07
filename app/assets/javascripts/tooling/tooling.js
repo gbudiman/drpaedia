@@ -424,32 +424,94 @@ var tooling = function() {
     var anchor_members = new Array();
     var animation_duration_ms = 500;
 
-    var animate_displacement = function(dir, obj, target, displacement) {
+
+    var animate_displacement = function(dir, objs, target, displacement) {
       var f = null;
+      var a_px = 0;
+      var b_px = 0;
+
+      var reset_animation_state = function() {
+        $.each(objs, function(i, obj) {
+          obj.css('top', 0)
+        })
+
+        $.each(target, function(i, t) {
+          t.css('top', 0)
+        })
+      }
+
+      $.each(objs, function(i, obj) {
+        if (obj.hasClass('tool-separator') || obj.is(':visible')) {
+          a_px += obj.outerHeight();
+        }
+      })
+
+      $.each(target, function(i, t) {
+        if (t.hasClass('tool-separator') || t.is(':visible')) {
+          b_px += t.outerHeight();
+        }
+      });
+
       if (dir == 'up') {
         f = function() {
-          obj.hide().insertBefore(anchor).show();
+          $.each(objs, function(i, obj) {
+            var cached_visible = obj.is(':visible');
+            obj.hide().insertBefore(anchor);
+
+            if (obj.hasClass('tool-separator') || cached_visible) {
+              obj.show();
+            }
+          })
+          
         }
       } else {
         f = function() {
-          obj.hide().insertAfter(anchor).show();
+          $.each(objs, function(i, obj) {
+            var cached_visible = obj.is(':visible');
+            obj.hide().insertAfter(anchor);
+
+            if (obj.hasClass('tool-separator') || cached_visible) {
+              obj.show();
+            }
+          })
+          
         }
       }
 
-      obj.css('position', 'relative');
-      anchor.css('position', 'relative');
+      $.each(objs, function(i, x) { x.css('position', 'relative')})
+      $.each(target, function(i, x) { x.css('position', 'relative')})
+      //obj.css('position', 'relative');
+      //anchor.css('position', 'relative');
 
 
-      f();
+      //f();
+      if (dir == 'up') {
+        b_px *= -1;
+      } else {
+        a_px *= -1;
+      }
 
-      /*obj.animate({
-        'top': (-1 * displacement) + 'px'
-      }, animation_duration_ms, function() {
-        //obj.css('top', 0);
-        //f();
+      console.log(a_px);
+      console.log(b_px);
+      $.each(objs, function(i, obj) {
+        obj.animate({
+          'top': b_px + 'px'
+        }, animation_duration_ms, function() {
+          //obj.css('top', 0);
+          //f();
+        })
       })
+      
 
-      setTimeout(function() {
+      $.each(target, function(i, t) {
+        t.animate({
+          'top': a_px + 'px'
+        }, animation_duration_ms, function() {
+          f();
+          reset_animation_state();
+        })
+      })
+      /*setTimeout(function() {
         anchor.animate({
           'top': displacement + 'px'
         }, animation_duration_ms, function() {
@@ -575,19 +637,25 @@ var tooling = function() {
           while (member.length > 0) {
             if (member.hasClass('tool-separator')) {
               amount += member.outerHeight();
+              members.push(member);
               break;
             }
+
             amount += member.outerHeight();
             members.push(member);
             member = member.prev();
           }
         } else if (dir == 'down') {
+
+          members.push(anchor);
+          amount += anchor.outerHeight();
           member = anchor.prev();
-          amount += member.outerHeight();
+          
 
           while (member.length > 0) {
             if (member.hasClass('tool-separator')) {
               amount += member.outerHeight();
+              members.push(member);
               break;
             }
             amount += member.outerHeight();
@@ -628,19 +696,7 @@ var tooling = function() {
 
     var displacement = determine_displacement_amount(direction, objs, anchor);
     console.log('Target object displace up by ' + displacement.amount + ' px');
-    $.each(objs, function(i, x) {
-      animate_displacement(direction, x, displacement.target, displacement.amount);
-      // if (direction == 'up') { 
-      //   animate_displacement(x, function() {
-      //     x.insertBefore(anchor); 
-      //   })
-      // }
-      // else if (direction == 'down') { 
-      //   animate_displacement(x, function() {
-      //     x.insertAfter(anchor); 
-      //   })
-      // }
-    })
+    animate_displacement(direction, objs, displacement.target);
 
     auto_indent(obj.parent());
     profile.save_all();
