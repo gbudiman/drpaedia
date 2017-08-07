@@ -43,6 +43,8 @@ gem 'bootstrap-sass'
 gem 'figaro'
 gem 'omniauth-facebook'
 gem 'devise'
+gem 'sprockets', '~> 4.x'
+gem 'babel-schmooze-sprockets'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

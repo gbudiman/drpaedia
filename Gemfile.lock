@@ -42,6 +42,9 @@ GEM
     autoprefixer-rails (7.1.1)
       execjs
     awesome_print (1.7.0)
+    babel-schmooze-sprockets (0.1.3)
+      schmooze
+      sprockets (~> 4.x)
     bcrypt (3.1.11)
     bindex (0.5.0)
     bootstrap-sass (3.3.7)
@@ -133,7 +136,7 @@ GEM
     orm_adapter (0.5.0)
     pg (0.20.0)
     puma (3.8.2)
-    rack (2.0.2)
+    rack (2.0.3)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.3)
@@ -192,13 +195,14 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    schmooze (0.1.6)
     sexp_processor (4.9.0)
     spring (2.0.1)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
-    sprockets (3.7.1)
+    sprockets (4.0.0.beta4)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.2.0)
@@ -232,6 +236,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  babel-schmooze-sprockets
   bootstrap-sass
   byebug
   coffee-rails (~> 4.2)
@@ -250,6 +255,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   spring
   spring-watcher-listen (~> 2.0.0)
+  sprockets (~> 4.x)
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)
