@@ -159,7 +159,7 @@ var dragdrop = (function() {
 
     func();
 
-    obj.show().css('opacity', 0).animate({
+    obj.show().css('opacity', 0).velocity({
       opacity: 1
     }, 1000)
   }

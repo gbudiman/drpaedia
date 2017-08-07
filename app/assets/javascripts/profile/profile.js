@@ -59,7 +59,7 @@ var profile = function() {
     profiles[new_value] = default_prefs;
     if (config.primary == undefined) config.primary = new_value;
 
-    $('#skill-pool').animate({
+    $('#skill-pool').velocity({
       opacity: 0.5
     }, 50, function() {
       switch_to(new_value);
@@ -225,7 +225,7 @@ var profile = function() {
     }
 
     if (name == selected) {
-      $('#skill-pool').animate({
+      $('#skill-pool').velocity({
         opacity: 0.5
       }, 50, function() {
         switch_to(config.primary);

@@ -154,7 +154,7 @@ var profile_interface = function() {
 
         var profile_name = $(this).attr('data-name');
 
-        $('#skill-pool').animate({
+        $('#skill-pool').velocity({
           opacity: 0.5
         }, 50, function() {
           profile.switch_to(profile_name);
@@ -262,7 +262,7 @@ var profile_interface = function() {
         var id = $(this).attr('data-id');
         var name = $(this).text();
 
-        $('#skill-pool').animate({
+        $('#skill-pool').velocity({
           opacity: 0.5
         }, 50);
 

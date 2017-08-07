@@ -14,6 +14,7 @@ Rails.application.config.assets.precompile += %w( style.css
                                                   generic.js
                                                   js.cookie.js
                                                   filterview/*.js 
+                                                  velocity*
                                                   calc/*.js
                                                   configbar/*.js 
                                                   dynaloader/*.js 

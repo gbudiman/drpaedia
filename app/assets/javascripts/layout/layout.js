@@ -22,12 +22,12 @@ var layout = (function() {
       //$('#main-left').hide();
 
       //$('#main-left').addClass('animated slideOutLeft');
-      $('#main-left').animate({
+      $('#main-left').velocity({
         opacity: 0,
         'margin-left': (-1 * slide_out_amount - 8) + 'px'
       }, animation_ms_duration)
 
-      $('#main-right').animate({
+      $('#main-right').velocity({
         width: 2 * slide_out_amount
       }, animation_ms_duration, function() {
         $('#main-right')
@@ -41,11 +41,11 @@ var layout = (function() {
       state = 'half';
       var half_width = $(window).width() / 2;
 
-      $('#main-right').animate({
+      $('#main-right').velocity({
         'margin-right': (-1 * half_width) + 'px'
       }, animation_ms_duration / 2)
 
-      $('#main-right').animate({
+      $('#main-right').velocity({
         width: half_width + 'px'
       }, animation_ms_duration / 2, function() {
         $('#main-right')
@@ -54,7 +54,7 @@ var layout = (function() {
       })
 
       setTimeout(function() {
-        $('#main-left').animate({
+        $('#main-left').velocity({
           opacity: 1,
           'margin-left': 0
         }, animation_ms_duration)

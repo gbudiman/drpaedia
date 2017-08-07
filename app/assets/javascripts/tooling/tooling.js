@@ -32,7 +32,7 @@ var tooling = function() {
       cloned.hide().show().css('opacity', 0);
 
       cloned.removeAttr('id').prependTo(target);
-      cloned.animate({
+      cloned.velocity({
         opacity: 1
       }, 250);
       activate(cloned);
@@ -255,7 +255,7 @@ var tooling = function() {
         //x.css('margin-top', 0);
         x.show()
           .css('opacity', exec ? 0 : 1)
-          .animate({
+          .velocity({
           'margin-top': 0,
           opacity: 1
         }, 500)
@@ -269,7 +269,7 @@ var tooling = function() {
         //x.hide(); 
         var height_amount = $(this).outerHeight();
 
-        x.animate({
+        x.velocity({
           opacity: exec ? 0 : 1,
           'margin-top': (-1 * height_amount) + 'px'
         }, 500, function() {
@@ -426,12 +426,11 @@ var tooling = function() {
 
 
     var animate_displacement = function(dir, objs, target, displacement) {
+
       var f = null;
       var a_px = 0;
       var b_px = 0;
 
-      console.log(objs);
-      console.log(target);
       var reset_animation_state = function() {
         $.each(objs, function(i, obj) {
           obj.css('top', 0)
@@ -442,9 +441,9 @@ var tooling = function() {
         })
       }
 
-      $.each(objs, function(i, obj) {
-        if (obj.hasClass('tool-separator') || obj.is(':visible')) {
-          a_px += obj.outerHeight();
+      $.each(objs, function(i, d_obj) {
+        if (d_obj.hasClass('tool-separator') || d_obj.is(':visible')) {
+          a_px += d_obj.outerHeight();
         }
       })
 
@@ -482,79 +481,34 @@ var tooling = function() {
 
       $.each(objs, function(i, x) { x.css('position', 'relative')})
       $.each(target, function(i, x) { x.css('position', 'relative')})
-      //obj.css('position', 'relative');
-      //anchor.css('position', 'relative');
 
-
-      //f();
       if (dir == 'up') {
         b_px *= -1;
       } else {
         a_px *= -1;
       }
 
-      console.log(a_px);
-      console.log(b_px);
-      $.each(objs, function(i, obj) {
-        obj.animate({
-          'top': b_px + 'px'
-        }, animation_duration_ms, function() {
-          //obj.css('top', 0);
-          //f();
+      return new Promise(function(resolve, reject) {
+        $.each(objs, function(i, obj) {
+          obj.velocity({
+            'top': b_px + 'px'
+          }, animation_duration_ms)
+        })
+        
+
+        $.each(target, function(i, t) {
+          t.velocity({
+            'top': a_px + 'px'
+          }, animation_duration_ms, function() {
+            f();
+            reset_animation_state();
+            resolve(true);
+          })
         })
       })
-      
 
-      $.each(target, function(i, t) {
-        t.animate({
-          'top': a_px + 'px'
-        }, animation_duration_ms, function() {
-          f();
-          reset_animation_state();
-        })
-      })
-      /*setTimeout(function() {
-        anchor.animate({
-          'top': displacement + 'px'
-        }, animation_duration_ms, function() {
-          
-          f();
-          anchor.css('top', 0);
-          obj.css('top', 0);
-        })
-      }, animation_duration_ms / 10);*/
-      
 
-      // setTimeout(function() {
-      //   anchor.animate({
-      //     opacity: 0
-      //   }, animation_duration_ms / 2, function() {
-      //     anchor.animate({
-      //       opacity: 1
-      //     }, animation_duration_ms / 2, function() {
-      //       //f();
-      //     })
-      //   })
-      // }, 50);
-      
     }
-
-    // var get_anchor_members = function(direction, anchor, objs) {
-    //   var comparator = function(c_anchor, c_pivot) {
-    //     if (c_anchor.hasClass)
-    //   }
-
-    //   var members = new Array();
-    //   if (direction == 'up') {
-    //     var pivot_object = objs[0].prev();
-
-    //     while (comparator(anchor, pivot_object) == false) {
-    //       members.push(pivot_object);
-    //     }
-    //   }
-
-    //   console.log(members);
-    // }
 
     if (is_group(obj)) {
       var maybe_anchor;
@@ -619,13 +573,6 @@ var tooling = function() {
       ordered = ordered.reverse();
     }
 
-    // $.each(objs, function(_junk, obj) {
-    //   relocate_pixel_amount += obj.outerHeight();
-    // })
-
-
-    //anchor_members = get_anchor_members(direction, anchor, objs);
-
     var determine_displacement_amount = function(dir, objs, anchor) {
       var amount = 0;
       //console.log(anchor);
@@ -649,21 +596,21 @@ var tooling = function() {
             member = member.prev();
           }
         } else if (dir == 'down') {
-
           members.push(anchor);
           amount += anchor.outerHeight();
-          member = anchor.prev();
-          
-
-          while (member.length > 0) {
-            if (member.hasClass('tool-separator')) {
+                
+          if (!anchor.hasClass('tool-separator')) {
+            member = anchor.prev();
+            while (member.length > 0) {
+              if (member.hasClass('tool-separator')) {
+                amount += member.outerHeight();
+                members.push(member);
+                break;
+              }
               amount += member.outerHeight();
               members.push(member);
-              break;
+              member = member.prev()
             }
-            amount += member.outerHeight();
-            members.push(member);
-            member = member.prev()
           }
         }
 
@@ -699,11 +646,13 @@ var tooling = function() {
     }
 
     var displacement = determine_displacement_amount(direction, objs, anchor);
-    console.log('Target object displace up by ' + displacement.amount + ' px');
-    animate_displacement(direction, objs, displacement.target);
+    //console.log('Target object displace up by ' + displacement.amount + ' px');
+    animate_displacement(direction, objs, displacement.target).then(function() {
+      auto_indent(obj.parent());
+      profile.save_all();      
+    })
 
-    auto_indent(obj.parent());
-    profile.save_all();
+
   }
 
   var auto_collapse = function(obj) {
@@ -867,7 +816,7 @@ var tooling = function() {
       }
 
       popover_caller.popover('hide');
-      popover_caller.parent().animate({
+      popover_caller.parent().velocity({
         opacity: 0
       }, 250, function() {
         popover_caller.parent().remove();
@@ -914,7 +863,7 @@ var tooling = function() {
         } else {
           //x.remove();
 
-          x.animate({
+          x.velocity({
             opacity: 0
           }, 250, function() {
             x.remove();

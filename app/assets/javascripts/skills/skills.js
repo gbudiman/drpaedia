@@ -317,9 +317,9 @@ var skills = (function() {
       calc.recalculate_all();
     } else {
 
-      $('#skill-pool').animate({
+      $('#skill-pool').velocity({
         opacity: 0.5
-      }, 50, function() { 
+      }, 250, function() { 
         func();
         do_postprocess();
         calc.recalculate_all();

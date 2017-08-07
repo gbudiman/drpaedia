@@ -32,7 +32,7 @@
   = render 'tooling_template'
 
 %div{class: 'footer', style: 'display: none'}
-  %div{class: 'credits'} DRpaedia 0.9.5
+  %div{class: 'credits'} DRpaedia 0.9.6
 
   %div{id: 'disqus_thread', class: 'col-xs-12'}
   :javascript
@@ -50,6 +50,7 @@
 
 = stylesheet_link_tag 'style'
 = stylesheet_link_tag 'typeaheadjs.css'
+= javascript_include_tag 'velocity.min'
 = javascript_include_tag 'typeahead.bundle.min'
 = javascript_include_tag 'js.cookie'
 = javascript_include_tag 'generic'
