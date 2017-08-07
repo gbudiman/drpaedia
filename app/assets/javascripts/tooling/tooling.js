@@ -430,6 +430,8 @@ var tooling = function() {
       var a_px = 0;
       var b_px = 0;
 
+      console.log(objs);
+      console.log(target);
       var reset_animation_state = function() {
         $.each(objs, function(i, obj) {
           obj.css('top', 0)
@@ -628,8 +630,9 @@ var tooling = function() {
       var amount = 0;
       //console.log(anchor);
       var obj = dir == 'up' ? objs[0] : objs[objs.length - 1];
+      var members = new Array();
       if (obj.hasClass('tool-separator')) {
-        var members = new Array();
+        
         var member = null;
         if (dir == 'up') {
           member = obj.prev();
@@ -685,6 +688,7 @@ var tooling = function() {
 
       } else {
         amount = anchor.outerHeight();
+        members.push(anchor);
       }
 
       return {
