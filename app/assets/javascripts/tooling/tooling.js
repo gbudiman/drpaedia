@@ -4,6 +4,8 @@ var tooling = function() {
   var indent_interval = setTimeout(null, 0);
   var popover_caller;
   var state;
+  var move_up_disabled = false;
+  var move_down_disabled = false;
 
   var attach = function() {
     // attach_to('skills-acquired');
@@ -98,12 +100,23 @@ var tooling = function() {
 
   var activate = function(obj) {
     obj.find('.glyphicon-arrow-down').on('click', function() {
-      move($(this).parent(), 'down');
+      if (!move_down_disabled) {
+        move_down_disabled = true;
+        move($(this).parent(), 'down');
+
+        setTimeout(function() { move_down_disabled = false}, 750 )
+      }
       return false;
     })
 
     obj.find('.glyphicon-arrow-up').on('click', function() {
-      move($(this).parent(), 'up');
+      if (!move_up_disabled) {
+        move_up_disabled = true;
+        move($(this).parent(), 'up');
+
+        setTimeout(function() { move_up_disabled = false}, 750 )
+      }
+      
       return false;
     })
 
@@ -124,6 +137,7 @@ var tooling = function() {
 
     obj.find('.group-collapsible').on('click', function() {
       toggle_group_visibility($(this).parent(), true);
+      return false;
     })
 
     // $('.tool').find('.glyphicon-option-horizontal').on('click', function() {
@@ -240,7 +254,7 @@ var tooling = function() {
         //x.show(); 
         //x.css('margin-top', 0);
         x.show()
-          .css('opacity', 0)
+          .css('opacity', exec ? 0 : 1)
           .animate({
           'margin-top': 0,
           opacity: 1
@@ -256,7 +270,7 @@ var tooling = function() {
         var height_amount = $(this).outerHeight();
 
         x.animate({
-          opacity: 0,
+          opacity: exec ? 0 : 1,
           'margin-top': (-1 * height_amount) + 'px'
         }, 500, function() {
           x.hide();
@@ -406,6 +420,77 @@ var tooling = function() {
     var objs = new Array();
     hide_popover();
     var anchor;
+    var relocate_pixel_amount = 0;
+    var anchor_members = new Array();
+    var animation_duration_ms = 500;
+
+    var animate_displacement = function(dir, obj, target, displacement) {
+      var f = null;
+      if (dir == 'up') {
+        f = function() {
+          obj.hide().insertBefore(anchor).show();
+        }
+      } else {
+        f = function() {
+          obj.hide().insertAfter(anchor).show();
+        }
+      }
+
+      obj.css('position', 'relative');
+      anchor.css('position', 'relative');
+
+
+      f();
+
+      /*obj.animate({
+        'top': (-1 * displacement) + 'px'
+      }, animation_duration_ms, function() {
+        //obj.css('top', 0);
+        //f();
+      })
+
+      setTimeout(function() {
+        anchor.animate({
+          'top': displacement + 'px'
+        }, animation_duration_ms, function() {
+          
+          f();
+          anchor.css('top', 0);
+          obj.css('top', 0);
+        })
+      }, animation_duration_ms / 10);*/
+      
+
+      // setTimeout(function() {
+      //   anchor.animate({
+      //     opacity: 0
+      //   }, animation_duration_ms / 2, function() {
+      //     anchor.animate({
+      //       opacity: 1
+      //     }, animation_duration_ms / 2, function() {
+      //       //f();
+      //     })
+      //   })
+      // }, 50);
+      
+    }
+
+    // var get_anchor_members = function(direction, anchor, objs) {
+    //   var comparator = function(c_anchor, c_pivot) {
+    //     if (c_anchor.hasClass)
+    //   }
+
+    //   var members = new Array();
+    //   if (direction == 'up') {
+    //     var pivot_object = objs[0].prev();
+
+    //     while (comparator(anchor, pivot_object) == false) {
+    //       members.push(pivot_object);
+    //     }
+    //   }
+
+    //   console.log(members);
+    // }
 
     if (is_group(obj)) {
       var maybe_anchor;
@@ -470,13 +555,91 @@ var tooling = function() {
       ordered = ordered.reverse();
     }
 
+    // $.each(objs, function(_junk, obj) {
+    //   relocate_pixel_amount += obj.outerHeight();
+    // })
+
+
+    //anchor_members = get_anchor_members(direction, anchor, objs);
+
+    var determine_displacement_amount = function(dir, objs, anchor) {
+      var amount = 0;
+      //console.log(anchor);
+      var obj = dir == 'up' ? objs[0] : objs[objs.length - 1];
+      if (obj.hasClass('tool-separator')) {
+        var members = new Array();
+        var member = null;
+        if (dir == 'up') {
+          member = obj.prev();
+        
+          while (member.length > 0) {
+            if (member.hasClass('tool-separator')) {
+              amount += member.outerHeight();
+              break;
+            }
+            amount += member.outerHeight();
+            members.push(member);
+            member = member.prev();
+          }
+        } else if (dir == 'down') {
+          member = anchor.prev();
+          amount += member.outerHeight();
+
+          while (member.length > 0) {
+            if (member.hasClass('tool-separator')) {
+              amount += member.outerHeight();
+              break;
+            }
+            amount += member.outerHeight();
+            members.push(member);
+            member = member.prev()
+          }
+        }
+
+        /*var members = new Array();
+        var member = dir == 'up' ? obj.prev() : obj.next();
+
+        if (dir == 'down') {
+          amount += member.outerHeight();
+          members.push(member);
+          member = member.next();
+        }
+
+        while (member.length > 0) {
+          if (member.hasClass('tool-separator')) {
+            amount += member.outerHeight();
+            break;
+          }
+          amount += member.outerHeight();
+          members.push(member);
+          member = dir == 'up' ? member.prev() : member.next();
+        }*/
+
+      } else {
+        amount = anchor.outerHeight();
+      }
+
+      return {
+        amount: dir == 'up' ? amount : -amount,
+        target: members
+      }
+      return dir == 'up' ? amount : -amount;
+    }
+
+    var displacement = determine_displacement_amount(direction, objs, anchor);
+    console.log('Target object displace up by ' + displacement.amount + ' px');
     $.each(objs, function(i, x) {
-      if (direction == 'up') { 
-        x.insertBefore(anchor); 
-      }
-      else if (direction == 'down') { 
-        x.insertAfter(anchor); 
-      }
+      animate_displacement(direction, x, displacement.target, displacement.amount);
+      // if (direction == 'up') { 
+      //   animate_displacement(x, function() {
+      //     x.insertBefore(anchor); 
+      //   })
+      // }
+      // else if (direction == 'down') { 
+      //   animate_displacement(x, function() {
+      //     x.insertAfter(anchor); 
+      //   })
+      // }
     })
 
     auto_indent(obj.parent());

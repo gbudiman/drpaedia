@@ -119,7 +119,9 @@ var dragdrop = (function() {
 
       if (obj.hasClass('tool-separator')) {
         parent_container = obj.parent();
-        to_append.insertAfter(obj);
+        animate_translocate(to_append, function() {
+          to_append.insertAfter(obj);
+        });
         tooling.attach_handles(to_append, true);
       } else if (drop_to_pool) {
         drop_alphabetically();
@@ -150,6 +152,16 @@ var dragdrop = (function() {
     profession_conc_interface.validate_existing();
     profession_adv.update();
     profile.save_all();
+  }
+
+  var animate_translocate = function(obj, func) {
+    obj.hide();
+
+    func();
+
+    obj.show().css('opacity', 0).animate({
+      opacity: 1
+    }, 1000)
   }
 
   var drop_selective = function(id, obj, append) {
