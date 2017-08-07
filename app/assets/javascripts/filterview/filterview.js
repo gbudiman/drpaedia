@@ -1,6 +1,7 @@
 var filterview = (function() {
   var cache = {};
   var open_state = {};
+  var apply_timeout = setTimeout(null, 0);
 
   var filters = {
     filter_accessible: true, //show accessible only
@@ -71,14 +72,17 @@ var filterview = (function() {
   var apply = function() {
     var has_result = false;
     var update_count = 0;
+    //var ignore_cache = _ignore_cache == undefined ? false : _ignore_cache;
 
     //console.log('GIL: ' + dynaloader.get_gil('ok_to_update_gui'));
 
+    var ignore_cache = true; // WUT???
     $.each(cache, function(id, _junk) {
       var new_state = get_state_is_open(id);
       var last_state = open_state[id];
 
-      if (last_state == undefined || new_state != last_state) {
+      if (ignore_cache 
+       || (last_state == undefined || new_state != last_state)) {
         open_state[id] = new_state;
         if (new_state) { $('#skill-pool').find('#' + id).show(); }
         else { $('#skill-pool').find('#' + id).hide(); }
@@ -110,8 +114,13 @@ var filterview = (function() {
     filters.filter_adv = $('#filter-adv').prop('checked');
 
     //$('div[data-accessible]').show();
-    apply();
+
+    clearTimeout(apply_timeout);
+    apply_timeout = setTimeout(function() {
+      apply();
+    }, 250);
   }
+
 
   var set = function(id, x, val) {
     cache[id][x] = val;

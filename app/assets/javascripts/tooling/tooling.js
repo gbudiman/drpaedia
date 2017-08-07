@@ -83,8 +83,11 @@ var tooling = function() {
 
       //obj.prepend(down);
       //obj.children().last().before(up).after(down);
-      obj.children().last().prev().before(up)
-      obj.children().last().after(down)
+      //obj.children().last().prev().before(up)
+      //obj.children().last().after(down)
+      var anchor = obj.find('.skill-cost');
+      anchor.after(down);
+      anchor.before(up);
       activate(obj);
     } else {
       obj.find('.glyphicon-arrow-up').remove();
@@ -242,6 +245,7 @@ var tooling = function() {
           'margin-top': 0,
           opacity: 1
         }, 500)
+        x.attr('data-group-altered', 'true');
       })
     } else {
       // console.log('collapsing');
@@ -257,6 +261,7 @@ var tooling = function() {
         }, 500, function() {
           x.hide();
         })
+        x.attr('data-group-altered', 'true');
       })
     }
 

@@ -158,7 +158,8 @@ var dragdrop = (function() {
     drop(obj, (append == 'append' ? undefined : 'prepend'));
   }
 
-  var drop_to_pool = function(id) {
+  var drop_to_pool = function(id, _with_force_filterview) {
+    var with_force_filterview = _with_force_filterview == undefined ? false : _with_force_filterview;
     deselect_all();
 
     if (Array.isArray(id)) {
@@ -170,7 +171,6 @@ var dragdrop = (function() {
     }
 
     drop_alphabetically();
-    //console.log(' !!! Drop to pool : sort() ');
     skill_interface.sort_pool();
   }
 
@@ -198,6 +198,7 @@ var dragdrop = (function() {
         $('#skill-pool').append(obj);
       }*/
       $('#skill-pool').append(obj);
+      reset_animation_state(obj);
       // skill_interface.sort_pool();
     })
 
@@ -213,6 +214,15 @@ var dragdrop = (function() {
     profession_conc_interface.validate_existing();
     profession_adv.update();
     return false;
+  }
+
+  var reset_animation_state = function(obj) {
+    var is_altered = obj.attr('data-group-altered') == undefined ? false : true;
+
+    if (is_altered) {
+      obj.removeAttr('style');
+    }
+    
   }
 
   var get_parent_container = function(obj) {

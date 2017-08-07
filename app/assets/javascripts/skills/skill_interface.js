@@ -329,7 +329,7 @@ var skill_interface = (function() {
       ids.push($(this).attr('id'));
     })
 
-    dragdrop.drop_to_pool(ids);
+    dragdrop.drop_to_pool(ids, true);
   }
 
   var sort_pool = function() {
