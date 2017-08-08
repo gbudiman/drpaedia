@@ -184,7 +184,10 @@ var skill_interface = (function() {
     });
 
     $.each(Object.keys(h_t).sort(), function(_junk, key) {
-      t += '<div class="skill-title">' + key + '</div>';
+      t += '<div class="skill-title">' 
+        +    key 
+        +    ' (MP: ' + get_mp_cost(key) + ')'
+        + '</div>';
       t += h_t[key];
     })
 
@@ -399,7 +402,8 @@ var skill_interface = (function() {
   var show_description = function(_name) {
     var name = sanitize(_name);
     var h = dynaloader.raw()['skill_desc'][name];
-    $('#skill-desc-title').text(name);
+    var cost = get_mp_cost(_name);
+    $('#skill-desc-title').text(name + ' (MP: ' + cost + ')');
     $('#skill-desc-body').html(skill_beautifier.process(h));
   }
 
@@ -409,6 +413,21 @@ var skill_interface = (function() {
     }
 
     return x;
+  }
+
+  var unpsi = function(x) {
+    if (x.match(/^Psi [IV]+ \- /)) {
+      return x.replace(/^Psi [IV]+ \- /, '').trim();
+    }
+  }
+
+  var tierify = function(x) {
+    return x + ' I';
+  }
+
+  var get_mp_cost = function(_name) {
+    var d = dynaloader.raw()['skill_mp_cost']
+    return d[_name] || d[sanitize(_name)] || d[unpsi(_name)] || d[tierify(_name)];
   }
 
   return {
@@ -426,6 +445,7 @@ var skill_interface = (function() {
     sort_pool: sort_pool,
     set_timeout: function(x) { timeout = x; },
     get_psis: get_psis,
-    show_description: show_description
+    show_description: show_description,
+    get_mp_cost: get_mp_cost
   }
 })()

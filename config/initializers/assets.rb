@@ -5,34 +5,63 @@ Rails.application.config.assets.version = '1.0'
 
 # Add additional assets to the asset load path
 # Rails.application.config.assets.paths << Emoji.images_path
+Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'javascripts')
+Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'stylesheets')
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-Rails.application.config.assets.precompile += %w( style.css 
+Rails.application.config.assets.precompile += %w( application.css
+                                                  application.js
+                                                  style.css 
                                                   configbar/configbar.css 
-                                                  typeahead*
+                                                  typeaheadjs.css
+                                                  typeahead.bundle.min.js
                                                   generic.js
                                                   js.cookie.js
-                                                  filterview/*.js 
-                                                  velocity*
-                                                  calc/*.js
-                                                  configbar/*.js 
-                                                  dynaloader/*.js 
-                                                  layout/*.js
-                                                  notifier/*.js
-                                                  notifier/*.css
-                                                  skills/*.js skills/*.css 
-                                                  stats/*.js
-                                                  strains/*.js strains/*.css 
-                                                  tooling/*.js tooling/*.css
-                                                  professions/*.js professions/*.css 
-                                                  profile/*.js profile/*.css
-                                                  bootstrap-select.min.*
-                                                  bootstrap-editable.*
-                                                  bootstrap-notify.*
-                                                  jstorage.*
+                                                  filterview/filterview.js 
+                                                  velocity.min.js
+                                                  configbar/configbar.js 
+                                                  dynaloader/dynaloader.js 
+                                                  dynaloader/manager.js
+                                                  layout/layout.js
+                                                  notifier/notifier.js
+                                                  notifier/style.css
+                                                  skills/calc.js
+                                                  skills/dragdrop.js 
+                                                  skills/popup.js
+                                                  skills/preq.js
+                                                  skills/skill_beautifier.js
+                                                  skills/skill_interface.js
+                                                  skills/skills.js 
+                                                  skills/style.css 
+                                                  stats/stats_interface.js
+                                                  strains/strain_interface.js
+                                                  strains/strains.js 
+                                                  strains/style.css 
+                                                  tooling/tooling.js 
+                                                  tooling/style.css
+                                                  professions/adv.js
+                                                  professions/basic.js
+                                                  professions/conc.js
+                                                  professions/interface_adv.js
+                                                  professions/interface_basic.js
+                                                  professions/interface_conc.js 
+                                                  professions/style.css
+                                                  profile/character_sheet.js
+                                                  profile/profile_interface.js
+                                                  profile/profile.js
+                                                  profile/remote_interface.js
+                                                  profile/remote.js 
+                                                  profile/style.css
+                                                  bootstrap-select.min.js
+                                                  bootstrap-select.min.css
+                                                  bootstrap-editable.min.js
+                                                  bootstrap-editable.css
+                                                  bootstrap-notify.min.js
+                                                  jstorage.min.js
                                                   AgentGirl.js
                                                   SParser.js
                                                   printThis.js
-                                                  bootstrap-toggle*
+                                                  bootstrap-toggle.min.js
+                                                  bootstrap-toggle.min.css
                                                   animate.css)

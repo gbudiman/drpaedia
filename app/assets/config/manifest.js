@@ -1,16 +1,2 @@
 //= link_tree ../images
-//= link_directory ../javascripts .js
-//= link_directory ../stylesheets .css
-//= link_tree ../javascripts
-//= link_tree ../stylesheets
-//= link typeaheadjs.css
-//= link velocity.min.js
-//= link typeahead.bundle.min.js
-//= link bootstrap-toggle.min.js
-//= link jstorage.min
-//= link bootstrap-editable.min.js
-//= link bootstrap-select.min
-//= link bootstrap-notify.min
-//= link bootstrap-editable.css
-//= link bootstrap-select.min.css
-//= link bootstrap-toggle.min.css
+

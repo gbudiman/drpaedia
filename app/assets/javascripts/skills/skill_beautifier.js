@@ -52,7 +52,13 @@ var skill_beautifier = function() {
   }
 
   var format = function(title, text) {
-    var t = '<div class="skill-title">' + title + '</div>';
+    var cost = dynaloader.raw()['skill_mp_cost'][title];
+    var t = '<div class="skill-title">' 
+          +   title 
+          +   '(MP: ' + cost + ')'
+          + '</div>';
+
+    console.log(cost);
     t += process(text);
     return t;
   }

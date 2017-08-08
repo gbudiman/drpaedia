@@ -9,6 +9,7 @@ var dynaloader = (function() {
     ok_to_sort: false,
     ok_to_delayed_save: false
   }
+  var const_raw_data_version = '1.0'
 
   var set_gil = function(key, value, func) {
     var keys;
@@ -110,8 +111,13 @@ var dynaloader = (function() {
 
     })
 
-    $.jStorage.deleteKey('raw_data');
-    raw_data = $.jStorage.get('raw_data', {});
+    var current_raw_data_version = $.jStorage.get('raw_data_version', '0.0')
+
+    if (current_raw_data_version != const_raw_data_version) {
+      $.jStorage.deleteKey('raw_data');
+    } else {
+      raw_data = $.jStorage.get('raw_data', {});
+    }
 
     if (Object.keys(raw_data).length == 0) {
       $.when(get_json('advanced_cat'),
@@ -137,6 +143,7 @@ var dynaloader = (function() {
         master_build().then(function(resolve, reject) {         
           if (resolve) {
             $.jStorage.set('raw_data', raw_data);
+            $.jStorage.set('raw_data_version', const_raw_data_version);
           }
         })
       })

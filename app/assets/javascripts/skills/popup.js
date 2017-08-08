@@ -62,6 +62,7 @@ var skill_popup = function() {
                +   '&nbsp; '
                +   '<span class="text-info"><strong>' 
                +     skill_name
+               +     ' (MP: ' + skill_interface.get_mp_cost(skill_name) + ')'
                +     '<span class="pull-right popover-skill-close"><button type="button" class="close">&times;</button></span>'
                +   '</strong></span>'
                + '</div>'
