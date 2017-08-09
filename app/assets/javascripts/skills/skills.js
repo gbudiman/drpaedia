@@ -347,10 +347,23 @@ var skills = (function() {
     }
 
     var apply_profession_signets = function(basic_profs) {
+      var length = Object.keys(basic_profs).length + 1;
+      var cell_length = 100.00 / length;
+      var bs_col_factor = 'width: ' + cell_length + '%';
+
       $.each(basic_profs, function(k, v) {
+        var offset = 'left: ' + cell_length * (v + 1) + '%';
+        var style = 'style="' + bs_col_factor + '; ' + offset + '; float: left; position: relative"';
+
         var anchor = $('#config-bar').find('span.basic-prof-name:contains("' + k + '")').parent();
-        var signet = '<div class="config-signet signet-' + v + '" />'
+        var signet = '<div class="row signet-clear"></div>'
+                   + '<div class="config-signet signet-' + v + '" '
+                   +   style
+                   + '/>'
+                   + '<div class="row signet-clear"></div>';
+
         anchor.find('div.config-signet').remove();
+        anchor.find('div.signer-clear').remove();
         anchor.append(signet);
       })
       
@@ -363,7 +376,6 @@ var skills = (function() {
 
       apply_profession_signets(inv);
 
-      console.log(inv);
       for (var i = 0; i < key_length; i++) {
         var shorthand = qkeys[i];
         var val = queue[shorthand];

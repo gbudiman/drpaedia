@@ -167,6 +167,7 @@
   height: 2px;
   width: 100%;
   margin-bottom: 2px;
+  margin-top: -2px;
 }
 
 .signet-cell {
@@ -190,7 +191,7 @@
 }
 
 .signet-3 {
-  background-color: #9962A3;
+  background-color: #E4AFD6;
 }
 
 .signet-4 {
