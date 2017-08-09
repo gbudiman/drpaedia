@@ -346,11 +346,24 @@ var skills = (function() {
       return inv;
     }
 
+    var apply_profession_signets = function(basic_profs) {
+      $.each(basic_profs, function(k, v) {
+        var anchor = $('#config-bar').find('span.basic-prof-name:contains("' + k + '")').parent();
+        var signet = '<div class="config-signet signet-' + v + '" />'
+        anchor.find('div.config-signet').remove();
+        anchor.append(signet);
+      })
+      
+    }
+
     var batch_render = function(queue) {
       var qkeys = Object.keys(queue);
       var key_length = qkeys.length;
       var inv = make_inverted_professions();
 
+      apply_profession_signets(inv);
+
+      console.log(inv);
       for (var i = 0; i < key_length; i++) {
         var shorthand = qkeys[i];
         var val = queue[shorthand];

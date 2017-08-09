@@ -204,12 +204,6 @@ var skill_interface = (function() {
     var cell_length = 100.00 / length;
     var bs_col_factor = 'width: ' + cell_length + '%';
 
-    /*$.each(satisfied_professions, function(k, _junk) {
-      if (k == 'open') {
-        var color = '#383838';
-      }
-      s    += '<div class="signet-cell col-xs-3"></div>';
-    })*/
 
     var open_style = 'style="' + bs_col_factor + '; float: left"';
     if (satisfied_professions['open'] != undefined) {

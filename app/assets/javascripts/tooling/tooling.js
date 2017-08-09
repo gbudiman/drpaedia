@@ -101,20 +101,16 @@ var tooling = function() {
   var activate = function(obj) {
     obj.find('.glyphicon-arrow-down').on('click', function() {
       if (!move_down_disabled) {
-        move_down_disabled = true;
+        enable_translocator(false);
         move($(this).parent(), 'down');
-
-        setTimeout(function() { move_down_disabled = false}, 750 )
       }
       return false;
     })
 
     obj.find('.glyphicon-arrow-up').on('click', function() {
       if (!move_up_disabled) {
-        move_up_disabled = true;
+        enable_translocator(false);
         move($(this).parent(), 'up');
-
-        setTimeout(function() { move_up_disabled = false}, 750 )
       }
       
       return false;
@@ -201,6 +197,16 @@ var tooling = function() {
     calc.recalculate_all();
   }
 
+  var enable_translocator = function(val) {
+    move_up_disabled = !val;
+    move_down_disabled = !val;
+
+    var color = val ? '#333' : '#aaa';
+
+    $('.drop-box').find('span.glyphicon.glyphicon-arrow-up').css('color', color);
+    $('.drop-box').find('span.glyphicon.glyphicon-arrow-down').css('color', color);
+  }
+
   var toggle_group_visibility = function(obj, exec) {
     var attr = obj.attr('data-group-is-collapsed') || 'false';
     var is_collapsed = attr == 'false' ? false : true;
@@ -256,9 +262,11 @@ var tooling = function() {
         x.show()
           .css('opacity', exec ? 0 : 1)
           .velocity({
-          'margin-top': 0,
-          opacity: 1
-        }, 500)
+            'margin-top': 0,
+            opacity: 1
+          }, 500, function() {
+            enable_translocator(true);
+          })
         x.attr('data-group-altered', 'true');
       })
     } else {
@@ -274,6 +282,7 @@ var tooling = function() {
           'margin-top': (-1 * height_amount) + 'px'
         }, 500, function() {
           x.hide();
+          enable_translocator(true);
         })
         x.attr('data-group-altered', 'true');
       })

@@ -163,6 +163,12 @@
   //background-color: red;
 }
 
+.config-signet {
+  height: 2px;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
 .signet-cell {
   height: 2px;
 }
@@ -181,6 +187,14 @@
 
 .signet-2 {
   background-color: #03438b;
+}
+
+.signet-3 {
+  background-color: #9962A3;
+}
+
+.signet-4 {
+  background-color: #B25500;
 }
 
 .signet-empty {
