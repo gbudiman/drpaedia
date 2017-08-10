@@ -15,6 +15,10 @@ var tooling = function() {
     attach_object('tool-stat-planner', 'skills-planned');
     attach_object('tool-checkin-planner', 'skills-planned');
     attach_object('tool-profession-planner', 'skills-planned');
+    attach_visual_tool('tool-acq-expand-all', 'skills-acquired', 'expand');
+    attach_visual_tool('tool-acq-collapse-all', 'skills-acquired', 'collapse');
+    attach_visual_tool('tool-plan-expand-all', 'skills-planned', 'expand');
+    attach_visual_tool('tool-plan-collapse-all', 'skills-planned', 'collapse');
     attach_dropdown_event();
   }
 
@@ -22,6 +26,14 @@ var tooling = function() {
     $('button.dropdown-tool').on('click', function() {
       hide_popover();
       skill_popup.hide();
+    })
+  }
+
+  var attach_visual_tool = function(type, target_id, action) {
+    $('#' + type).on('click', function(event) {
+      var button_class = action == 'expand' ? '.glyphicon-menu-down' : '.glyphicon-menu-up';
+      $('#' + target_id).find(button_class).trigger('click');
+      event.preventDefault();
     })
   }
 
@@ -264,8 +276,8 @@ var tooling = function() {
           .velocity({
             'margin-top': 0,
             opacity: 1
-          }, 500, function() {
-            enable_translocator(true);
+          }, 200, function() {
+            //enable_translocator(true);
           })
         x.attr('data-group-altered', 'true');
       })
@@ -280,9 +292,9 @@ var tooling = function() {
         x.velocity({
           opacity: exec ? 0 : 1,
           'margin-top': (-1 * height_amount) + 'px'
-        }, 500, function() {
+        }, 200, function() {
           x.hide();
-          enable_translocator(true);
+          //enable_translocator(true);
         })
         x.attr('data-group-altered', 'true');
       })
@@ -431,7 +443,7 @@ var tooling = function() {
     var anchor;
     var relocate_pixel_amount = 0;
     var anchor_members = new Array();
-    var animation_duration_ms = 500;
+    var animation_duration_ms = 200;
 
 
     var animate_displacement = function(dir, objs, target, displacement) {
@@ -448,6 +460,8 @@ var tooling = function() {
         $.each(target, function(i, t) {
           t.css('top', 0)
         })
+
+        enable_translocator(true);
       }
 
       $.each(objs, function(i, d_obj) {
@@ -562,7 +576,10 @@ var tooling = function() {
       }
     }
 
-    if (anchor == null) return;
+    if (anchor == null) {
+      enable_translocator(true);
+      return;
+    }
 
     objs.push(obj);
 
