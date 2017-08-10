@@ -512,7 +512,9 @@ var profile = function() {
       //var alt = entry.alt ? '<sup>+</sup>' : '';
       //$('#' + entry.skill + '-cost').html(entry.cost + alt);
       if (entry.alt) {
-        postprocess = entry.cost
+        if (skills.get_all_possible_costs(skills.get_name(entry.skill)).length > 1) {
+          postprocess = entry.cost
+        }
       }
     } else if (entry.stat != undefined) {
       tooling.copy_programmatically('tool-stat-planner', target, { option: entry.stat, nominal: entry.nominal })
@@ -583,7 +585,7 @@ var profile = function() {
       } else if ($(this).hasClass('skill')) {
         a.push({skill: $(this).attr('id'),
                 cost: parseInt($(this).find('.skill-cost').text()),
-                alt: $(this).find('sup').length > 0});
+                alt: $(this).find('.skill-cost').find('sup').length > 0});
       }
     })
 
