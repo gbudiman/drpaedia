@@ -180,6 +180,8 @@ var tooling = function() {
         caller.text(new_value);
         profile.save_all();
       })
+    }).on('click', function() {
+      return false;
     })
 
     rebuild_prof_list(obj);
@@ -798,7 +800,7 @@ var tooling = function() {
       html: true,
       content: generate_more_options(obj.parent()),
       placement: 'top',
-      container: 'body'
+      container: '#main-right'
     }).on('shown.bs.popover', function() {
       apply_popover_interactivity();
       highlight_children(obj.parent(), true);
@@ -810,14 +812,29 @@ var tooling = function() {
   var highlight_children = function(obj, val) {
     //if (val) { obj.addClass('bg-primary'); }
     //else { obj.removeClass('bg-primary'); }
-    var current_obj = obj.next();
-
-    while (current_obj.length > 0) {
-      if (is_group(current_obj)) break;
-      if (val) { current_obj.addClass('tool-highlight'); }
-      else { current_obj.removeClass('tool-highlight'); }
-      current_obj = current_obj.next();
+    
+    var apply = function(cobj) {
+      if (val) { 
+        cobj.addClass('tool-highlight'); 
+      }
+      else { 
+        cobj.removeClass('tool-highlight'); 
+      }
     }
+
+    if (!is_group(obj)) {
+      apply(obj);
+    } else {
+      var current_obj = obj.next();
+      while (current_obj.length > 0) {
+        if (is_group(current_obj)) break;
+        apply(current_obj);
+        
+        current_obj = current_obj.next();
+      }
+    }
+
+    
 
   }
 

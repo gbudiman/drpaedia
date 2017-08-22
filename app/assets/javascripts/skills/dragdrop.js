@@ -298,9 +298,9 @@ var dragdrop = (function() {
 
   var highlight_droppable_plan = function(val) {
     if (val) {
-      $('#skills-planned').find('.tool-separator').addClass('bg-primary tool-droppable');
+      $('#skills-planned').find('.tool-separator').addClass('drop-highlight-group');
     } else {
-      $('#skills-planned').find('.tool-separator').removeClass('bg-primary tool-droppable');
+      $('#skills-planned').find('.tool-separator').removeClass('drop-highlight-group');
     }
   }
 
