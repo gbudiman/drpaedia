@@ -512,8 +512,11 @@ var profile = function() {
       //var alt = entry.alt ? '<sup>+</sup>' : '';
       //$('#' + entry.skill + '-cost').html(entry.cost + alt);
       if (entry.alt) {
-        if (skills.get_all_possible_costs(skills.get_name(entry.skill)).length > 1) {
+        var gap_cost = skills.get_all_possible_costs(skills.get_name(entry.skill));
+        //console.log(gap_cost);
+        if (Object.keys(gap_cost).length >= 1) {
           postprocess = entry.cost
+          //console.log(postprocess);
         }
       }
     } else if (entry.stat != undefined) {
