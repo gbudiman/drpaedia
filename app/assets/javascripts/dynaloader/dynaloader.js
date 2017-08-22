@@ -9,7 +9,7 @@ var dynaloader = (function() {
     ok_to_sort: false,
     ok_to_delayed_save: false
   }
-  var const_raw_data_version = '1.0'
+  var const_raw_data_version = '1.11'
 
   var set_gil = function(key, value, func) {
     var keys;
