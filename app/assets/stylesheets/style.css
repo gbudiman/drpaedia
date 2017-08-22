@@ -295,6 +295,11 @@ input.input-stat.input-sm {
   margin-bottom: 8px;
 }
 
+.xp-total {
+  background-color: #ddd;
+  border-top: 2px solid #aaa;
+}
+
 .stat-container {
   margin-top: 2px;
   padding-right: 4px;
