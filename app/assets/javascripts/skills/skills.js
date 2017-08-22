@@ -105,6 +105,17 @@ var skills = (function() {
       }
     })
 
+    $.each(r.skill_group['NPC'], function(k, _junk) {
+      data[k] = {
+        shorthand: r.skill_list[k],
+        type: 'npc',
+        conditions: { open: 0 },
+        mp_cost: 0
+      }
+
+      skill_hash[r.skill_list[k]] = k;
+    })
+
     $.each(r.concentration_cat, function(k, v) {
       data[k] = {
         shorthand: r.skill_list[k],

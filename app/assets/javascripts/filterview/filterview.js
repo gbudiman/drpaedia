@@ -9,6 +9,7 @@ var filterview = (function() {
     filter_lore: true, //hide lores
     filter_psionics: true, //hide psionics
     filter_adv: true, //hide advanced
+    filter_npc: true, //hide NPC skills
   }
 
   var attach = function() {
@@ -27,6 +28,9 @@ var filterview = (function() {
     $('#filter-adv').on('click', function() {
       update('filter_adv', $(this).prop('checked'));
     })
+    $('#filter-npc').on('click', function() {
+      update('filter_npc', $(this).prop('checked'));
+    })
   }
 
   var build_cache = function() {
@@ -36,7 +40,8 @@ var filterview = (function() {
         discounted: false,
         lore: false,
         psionics: false,
-        adv: false
+        adv: false,
+        npc: false
       }
 
       //open_state[code] = false;
@@ -51,13 +56,15 @@ var filterview = (function() {
     var show_only_discounted = f.filter_discounted ? c.discounted : true;
     var show_lores = f.filter_lore ? !c.lore : true;
     var show_psionics = f.filter_psionics ? !c.psionics : true;
-    var show_adv = f.filter_adv ? !c.adv : true
+    var show_adv = f.filter_adv ? !c.adv : true;
+    var show_npc = f.filter_npc ? !c.npc : true;
 
     return show_only_accessible
         && show_only_discounted
         && show_lores
         && show_psionics
-        && show_adv;
+        && show_adv
+        && show_npc;
   }
 
   var update = function(target, value) {
@@ -112,6 +119,7 @@ var filterview = (function() {
     filters.filter_lore = $('#filter-lore').prop('checked');
     filters.filter_psionics = $('#filter-psionics').prop('checked');
     filters.filter_adv = $('#filter-adv').prop('checked');
+    filters.filter_npc = $('#filter-npc').prop('checked');
 
     //$('div[data-accessible]').show();
 
@@ -131,6 +139,7 @@ var filterview = (function() {
       case 'lore': cache[id][x] = true; break;
       case 'psionics': cache[id][x] = true; break;
       case 'adv': cache[id][x] = true; break;
+      case 'npc': cache[id][x] = true; break;
     }
   }
 
