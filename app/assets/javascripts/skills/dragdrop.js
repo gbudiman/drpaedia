@@ -74,7 +74,7 @@ var dragdrop = (function() {
         x.find('.glyphicon-plus').hide();
         x.find('.glyphicon-refresh').hide();
         //x.find('span.pull-right').hide();
-        x.find('.tool-editable').editable('disable');
+        x.find('.tool-editable').editable('disable').attr('style', '');
       });
     } else {
       $.each(target, function(_junk, _x) {

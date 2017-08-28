@@ -32,6 +32,7 @@ var strain_interface = (function() {
   var set = function(x) {
     selected_strain = x;
 
+    profession_basic_interface.trigger_filterview(x, true);
     profession_basic.update_strain_change();
     profession_adv.update();
     skills.update_availability(true);

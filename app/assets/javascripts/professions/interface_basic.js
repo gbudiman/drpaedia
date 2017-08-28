@@ -47,7 +47,7 @@ var profession_basic_interface = (function() {
   }
 
   var trigger_filterview = function(type, val) {
-    if (type == 'Psionist') {
+    if (type == 'Psionist' || type == 'Unborn of Teixiptla') {
       $('#filter-psionics').prop('checked', !val);
       filterview.apply_all();
     }
@@ -151,6 +151,7 @@ var profession_basic_interface = (function() {
     disable_limit_warning: disable_limit_warning,
     forget: forget,
     reset: reset,
+    trigger_filterview: trigger_filterview,
     update_profession_added: update_profession_added,
     update_profession_removed: update_profession_removed,
     update_strain_change: update_strain_change
