@@ -1,24 +1,5 @@
-# README
+# DRpaedia
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+DRpaedia is a Character Planning Tool for [Dystopia Rising](http://www.dystopiarisinglarp.com/) Live-Action Role-Playing (LARP) game.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Visit this tool at [DRpaedia.org](http://drpaedia.org)
