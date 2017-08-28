@@ -1,0 +1,260 @@
+.popover {
+  min-width: 200px !important;
+  width: auto;
+  left: 33% !important;
+}
+
+.popover-content {
+  padding: 8px;
+  width: 100%;
+  font-family: 'Exo', sans-serif;
+  font-size: 12px;
+}
+
+.popover.popover-skill > .arrow {
+  left: 60% !important;
+}
+
+.popover.popover-skill {
+  max-width: 67% !important;
+  min-width: 67% !important; 
+}
+
+.popover.popover-skill > .popover-title {
+  padding: 8px;
+  display: grid;
+  font-family: 'Exo', sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.popover-skill-close {
+  margin-top: -1px;
+  margin-bottom: -4px;
+}
+
+.skill {
+  cursor: pointer;
+  //background-color: white;
+  border-bottom: 1px solid #ddd;
+  padding: 4px;
+}
+
+.skill-infancy {
+  display: none;
+  background-color: #ccc;
+  opacity: 0.5;
+}
+
+.skill {
+  display: flow-root;
+}
+
+.skill-name {
+  display: inline-flex;
+}
+
+#skill-pool > .skill-name {
+  width: 80%;
+}
+
+#skills-acquired .skill-name, #skills-planned .skill-name {
+  width: 50%;
+}
+
+#cs-print {
+  cursor: pointer;
+}
+
+@media print {
+  .row.main {
+    display: none;
+  }
+
+  .footer {
+    display: none;
+  }
+}
+/*.skill-cost {
+  margin-top: 1px;
+}*/
+
+.brand.dropdown-menu {
+  //margin-top: -20px;
+  //margin-left: 8px;
+  font-size: 125%;
+}
+
+.badge-success {
+  background-color: #5cb83c;
+}
+
+.badge-error {
+  background-color: #d9534f;
+}
+
+.badge-checkin {
+  background-color: #33b5e5;
+}
+
+.cond-disabled {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.cond-discounted {
+  color: blue;
+}
+
+.cond-cheapest {
+  color: green;
+  font-weight: bold;
+}
+
+.cond-ok {
+
+}
+
+.cond-error {
+  color: red;
+}
+
+.skill-selected {}
+
+.skill-info-query {
+  cursor: pointer;
+}
+.drop-highlight {
+  background-color: #dff0d8;
+  border-color: #3f5f38;
+  cursor: pointer;
+}
+
+.tool.tool-separator.drop-highlight-group {
+  background-color: #3071a9;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-alternator {
+  font-family: 'Exo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 1px 6px 0px 6px;
+  margin: -1px 2px 0px 2px;
+  border: 0px;
+}
+
+.popover-title {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+#modal-sync-conflict-body {
+  overflow-y: auto;
+}
+
+.row.signet {
+  height: 2px;
+  //margin: 0px -4px -4px -4px;
+  margin-bottom: -4px;
+  margin-left: -4px;
+  margin-right: -4px;
+  //background-color: red;
+}
+
+.config-signet {
+  height: 2px;
+  width: 100%;
+  margin-bottom: 2px;
+  margin-top: -2px;
+}
+
+.signet-cell {
+  height: 2px;
+}
+
+.signet-open {
+  background-color: #d48100;
+}
+
+.signet-0 {
+  background-color: #009d2f;
+}
+
+.signet-1 {
+  background-color: #d41d00;
+}
+
+.signet-2 {
+  background-color: #03438b;
+}
+
+.signet-3 {
+  background-color: #E4AFD6;
+}
+
+.signet-4 {
+  background-color: #B25500;
+}
+
+.signet-empty {
+
+}
+
+#skill-pool-no-result {
+  display: none;
+  text-align: center;
+}
+
+#skill-panel {
+  margin: 0px;
+}
+
+.skill-title {
+  font-size: 125%;
+  background-color: #333;
+  color: #fff;
+  padding: 4px;
+}
+
+.skill-body {
+  padding-top: 4px;
+}
+
+.skill-body > p {
+  text-indent: 24px;
+}
+
+.skill-body > table > thead > tr > th {
+  background-color: #ccc;
+  //color: #ddd;
+}
+
+.skill-body > p > table > thead > tr > th {
+  background-color: #ccc;
+  font-size: 12.5px !important;
+  font-weight: bolder;
+  text-align: center;
+  text-indent: 0;
+  vertical-align: middle;
+}
+
+.skill-body > p > table > tbody > tr > td {
+  font-size: 12px !important;
+  text-align: left;
+  text-indent: 0;
+}
+
+.strain-info {
+  font-size: 125%;
+  background-color: #333;
+  color: #fff;
+  padding: 4px;
+  text-align: center;
+}
+
+#skill-desc-body {
+  max-height: 65%;
+  overflow-y: auto;
+}
