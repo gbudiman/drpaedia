@@ -10,6 +10,7 @@
 = render 'remote_config'
 = render 'skill_desc'
 = render 'skill_info_config'
+= render 'tour'
 
 %div{id: 'is-logged-in', hidden: true, 'data-value': "#{@is_logged_in}"}
 
@@ -32,7 +33,7 @@
   = render 'tooling_template'
 
 %div{class: 'footer', style: 'display: none'}
-  %div{class: 'credits'} DRpaedia 0.9.13
+  %div{class: 'credits'} DRpaedia 0.9.14
 
   %div{id: 'disqus_thread', class: 'col-xs-12'}
   :javascript
@@ -50,6 +51,8 @@
 
 = stylesheet_link_tag 'style'
 = stylesheet_link_tag 'typeaheadjs.css'
+= stylesheet_link_tag 'bootstrap-tour.min'
+= javascript_include_tag 'bootstrap-tour.min'
 = javascript_include_tag 'velocity.min'
 = javascript_include_tag 'typeahead.bundle.min'
 = javascript_include_tag 'js.cookie'

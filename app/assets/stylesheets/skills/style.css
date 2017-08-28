@@ -246,6 +246,14 @@
   text-indent: 0;
 }
 
+.strain-info {
+  font-size: 125%;
+  background-color: #333;
+  color: #fff;
+  padding: 4px;
+  text-align: center;
+}
+
 #skill-desc-body {
   max-height: 65%;
   overflow-y: auto;

@@ -10,7 +10,7 @@ var skill_beautifier = function() {
     return t;
   }
 
-  var dump_to_new_window = function(x) {
+  var dump_to_new_window = function(x, strain_skill_descs) {
     if (new_window == null) {
       new_window = window.open('', 'skill-descs');
     } else {
@@ -29,6 +29,8 @@ var skill_beautifier = function() {
                 +   '</head>'
                 +   '<body>'
                 +     '<div class="container-fluid">'
+                +       strain_skill_descs
+                +       '<hr />'
                 +       x
                 +     '</div>'
                 +     footer_code.join('')

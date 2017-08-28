@@ -331,6 +331,7 @@ var profile = function() {
     if (v == null) {
       v = empty_default;
       first_save = true;
+      tour.start();
     }
     profiles = v.profiles;
     config = v.config;
@@ -352,8 +353,6 @@ var profile = function() {
     switch_to(selected);
     //dynaloader.set_gil('ok_to_save', false, reset);
     //dynaloader.set_gil(['ok_to_save', 'ok_to_update_gui'], false, apply);
-
-    
 
     return { profiles: profiles, config: config }
   }

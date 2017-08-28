@@ -135,7 +135,8 @@ var skill_interface = (function() {
 
     $('#exec-info-generate').on('click', function() {
       $('#skill-info-config').modal('hide');
-      skill_beautifier.dump_to_new_window(build_formatted_skill_descs());
+      skill_beautifier.dump_to_new_window(build_formatted_skill_descs(),
+                                          build_strain_skill_descs());
       return false;
     })
     attach_alternator();
@@ -149,6 +150,44 @@ var skill_interface = (function() {
     })
 
     return h;
+  }
+
+  var build_strain_skill_descs = function() {
+    var t = '';
+    var sd = dynaloader.raw()['skill_desc'];
+    var stats = dynaloader.raw()['strain_stats'][profile.get_strain()];
+
+    t += '<div class="strain-info">'
+      +    profile.get_strain()
+      +  '</div>'
+      +  '<div class="row">'
+      +    '<div class="col-xs-4">Health: ' + stats.hp + '</div>'
+      +    '<div class="col-xs-4">Mind: ' + stats.mp + '</div>'
+      +    '<div class="col-xs-4">Infection: ' + stats.infection + '</div>'
+      +  '</div>'
+      +  '<hr />';
+
+    $.each(strains.get_innate(profile.get_strain()), function(i, x) {
+      t += '<div class="skill-title">Strain: '
+        +    x
+        +  '</div>'
+        +  skill_beautifier.process(sd[x]);
+    });
+
+    // DEBUG ONLY
+    // Print all strains' innate skills
+    // $.each(strains.data(), function(strain, _junk) {
+    //   t += strain;
+
+    //   $.each(strains.get_innate(strain), function(i, x) {
+    //     t += '<div class="skill-title">Strain: '
+    //     +    x
+    //     +  '</div>'
+    //     +  skill_beautifier.process(sd[x]);
+    //   })
+    // })
+
+    return t;
   }
 
   var build_formatted_skill_descs = function() {
