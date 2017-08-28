@@ -58,8 +58,6 @@ Rails.application.config.assets.precompile += %w( application.css
                                                   bootstrap-editable.min.js
                                                   bootstrap-editable.css
                                                   bootstrap-notify.min.js
-                                                  bootstrap-tour.min.js
-                                                  bootstrap-tour.min.css
                                                   jstorage.min.js
                                                   AgentGirl.js
                                                   SParser.js
