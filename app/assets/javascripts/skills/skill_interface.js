@@ -199,13 +199,18 @@ var skill_interface = (function() {
     var filter_config = $('#skill-info-config').find('input[name="infofilter"]:checked').attr('value');
     var include_lore = $('#skill-info-config').find('input[name="with-lore"]').prop('checked');
     var include_psi = $('#skill-info-config').find('input[name="with-psi"]').prop('checked');
+    var get_non_strain_skills = function() {
+      return Object.keys(dynaloader.raw()['skill_desc'])
+                   .filter( key => !strains.is_strain_skill(key))
+                   .reduce( (res, key) => (res[key] = dynaloader.raw()['skill_desc'][key], res), {} );
+    }
 
     var data;
 
     switch (filter_config) {
       case 'acqplan': data = profile.get_all_skills(); break;
       case 'accessible': data = get_all_accessible_skills(); break;
-      case 'all': data = dynaloader.raw()['skill_desc']; break;
+      case 'all': data = get_non_strain_skills(); break;//dynaloader.raw()['skill_desc']; break;
     }
 
     $.each(data, function(_name, _junk) {
