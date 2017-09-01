@@ -199,6 +199,7 @@ var skill_interface = (function() {
     var filter_config = $('#skill-info-config').find('input[name="infofilter"]:checked').attr('value');
     var include_lore = $('#skill-info-config').find('input[name="with-lore"]').prop('checked');
     var include_psi = $('#skill-info-config').find('input[name="with-psi"]').prop('checked');
+    var include_npc = $('#skill-info-config').find('input[name="with-npc"]').prop('checked');
     var get_non_strain_skills = function() {
       return Object.keys(dynaloader.raw()['skill_desc'])
                    .filter( key => !strains.is_strain_skill(key))
@@ -218,6 +219,9 @@ var skill_interface = (function() {
 
       if (!include_lore && name.match(/^Lore/) != null) return true;
       if (!include_psi && name.match(/^Psi/) != null) return true;
+      if (!include_npc 
+        && skills.data()[name] != undefined 
+        && skills.data()[name].type == 'npc') return true;
 
       if (processed[name] != undefined) {
 
