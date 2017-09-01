@@ -138,6 +138,8 @@ var skills = (function() {
       skill_hash[r.skill_list[k]] = k;
     })
 
+    data['Lore - Animals - Aquatic'].type = 'lore';
+    data['Lore - Mon Histories'].type = 'lore';
     
     counters = r.skill_counters;
     countered = r.skill_countered;
