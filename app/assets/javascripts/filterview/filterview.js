@@ -48,7 +48,7 @@ var filterview = (function() {
     });
   }
 
-  var get_state_is_open = function(id) {
+  var get_state_is_open = function(id, two_lore) {
     var c = cache[id];
     var f = filters;
 
@@ -84,8 +84,9 @@ var filterview = (function() {
     //console.log('GIL: ' + dynaloader.get_gil('ok_to_update_gui'));
 
     var ignore_cache = true; // WUT???
+    var two_lore = profile.get_strain() == 'Genjian' || profile.get_strain() == 'Saltwise';
     $.each(cache, function(id, _junk) {
-      var new_state = get_state_is_open(id);
+      var new_state = get_state_is_open(id, two_lore);
       var last_state = open_state[id];
 
       if (ignore_cache 
