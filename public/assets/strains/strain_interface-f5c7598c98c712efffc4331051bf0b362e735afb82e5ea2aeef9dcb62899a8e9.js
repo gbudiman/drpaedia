@@ -61,3 +61,4 @@ var strain_interface = (function() {
     set_gui: set_gui
   }
 })()
+;
