@@ -16,7 +16,9 @@ var tour = function() {
     }).on('shown.bs.modal', function() {
       resize_tour_window();
       $('body').css('padding-right', 0);
-    })
+    }).on('hidden.bs.modal', function() {
+      $('body').css('padding-right', 0);
+    });
 
     $(window).resize(resize_tour_window);
   }
