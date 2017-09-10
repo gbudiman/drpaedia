@@ -460,8 +460,9 @@ var profile = function() {
         profession_adv_interface.set_gui(x);
       })
     }
-
+    
     stats_interface.set(d.stats);
+    skills.get_config();
     $.each(d.acq, function(i, x) {
       var post = apply_rightside(x, 'skills-acquired');
       if (post) postprocess_cost[x.skill] = x.cost;
@@ -512,7 +513,6 @@ var profile = function() {
       //$('#' + entry.skill + '-cost').html(entry.cost + alt);
       if (entry.alt) {
         var gap_cost = skills.get_all_possible_costs(skills.get_name(entry.skill));
-        //console.log(gap_cost);
         if (Object.keys(gap_cost).length >= 1) {
           postprocess = entry.cost
           //console.log(postprocess);
