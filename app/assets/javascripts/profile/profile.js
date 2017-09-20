@@ -614,6 +614,171 @@ var profile = function() {
     return h;
   }
 
+  var get_acquired_skills_with_cost = function() {
+    var h = {};
+    $.each(pack_acq(), function(junk, x) {
+      if (x.skill != undefined) {
+        h[skills.get_name(x.skill)] = x;
+      }
+    })
+
+    return h;
+  }
+
+  var simulate_profession_drop = function(x) {
+    var enumerate_delta = function(s, oc, c) {
+      var _s = {
+        name: s
+      }
+
+      if (c.length == 0) {
+        _s.status = 'refunded';
+        _s.amount = oc;
+      } else {
+        // var min_dropped = Math.min.apply(null, Object.keys(c));
+        // if (oc < min_dropped) {
+        //   _s.status = 'taxed';
+        //   _s.amount = min_dropped - oc;
+        // }
+        _s.sub = new Array();
+        _s.global_satisfied = false;
+        _s.min_cost = null;
+
+        $.each(c, function(_junk, condition) {
+          var sub = {};
+          //console.log(condition);
+          sub.origin = condition[2];
+
+          if (condition[1] == 'open') {
+            sub.predicate = 'open';
+            _s.global_satisfied = true;
+            _s.min_cost = condition[0];
+            _s.local_cost = condition[0];
+          } else if (condition[1] != null) {
+            //sub.predicate = condition[1].predicate;
+            //sub.list = Object.keys(condition[1].list);
+
+            var predicate = condition[1].predicate;
+            var list = Object.keys(condition[1].list);
+            var logic = null;
+
+            _s.local_cost = condition[0];
+            sub.predicate = predicate;
+            sub.list = {};
+
+            if (predicate == 'and') {
+              logic = true;
+            } else if (predicate == 'or') {
+              logic = false;
+            }
+
+            $.each(list, function(_junk, l) {
+              sub.list[l] = has_skill(l);
+
+              if (predicate == 'and') {
+                logic = logic && sub.list[l];
+              } else if (predicate == 'or') {
+                logic = logic || sub.list[l];
+              }
+            })
+
+            sub.satisfied = logic;
+
+            if (sub.satisfied) {
+              sub.cost = condition[0];
+
+              if (_s.min_cost == null) {
+                _s.min_cost = sub.cost;
+              } else {
+                if (sub.cost < _s.min_cost) {
+                  _s.min_cost = sub_cost;
+                }
+              }
+            }
+
+            _s.global_satisfied = _s.global_satisfied || sub.satisfied;
+          } else {
+            _s.global_satisfied = true;
+            _s.min_cost = condition[0];
+            _s.local_cost = condition[0];
+          }
+
+          _s.sub.push(sub);
+        })
+
+        if (_s.global_satisfied && _s.min_cost > oc) {
+          _s.status = 'taxed';
+          _s.amount = _s.min_cost - oc;
+        }
+      }
+
+      //console.log(_s);
+
+      var report = _s.name + "\n";
+      $.each(_s.sub, function(_junk, d) {
+        if (d.predicate == 'open') {
+          report += 'Open ' + _s.local_cost;
+        } else if (d.predicate == undefined) {
+          report += '<< Unchanged >> ' + _s.local_cost;
+        } else {
+          var px = d.predicate == 'or' ? ' | ' : ' & ';
+          var element = new Array();
+          $.each(d.list, function(name, has_it) {
+            element.push(name + ' (' + (has_it ? 'OK' : 'NO') + ')');
+          })
+          report += d.origin + ': ' + element.join(px) + ': ' + _s.local_cost + '\n';
+
+
+        }
+
+        
+      })
+
+      if (!_s.global_satisfied) {
+        report += 'Refunded ' + oc;
+      } else {
+        if (_s.status == 'taxed') {
+          report += 'Taxed ' + _s.amount;
+        }
+      }
+      
+      console.log(report);
+    };
+
+    var rems = Object.assign({}, get_current_professions());
+    var deleted = x;
+    var acquired_skills = get_acquired_skills_with_cost();
+    delete rems[x];
+
+    $.each(acquired_skills, function(skill, data) {
+      var original_cost = data.cost;
+      var costs = new Array();
+
+      $.each(rems, function(profession, _junk) {
+        var accessible = skills.is_accessible_by_profession(skill, profession, get_strain());
+
+        if (accessible) {
+          //costs[accessible.cost] = accessible.preq;
+          costs.push([accessible.cost, accessible.preq, profession]);
+        }
+      })
+
+      if (Object.keys(costs).length == 0) {
+        var open = skills.is_accessible_by_profession(skill, 'open')
+        if (open) {
+          //costs[open] = null;
+          costs.push([open, 'open', 'Open'])
+        }
+      }
+
+      //console.log(skill);
+      // console.log(costs);
+      //console.log('---');
+
+      enumerate_delta(skill, original_cost, costs);
+    })
+  }
+
   var get_skill_list = function(x) {
     var h = {};
     var pack = (x == 'planned' ? pack_plan() : pack_acq());
@@ -716,6 +881,10 @@ var profile = function() {
     return metadata;
   }
 
+  var get_strain = function() {
+    return pack_strain();
+  }
+
   return {
     apply: apply,
     copy_current_to: copy_current_to,
@@ -729,6 +898,7 @@ var profile = function() {
     get_current: function() { return profiles[selected]; },
     get_current_professions: get_current_professions,
     get_all_skills: get_all_skills,
+    get_acquired_skills_with_cost: get_acquired_skills_with_cost,
     get_skill_list: get_skill_list,
     has_skill: has_skill,
     get_postprocess_cost: function() { return postprocess_cost; },
@@ -736,7 +906,7 @@ var profile = function() {
     get_old_name: function() { return old_profile; },
     get_master: function() { return $.jStorage.get('all'); },
     get_deleted: function() { return deleted; },
-    get_strain: function() { return pack_strain(); },
+    get_strain: get_strain,
     get_primary: get_primary,
     inject: inject,
     set_primary: set_primary,
@@ -746,6 +916,7 @@ var profile = function() {
     save_all_delayed: save_all_delayed,
     set_pref: set_pref,
     set_normally_synced: set_normally_synced,
+    simulate_profession_drop: simulate_profession_drop,
     soft_delete: soft_delete,
     sync: sync,
     undelete: undelete,

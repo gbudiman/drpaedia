@@ -342,6 +342,16 @@ var skills = (function() {
     
   }
 
+  var is_accessible_by_profession = function(skill, profession, strain) {
+    var by_profession = data[skill].conditions[profession];
+
+    if (by_profession == null) {
+      return data[skill].conditions[strain];
+    }
+
+    return by_profession;
+  }
+
   var update_strain_specific_lore = function(strain) {
     var aquatic = data['Lore - Animals - Aquatic'].shorthand;
     var monhist = data['Lore - Mon Histories'].shorthand;
@@ -623,6 +633,7 @@ var skills = (function() {
     get_interaction: get_interaction,
     has_tier: has_tier,
     hash: get_hash,
+    is_accessible_by_profession: is_accessible_by_profession,
     update_strain_specific_lore: update_strain_specific_lore,
     update_availability: update_availability,
     validate: validate
