@@ -629,11 +629,11 @@ var profile = function() {
     drop_simulator.attach();
     $('#modal-drop-profession').text(x);
 
-    if (Object.keys(profession_conc.selected()).length > 0 || Object.keys(profession_adv.selected()).length > 0) {
-      $('#modal-drop-simulator-body').text('Profession Drop Simulator does not support simulation when you already have Profession Concentration or Advanced Profession. You can still drop it however.');
-      $('#modal-drop-simulator').modal('show');
-      return;
-    } 
+    // if (Object.keys(profession_conc.selected()).length > 0 || Object.keys(profession_adv.selected()).length > 0) {
+    //   $('#modal-drop-simulator-body').text('Profession Drop Simulator does not support simulation when you already have Profession Concentration or Advanced Profession. You can still drop it however.');
+    //   $('#modal-drop-simulator').modal('show');
+    //   return;
+    // } 
 
     var enumerate_delta = function(s, oc, c) {
       var _s = {
@@ -774,7 +774,7 @@ var profile = function() {
 
       anchor.empty();
 
-      console.log(r);
+      //console.log(r);
 
       $.each(r, function(_junk, entry) {
         w += '<tr>'
