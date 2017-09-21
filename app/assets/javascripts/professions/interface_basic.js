@@ -6,9 +6,9 @@ var profession_basic_interface = (function() {
     var s = '<div class="purchased-profession">'
           +   '<span class="basic-prof-name">' + prof + '</span>'
           +   '<span class="simulate-forget pull-right" data-prof="' + prof + '">F</span>'
-          +   '<span class="pull-right">&nbsp|&nbsp</span>'
-          +   '<span class="forget-profession pull-right" data-prof="' + prof + '" style="display: none">F</span>'
           //+   '<span class="pull-right">&nbsp|&nbsp</span>'
+          +   '<span class="forget-profession pull-right" data-prof="' + prof + '" style="display: none">F</span>'
+          +   '<span class="pull-right">&nbsp|&nbsp</span>'
           +   '<span class="glyphicon glyphicon-remove pull-right remove-profession" data-prof="' + prof + '"></span>'
           + '</div>';
 
@@ -28,16 +28,24 @@ var profession_basic_interface = (function() {
       var anchor = $(this).parent().find('.basic-prof-name');
 
       if (anchor.hasClass('forgotten-basic-prof')) {
+        console.log('branch 1 called');
         anchor.removeClass('forgotten-basic-prof');
         profession_basic.unforget(target_prof);
         that.text('F');
         trigger_filterview(target_prof, true);
+        that.hide();
+        $('#profession-basic-config').find('.simulate-forget[data-prof="' + target_prof + '"]').show();
       } else {
+        console.log('branch 2 called: ' + target_prof);
         anchor.addClass('forgotten-basic-prof');
         profession_basic.forget(target_prof);
         that.text('U');
         trigger_filterview(target_prof, false);
         $(this).parent().find('.config-signet').remove();
+        that.show();
+        $('#profession-basic-config').find('.forget-profession[data-prof="' + target_prof + '"]').show();
+        $('#profession-basic-config').find('.simulate-forget[data-prof="' + target_prof + '"]').hide();
+        
       }
 
       profession_conc_interface.validate_existing();
@@ -45,7 +53,6 @@ var profession_basic_interface = (function() {
 
     $('#profession-basic-config')
       .find('.simulate-forget').off('click').on('click', function() {
-        console.log('clicked');
         profile.simulate_profession_drop($(this).attr('data-prof'));
       })
   }

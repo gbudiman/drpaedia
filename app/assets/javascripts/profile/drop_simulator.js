@@ -23,10 +23,11 @@ var drop_simulator = function() {
       $('body').css('padding-right', 0);
     });
 
-    $('#modal-drop-execute').on('click', function() {
-      $('div.purchased-profession')
+    $('#modal-drop-execute').off('click').on('click', function() {
+      profession_basic_interface.forget($('#modal-drop-profession').text());
+      /*$('div.purchased-profession')
         .find('.forget-profession[data-prof="' + $('#modal-drop-profession').text() + '"]')
-          .trigger('click');
+          .trigger('click');*/
 
       $('#modal-drop-simulator').modal('hide');
     })

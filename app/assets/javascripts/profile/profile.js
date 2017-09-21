@@ -627,15 +627,13 @@ var profile = function() {
 
   var simulate_profession_drop = function(x) {
     drop_simulator.attach();
+    $('#modal-drop-profession').text(x);
 
     if (Object.keys(profession_conc.selected()).length > 0 || Object.keys(profession_adv.selected()).length > 0) {
-      $('#modal-drop-simulator-body').text('Profession Drop Simulator does not support simulation when you already have Profession Concentration or Advanced Profession');
-      $('#modal-drop-execute').hide();
+      $('#modal-drop-simulator-body').text('Profession Drop Simulator does not support simulation when you already have Profession Concentration or Advanced Profession. You can still drop it however.');
       $('#modal-drop-simulator').modal('show');
       return;
-    } else {
-      $('#modal-drop-execute').show();
-    }
+    } 
 
     var enumerate_delta = function(s, oc, c) {
       var _s = {
@@ -856,8 +854,6 @@ var profile = function() {
         + '</table>'
       );
 
-
-      $('#modal-drop-profession').text(x);
       t += '<table class="table table-condensed">'
         +    '<thead>'
         +      '<tr>'
