@@ -28,7 +28,7 @@ var profession_basic_interface = (function() {
       var anchor = $(this).parent().find('.basic-prof-name');
 
       if (anchor.hasClass('forgotten-basic-prof')) {
-        console.log('branch 1 called');
+        //console.log('branch 1 called');
         anchor.removeClass('forgotten-basic-prof');
         profession_basic.unforget(target_prof);
         that.text('F');
@@ -36,7 +36,7 @@ var profession_basic_interface = (function() {
         that.hide();
         $('#profession-basic-config').find('.simulate-forget[data-prof="' + target_prof + '"]').show();
       } else {
-        console.log('branch 2 called: ' + target_prof);
+        //console.log('branch 2 called: ' + target_prof);
         anchor.addClass('forgotten-basic-prof');
         profession_basic.forget(target_prof);
         that.text('U');
