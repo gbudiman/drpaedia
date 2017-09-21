@@ -166,3 +166,4 @@ var profession_basic_interface = (function() {
     update_strain_change: update_strain_change
   }
 })()
+;
