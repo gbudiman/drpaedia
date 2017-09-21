@@ -342,14 +342,20 @@ var skills = (function() {
     
   }
 
-  var is_accessible_by_profession = function(skill, profession, strain) {
-    var by_profession = data[skill].conditions[profession];
+  var is_accessible_by_profession = function(skill, profession) {
+    return data[skill].conditions[profession];
+  }
 
-    if (by_profession == null) {
-      return data[skill].conditions[strain];
+  var is_accessible_by_strain = function(skill, strain) {
+    if (data[skill].conditions.innate.indexOf(strain) != -1) {
+      var innate_preq = data[skill].conditions.innate_preq;
+
+      if (innate_preq) {
+        return innate_preq[strain];
+      } else {
+        return 'strain_accessible';
+      }
     }
-
-    return by_profession;
   }
 
   var update_strain_specific_lore = function(strain) {
@@ -634,6 +640,7 @@ var skills = (function() {
     has_tier: has_tier,
     hash: get_hash,
     is_accessible_by_profession: is_accessible_by_profession,
+    is_accessible_by_strain: is_accessible_by_strain,
     update_strain_specific_lore: update_strain_specific_lore,
     update_availability: update_availability,
     validate: validate

@@ -254,6 +254,49 @@
   text-align: center;
 }
 
+.skillsim-highlight {
+  font-weight: bold;
+}
+
+.skillsim-original-cost {
+  text-align: right;
+}
+
+.sub-list {
+  text-align: right;
+  font-style: italic;
+  background-color: #ddd;
+}
+
+.outcome-refunded {
+  background-color: green;
+  color: white;
+  text-align: right;
+  font-style: italic;
+}
+
+.outcome-taxed {
+  background-color: red;
+  color: white;
+  text-align: right;
+  font-style: italic;
+}
+
+.tally-negative, .tally-positive {
+  border-top: 2px solid #aaa;
+  background-color: #333;
+  color: white;
+  font-size: 125%;
+}
+
+.tally-negative {
+
+}
+
+.tally-numeric {
+  text-align: right;
+}
+
 #skill-desc-body {
   max-height: 65%;
   overflow-y: auto;

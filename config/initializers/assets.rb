@@ -48,6 +48,7 @@ Rails.application.config.assets.precompile += %w( application.css
                                                   professions/interface_conc.js 
                                                   professions/style.css
                                                   profile/character_sheet.js
+                                                  profile/drop_simulator.js
                                                   profile/profile_interface.js
                                                   profile/profile.js
                                                   profile/remote_interface.js

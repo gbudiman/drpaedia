@@ -626,9 +626,21 @@ var profile = function() {
   }
 
   var simulate_profession_drop = function(x) {
+    drop_simulator.attach();
+
+    if (Object.keys(profession_conc.selected()).length > 0 || Object.keys(profession_adv.selected()).length > 0) {
+      $('#modal-drop-simulator-body').text('Profession Drop Simulator does not support simulation when you already have Profession Concentration or Advanced Profession');
+      $('#modal-drop-execute').hide();
+      $('#modal-drop-simulator').modal('show');
+      return;
+    } else {
+      $('#modal-drop-execute').show();
+    }
+
     var enumerate_delta = function(s, oc, c) {
       var _s = {
-        name: s
+        name: s,
+        original_cost: oc
       }
 
       if (c.length == 0) {
@@ -648,8 +660,16 @@ var profile = function() {
           var sub = {};
           //console.log(condition);
           sub.origin = condition[2];
+          if (sub.origin == 'Strain') {
+            sub.origin += ': ' + get_strain();
+          }
 
-          if (condition[1] == 'open') {
+          if (condition[2] == 'Strain') {
+            sub.predicate = 'strain';
+            _s.global_satisfied = true;
+            _s.min_cost = condition[0];
+            _s.local_cost = condition[0];
+          } else if (condition[1] == 'open') {
             sub.predicate = 'open';
             _s.global_satisfied = true;
             _s.min_cost = condition[0];
@@ -742,12 +762,124 @@ var profile = function() {
         }
       }
       
-      console.log(report);
+      //console.log(report);
+
+      return _s;
     };
+
+    var write_report = function(r) {
+      var anchor = $('#modal-drop-simulator-body');
+      var t = '';
+      var w = '';
+      var summary = '';
+      var tally = 0;
+
+      anchor.empty();
+
+      //console.log(r);
+
+      $.each(r, function(_junk, entry) {
+        w += '<tr>'
+          +    '<td class="skillsim-highlight">' + entry.name + '</td>'
+          +    '<td class="skillsim-original-cost">' + entry.original_cost + '</td>'
+          +    '<td></td>'
+          + '</tr>';
+
+        $.each(entry.sub, function(_junk, d) {
+          if (d.predicate == 'open') {
+            w += '<tr class="sub-list">'
+              +    '<td>Open</td>' 
+              +    '<td>' + entry.local_cost + '</td>'
+              +    '<td></td>'
+              +  '</tr>';
+          } else if (d.predicate == undefined) {
+
+          } else {
+            var px = d.predicate == 'or' ? ' OR ' : ' AND ';
+            var element = new Array();
+            $.each(d.list, function(name, has_it) {
+              element.push(name + ' (' + (has_it ? '<span class="glyphicon glyphicon-ok" style="color: green"/>' 
+                                                 : '<span class="glyphicon glyphicon-remove" style="color: red"/>') + ')');
+            })
+            w += '<tr class="sub-list">'
+              +    '<td>' + d.origin
+              +      ((element.length > 0) ? ': ' : '')
+              +      element.join(px)
+              +    '</td>'
+              +    '<td>' + entry.local_cost + '</td>'
+              +    '<td></td>'
+              +  '</tr>';
+          }
+          
+        })
+
+        if (!entry.global_satisfied) {
+          w += '<tr class="outcome-refunded">'
+            +    '<td>Refunded</td>'
+            +    '<td></td>'
+            +    '<td>' + entry.original_cost + '</td>'
+            +  '</tr>';
+
+          tally += entry.original_cost;
+        } else {
+          if (entry.status == 'taxed') {
+            w += '<tr class="outcome-taxed">'
+              +    '<td>Taxed</td>'
+              +    '<td></td>'
+              +    '<td>' + entry.amount + '</td>'
+              +  '</tr>';
+
+            tally -= entry.amount;
+          }
+        }
+
+        
+      })
+
+
+      if (tally < 0) {
+        summary += '<tr class="tally-negative">'
+          +    '<td>Requires additional XP</td>'
+          +    '<td></td>'
+          +    '<td class="tally-numeric">' + Math.abs(tally) + '</td>'
+          +  '</tr>';
+      } else {
+        summary += '<tr class="tally-positive">'
+          +    '<td>XP refunded</td>'
+          +    '<td></td>'
+          +    '<td class="tally-numeric">' + tally + '</td>'
+          +  '</tr>';
+      }
+      $('#modal-drop-summary').empty().append(
+        '<table class="table">'
+        + summary
+        + '</table>'
+      );
+
+
+      $('#modal-drop-profession').text(x);
+      t += '<table class="table table-condensed">'
+        +    '<thead>'
+        +      '<tr>'
+        +        '<th>Skill</th>'
+        +        '<th>Cost</th>'
+        +        '<th>&Delta;</th>'
+        +      '</tr>'
+        +    '</thead>'
+        +    '<tbody>'
+        +      w
+        +    '</tbody>'
+        +  '</table>';
+
+      anchor.append(t);
+      $('#modal-drop-simulator').modal('show');
+
+    }
 
     var rems = Object.assign({}, get_current_professions());
     var deleted = x;
     var acquired_skills = get_acquired_skills_with_cost();
+    var reports = new Array();
     delete rems[x];
 
     $.each(acquired_skills, function(skill, data) {
@@ -755,7 +887,7 @@ var profile = function() {
       var costs = new Array();
 
       $.each(rems, function(profession, _junk) {
-        var accessible = skills.is_accessible_by_profession(skill, profession, get_strain());
+        var accessible = skills.is_accessible_by_profession(skill, profession);
 
         if (accessible) {
           //costs[accessible.cost] = accessible.preq;
@@ -764,19 +896,28 @@ var profile = function() {
       })
 
       if (Object.keys(costs).length == 0) {
-        var open = skills.is_accessible_by_profession(skill, 'open')
-        if (open) {
-          //costs[open] = null;
-          costs.push([open, 'open', 'Open'])
+        var by_strain = skills.is_accessible_by_strain(skill, get_strain());
+
+        if (by_strain) {
+          costs.push([3, by_strain == 'strain_accessible' ? null : by_strain, 'Strain']);
+        } else {
+          var open = skills.is_accessible_by_profession(skill, 'open')
+          if (open) {
+            //costs[open] = null;
+            costs.push([open, 'open', 'Open'])
+          }
         }
+        
       }
 
       //console.log(skill);
       // console.log(costs);
       //console.log('---');
 
-      enumerate_delta(skill, original_cost, costs);
+      reports.push(enumerate_delta(skill, original_cost, costs));
     })
+
+    write_report(reports);
   }
 
   var get_skill_list = function(x) {
