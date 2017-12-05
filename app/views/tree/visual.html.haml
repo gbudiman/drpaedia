@@ -1,4 +1,12 @@
-%table{class: 'table table-condensed', id: 'vis-table'}
+%div{class: 'form-check form-check-inline'}
+  %label{class: 'form-check-label'}
+    %input{class: 'form-check-input', type: 'checkbox', id: 'hide-lore', value: 'lore'} &nbsp Hide Lores
+
+%div{class: 'form-check form-check-inline'}
+  %label{class: 'form-check-label'}
+    %input{class: 'form-check-input', type: 'checkbox', id: 'hide-psionic', value: 'psionic'} &nbsp Hide Psionics
+
+%table{class: 'table table-condensed col-xs-12', id: 'vis-table'}
   %thead
   %tbody
 = stylesheet_link_tag 'style'
@@ -55,6 +63,7 @@
 
 :javascript
   visual.attach();
+  $('body').css('max-width', '9999px');
 
 :css
   #vis-table {
@@ -68,7 +77,7 @@
   }
 
   .row-head {
-    width: 80px;
+    width: 160px;
   }
 
   #vis-table > thead > tr > th.cols-splitter {
@@ -79,4 +88,29 @@
   #vis-table > thead > tr > th {
     max-width: 20px;
     height: 80px
+  }
+
+  .cell {
+    vertical-align: middle !important;
+    text-align: center;
+  }
+
+  .opencell {
+    //background-color: yellow;
+    color: #aaa;
+  }
+
+  .accesscell {
+    background-color: green;
+    color: white;
+    vertical-align: midd
+  }
+
+  .accesscell.uniquecell {
+    background-color: blue;
+  }
+
+  .disadvcell {
+    background-color: red;
+    color: #ddd;
   }
