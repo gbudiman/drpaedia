@@ -61,9 +61,22 @@
     margin-top: 64px;
   }
 
-  #vis-table > thead > tr > th {
-    transform: translate(51px, 21px) rotate(-60deg);
-    //height: 64px;
+  .head-rotate {
+    transform: rotate(-90deg);
     //width: 24px;
     white-space: pre;
+  }
+
+  .row-head {
+    width: 80px;
+  }
+
+  #vis-table > thead > tr > th.cols-splitter {
+    max-width: 4px;
+    max-height: 4px;
+  }
+
+  #vis-table > thead > tr > th {
+    max-width: 20px;
+    height: 80px
   }

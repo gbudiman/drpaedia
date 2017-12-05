@@ -15,17 +15,45 @@ var visual = function() {
   }
 
   var render = function() {
+    render_head();
+    render_body();
+  }
+
+  var render_head = function() {
     var head = table.find('thead');
-    var t = '';
+    var t = '<th></th>';
 
     $.each(cols, function(i, k) {
-      t += '<th>'
-        +    k.name
-        +  '</th>';
+      if (k.is_splitter) {
+        t += '<th class="cols-splitter"></th>';
+      } else {
+        t += '<th>'
+          +    '<div class="head-rotate">' + k.name + '</div>'
+          +  '</th>';
+      }
+      
     })
 
-    console.log(t);
     head.append('<tr>' + t + '</tr>');
+  }
+
+  var render_body = function() {
+    var body = table.find('tbody');
+    var sorted = Object.keys(rows).sort();
+    var t = '';
+
+    $.each(sorted, function(_junk, k) {
+      var cs = '<td class="row-head">' + k + '</td>';
+      $.each(cols, function(j, l) {
+        cs += '<td></td>';
+      })
+
+      t += '<tr>'
+        +    cs
+        +  '</tr>';
+    })
+
+    body.append(t);
   }
 
   var build_rows = function() {
@@ -53,6 +81,10 @@ var visual = function() {
         strain: k,
         props: strain_data[k] || {}
       })
+    })
+
+    d.push({
+      is_splitter: true
     })
 
     $.each(prof_keys, function(i, k) {
