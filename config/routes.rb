@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :survivors, controllers: { omniauth_callbacks: 'survivors/omniauth_callbacks' }
 
   root                                                   to: 'tree#index'
+  get           '/visual',                               to: 'tree#visual'
   post          '/sync/upstream',                        to: 'survivor#upstream'
   post          '/sync/force_upstream',                  to: 'survivor#force_upstream'
   get           '/sync/downstream',                      to: 'survivor#downstream'

@@ -65,4 +65,5 @@ Rails.application.config.assets.precompile += %w( application.css
                                                   printThis.js
                                                   bootstrap-toggle.min.js
                                                   bootstrap-toggle.min.css
-                                                  animate.css)
+                                                  animate.css
+                                                  visual/visual.js )

@@ -119,38 +119,44 @@ var dynaloader = (function() {
       raw_data = $.jStorage.get('raw_data', {});
     }
 
-    if (Object.keys(raw_data).length == 0) {
-      $.when(get_json('advanced_cat'),
-             get_json('concentration_cat'),
-             get_json('profession_advanced'),
-             get_json('profession_concentration_group'),
-             get_json('profession_concentration_hierarchy'),
-             get_json('profession_concentrations'),
-             get_json('profession_extension'),
-             get_json('professions'),
-             get_json('skill_cat'),
-             get_json('skill_countered'),
-             get_json('skill_counters'),
-             get_json('skill_group'),
-             get_json('skill_list'),
-             get_json('skill_mp_cost'),
-             get_json('strain_restriction'),
-             get_json('strain_specs'),
-             get_json('strain_stats'),
-             get_json('strains')).done(function() {
+    var promise = new Promise(function(lrm_resolve, lrm_reject) {
+      if (Object.keys(raw_data).length == 0) {
+        $.when(get_json('advanced_cat'),
+               get_json('concentration_cat'),
+               get_json('profession_advanced'),
+               get_json('profession_concentration_group'),
+               get_json('profession_concentration_hierarchy'),
+               get_json('profession_concentrations'),
+               get_json('profession_extension'),
+               get_json('professions'),
+               get_json('skill_cat'),
+               get_json('skill_countered'),
+               get_json('skill_counters'),
+               get_json('skill_group'),
+               get_json('skill_list'),
+               get_json('skill_mp_cost'),
+               get_json('strain_restriction'),
+               get_json('strain_specs'),
+               get_json('strain_stats'),
+               get_json('strains')).done(function() {
 
-        manager.log('retrieved server data');
-        master_build().then(function(resolve, reject) {         
-          if (resolve) {
-            $.jStorage.set('raw_data', raw_data);
-            $.jStorage.set('raw_data_version', const_raw_data_version);
-          }
+          manager.log('retrieved server data');
+          master_build().then(function(resolve, reject) {         
+            if (resolve) {
+              $.jStorage.set('raw_data', raw_data);
+              $.jStorage.set('raw_data_version', const_raw_data_version);
+              lrm_resolve(true);
+            }
+          })
         })
-      })
-    } else {
-      manager.log('cached data loaded');
-      master_build();
-    }
+      } else {
+        manager.log('cached data loaded');
+        master_build().then(function(resolve, reject) {
+          lrm_resolve(true);
+        });
+      }
+    })
+    
 
     $.ajax({
       cache: false,
@@ -160,6 +166,8 @@ var dynaloader = (function() {
       raw_data.skill_desc = d;
     })
     //get_json('skill_desc');
+    
+    return promise;
   }
 
   var get_json = function(path) {

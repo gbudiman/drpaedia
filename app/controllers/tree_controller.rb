@@ -8,4 +8,7 @@ class TreeController < ApplicationController
       @is_logged_in = true
     end
   end
+
+  def visual
+  end
 end

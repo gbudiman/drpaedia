@@ -1,0 +1,69 @@
+%table{class: 'table table-condensed', id: 'vis-table'}
+  %thead
+  %tbody
+= stylesheet_link_tag 'style'
+= stylesheet_link_tag 'typeaheadjs.css'
+= javascript_include_tag 'velocity.min'
+= javascript_include_tag 'typeahead.bundle.min'
+= javascript_include_tag 'js.cookie'
+= javascript_include_tag 'generic'
+= javascript_include_tag 'bootstrap-toggle.min'
+= javascript_include_tag 'jstorage.min'
+= javascript_include_tag 'bootstrap-editable.min'
+= javascript_include_tag 'bootstrap-select.min'
+= javascript_include_tag 'bootstrap-notify.min'
+= javascript_include_tag 'SParser'
+= javascript_include_tag 'AgentGirl'
+= stylesheet_link_tag 'bootstrap-editable'
+= stylesheet_link_tag 'bootstrap-select.min'
+= stylesheet_link_tag 'bootstrap-toggle.min'
+= stylesheet_link_tag 'configbar/configbar'
+= stylesheet_link_tag 'professions/style'
+= stylesheet_link_tag 'skills/style'
+= stylesheet_link_tag 'tooling/style'
+= stylesheet_link_tag 'notifier/style'
+= stylesheet_link_tag 'profile/style'
+= stylesheet_link_tag 'animate'
+= javascript_include_tag 'notifier/notifier'
+= javascript_include_tag 'skills/calc'
+= javascript_include_tag 'stats/stats_interface'
+= javascript_include_tag 'skills/popup'
+= javascript_include_tag 'skills/skill_interface'
+= javascript_include_tag 'skills/skills'
+= javascript_include_tag 'profile/remote_interface'
+= javascript_include_tag 'profile/remote'
+= javascript_include_tag 'dynaloader/manager'
+= javascript_include_tag 'layout/layout'
+= javascript_include_tag 'profile/drop_simulator'
+= javascript_include_tag 'profile/profile_interface'
+= javascript_include_tag 'profile/profile'
+= javascript_include_tag 'profile/character_sheet'
+= javascript_include_tag 'filterview/filterview'
+= javascript_include_tag 'tooling/tooling'
+= javascript_include_tag 'professions/interface_adv'
+= javascript_include_tag 'professions/interface_basic'
+= javascript_include_tag 'professions/interface_conc'
+= javascript_include_tag 'professions/adv'
+= javascript_include_tag 'professions/basic'
+= javascript_include_tag 'professions/conc'
+= javascript_include_tag 'strains/strain_interface'
+= javascript_include_tag 'strains/strains'
+= javascript_include_tag 'professions/basic'
+= javascript_include_tag 'dynaloader/dynaloader'
+= javascript_include_tag 'printThis'
+= javascript_include_tag 'visual/visual'
+
+:javascript
+  visual.attach();
+
+:css
+  #vis-table {
+    margin-top: 64px;
+  }
+
+  #vis-table > thead > tr > th {
+    transform: translate(51px, 21px) rotate(-60deg);
+    //height: 64px;
+    //width: 24px;
+    white-space: pre;
+  }
