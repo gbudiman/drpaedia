@@ -93,6 +93,11 @@
     margin-top: 64px;
   }
 
+  .table-hover {
+    table-layout: fixed;
+    //width: 5120px;
+  }
+
   / .head-rotate {
   /   transform: translate(-27px, 27px) rotate(-90deg);
   /   //width: 24px;
@@ -104,6 +109,10 @@
     font-weight: bold;
   }
 
+  .fixed-table-body-columns, .fixed-table-header-columns {
+    background: white;
+    z-index: 9999;
+  }
   / .fixed-table-body-columns, .fixed-table-header-columns {
   /   width: 200px !important;
   /   font-weight: bold;
@@ -116,6 +125,7 @@
 
   #vis-table > thead > tr > th.head-rotate, th.head-rotate {
     max-width: 20px;
+    width: 20px;
     height: 80px;
     //transform: translate(-64px, 52px) rotate(-90deg);
     transform: rotate(-90deg) translateY(10px);

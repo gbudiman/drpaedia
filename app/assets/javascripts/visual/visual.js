@@ -78,10 +78,10 @@ var visual = function() {
 
     var attach_remove_row = function() {
       $('span[data-row-remove]').on('click', function() {
-        //var data_index = $(this).parent().parent().attr('data-index');
+        var data_index = $(this).parent().parent().attr('data-index');
 
         $(this).parent().parent().hide();
-        //$('div.fixed-table-body-columns').find('[data-index=' + data_index + ']').hide();
+        $('div.fixed-table-body-columns').find('[data-index=' + data_index + ']').hide();
         monitor_hidden_row($(this).attr('data-row-remove'));
       })
     }
@@ -120,7 +120,14 @@ var visual = function() {
     $('.psc-class-' + dom_idify(x)).hide();
     $('[data-field="' + x + '"]').hide();
 
+    recalculate_header_width();
     monitor_hidden_column(x);
+  }
+
+  var recalculate_header_width = function() {
+    $('.fixed-table-header').find('.head-rotate:visible').width(20);
+    $('.table-hover').find('.head-rotate').width(20);
+    $('.table-hover').css('width', '');
   }
 
   var attach_unhide_all = function(x) {
@@ -132,6 +139,7 @@ var visual = function() {
   var unhide_column = function(x) {
     $('.psc-class-' + dom_idify(x)).show();
     $('[data-field="' + x + '"]').show();
+    recalculate_header_width();
   }
 
   var unhide_row = function(x) {
@@ -276,9 +284,14 @@ var visual = function() {
       height: get_table_space_size(),
       onPostBody: function() {
         attach_controls();
+        remove_source_duplication();
       },
-      fixedColumns: false
+      fixedColumns: true
     })
+  }
+
+  var remove_source_duplication = function() {
+    //$('.fixed-table-body').find('td:first-child').empty();
   }
 
   var cell_formatter = function(value, row, index, field) {
