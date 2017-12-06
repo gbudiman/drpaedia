@@ -105,6 +105,8 @@ var visual = function() {
 
           flash_state = true;
         }
+
+        //remove_source_duplication();
       })
     }
 
@@ -125,9 +127,15 @@ var visual = function() {
   }
 
   var recalculate_header_width = function() {
-    $('.fixed-table-header').find('.head-rotate:visible').width(20);
+    var visibles = $('.fixed-table-header').find('.head-rotate:visible');
+    var vt_width = 199 + 23 * visibles.length - 32;
+    visibles.width(20);
     $('.table-hover').find('.head-rotate').width(20);
     $('.table-hover').css('width', '');
+
+    console.log(vt_width);
+    $('#vis-table').css('width', vt_width);
+    $('.fixed-table-header').css('width', vt_width);
   }
 
   var attach_unhide_all = function(x) {
@@ -284,14 +292,13 @@ var visual = function() {
       height: get_table_space_size(),
       onPostBody: function() {
         attach_controls();
-        remove_source_duplication();
       },
       fixedColumns: true
     })
   }
 
   var remove_source_duplication = function() {
-    //$('.fixed-table-body').find('td:first-child').empty();
+    $('.fixed-table-body').find('td:first-child').empty();
   }
 
   var cell_formatter = function(value, row, index, field) {
