@@ -4,8 +4,10 @@ var visual = function() {
   var cells;
   var table;
   var col_indexes;
+  var prof_only_indexes;
   var innate_cost;
   var col_separator;
+  var strains_data = strains.data()
 
   var attach = function() {
     innate_cost = 3;
@@ -44,34 +46,55 @@ var visual = function() {
 
 
   var render = function() {
-    render_head().then(function() {
-      render_body().then(function() {
-        render_cells();
-        table.bootstrapTable({
-          stickyHeader: false
-        })
-      })
-    });
+    // render_head().then(function() {
+    //   render_body().then(function() {
+    //     render_cells();
+    //     table.bootstrapTable({
+    //       stickyHeader: false
+    //     })
+    //   })
+    // });
+
+    table.bootstrapTable({
+      columns: cols,
+      data: rows,
+      undefinedText: '',
+    })
+  }
+
+  var cell_formatter = function(value, row, index, field) {
+    var a_class = [];
+
+    if (field == 'separator') { a_class.push('separatorcell'); }
+
+    if (row.opens[field]) { a_class.push('opencell'); }
+    if (row.accesses[field]) { a_class.push('accesscell'); }
+    if (row.uniques[field]) { a_class.push('uniquecell'); }
+    if (row.disadvs[field]) { a_class.push('disadvcell'); }
+
+    return {
+      classes: a_class.join(' ')
+    }
   }
 
   var render_head = function() {
     return new Promise(function(resolve, reject) {
-      var head = table.find('thead');
-      var t = '<th></th>';
+      // var head = table.find('thead');
+      // var t = '<th></th>';
 
-      $.each(cols, function(i, k) {
-        if (k.is_splitter) {
-          t += '<th class="cols-splitter"> &nbsp; &nbsp; </th>';
-        } else {
-          t += '<th class="head-rotate">'
-            //+    '<div class="head-rotate">' + k.name + '</div>'
-            +    k.name
-            +  '</th>';
-        }
+      // $.each(cols, function(i, k) {
+      //   if (k.is_splitter) {
+      //     t += '<th class="cols-splitter"> &nbsp; &nbsp; </th>';
+      //   } else {
+      //     t += '<th class="head-rotate">'
+      //       //+    '<div class="head-rotate">' + k.name + '</div>'
+      //       +    k.name
+      //       +  '</th>';
+      //   }
         
-      })
+      // })
 
-      head.append('<tr>' + t + '</tr>');
+      // head.append('<tr>' + t + '</tr>');
       resolve(true);
     })
     
@@ -183,14 +206,55 @@ var visual = function() {
   }
 
   var build_rows = function() {
-    var h = {};
-    $.each(skills.data(), function(k, v) {
-      if (!['conc', 'adv', 'npc'].includes(v.type)) {
-        h[k] = v;
-      }
-    });
+    var a = [];
+    var data = skills.data();
+    var sorted = Object.keys(data).sort();
 
-    return h;
+    $.each(sorted, function(idx, k) {
+      var sdata = data[k];
+
+      if (!['conc', 'adv', 'npc'].includes(sdata.type)) {
+        var h = {
+          id: idx,
+          skill_name: k,
+          uniques: {},
+          disadvs: {},
+          accesses: {},
+          opens: {}
+        }
+
+        if (sdata.conditions.open) {
+          $.each(prof_only_indexes, function(n, _junk) {
+            h[n] = sdata.conditions.open;
+            h.opens[n] = true;
+            //h.is_open = true;
+          })
+        }
+
+        $.each(sdata.conditions, function(condition, d) {
+          if (condition == 'innate') {
+            $.each(d, function(_junk, strain) {
+              h[strain] = innate_cost;
+            })
+          } else if (condition == 'innate_disadvantage') {
+            $.each(d, function(_junk, strain) {
+              h[strain] = 'X';
+              h.disadvs[strain] = true;
+            })
+          } else if (d.cost) {
+            h[condition] = d.cost;
+            h.accesses[condition] = true;
+            if (sdata.unique) {
+              h.uniques[condition] = true;
+            }
+          }
+        })
+
+        a.push(h);
+      }
+    })
+
+    return a;
   }
 
   var build_columns = function() {
@@ -202,31 +266,47 @@ var visual = function() {
     var prof_keys = Object.keys(prof_data).sort();
 
     col_indexes = {};
+    prof_only_indexes = {};
     var idx = 0;
+
+    d.push({
+      title: 'Skills',
+      field: 'skill_name'
+    })
 
     $.each(strain_keys, function(i, k) {
       d.push({
-        name: k,
-        is_strain: true,
-        props: strain_data[k] || {}
+        title: k,
+        field: k,
+        class: 'head-rotate',
+        cellStyle: cell_formatter
+        //is_strain: true,
+        //props: strain_data[k] || {}
       })
-      col_indexes[k] = idx++;
+      col_indexes[k] = true;
     })
 
     d.push({
-      is_splitter: true
+      title: '',
+      field: 'separator',
+      class: 'separatorcell'
+      //is_splitter: true
     })
-    col_separator = idx++;
+    //col_separator = idx++;
 
     $.each(prof_keys, function(i, k) {
       d.push({
-        name: k,
-        is_profession: true,
-        props: strain_data[k] || {}
+        title: k,
+        field: k,
+        class: 'head-rotate',
+        cellStyle: cell_formatter
+        //is_profession: true,
+        //props: strain_data[k] || {}
       })
-      col_indexes[k] = idx++;
+      col_indexes[k] = true;
+      prof_only_indexes[k] = true;
     })
-    
+
     return d;
   }
 

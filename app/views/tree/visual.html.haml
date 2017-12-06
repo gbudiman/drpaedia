@@ -6,9 +6,8 @@
   %label{class: 'form-check-label'}
     %input{class: 'form-check-input', type: 'checkbox', id: 'hide-psionic', value: 'psionic'} &nbsp Hide Psionics
 
-%table{class: 'table table-condensed col-xs-12', id: 'vis-table'}
-  %thead
-  %tbody
+%table{class: 'table', id: 'vis-table'}
+
 = stylesheet_link_tag 'style'
 = stylesheet_link_tag 'typeaheadjs.css'
 = stylesheet_link_tag 'visual/bootstrap-table.min'
@@ -74,25 +73,28 @@
     margin-top: 64px;
   }
 
-  .head-rotate {
-    transform: translate(-27px, 27px) rotate(-90deg);
-    //width: 24px;
-    white-space: pre;
-  }
+  / .head-rotate {
+  /   transform: translate(-27px, 27px) rotate(-90deg);
+  /   //width: 24px;
+  /   white-space: pre;
+  / }
 
-  .row-head {
-    width: 160px;
-    padding: 1px !important;
-  }
+  / .row-head {
+  /   width: 160px;
+  /   padding: 1px !important;
+  / }
 
   #vis-table > thead > tr > th.cols-splitter {
     max-width: 4px;
     max-height: 4px;
   }
 
-  #vis-table > thead > tr > th {
+  #vis-table > thead > tr > th.head-rotate {
     max-width: 20px;
-    height: 80px
+    height: 80px;
+    transform: translate(-27px, 27px) rotate(-90deg);
+    //width: 24px;
+    white-space: pre;
   }
 
   #vis-table > thead > tr > th > div.th-inner {
@@ -114,14 +116,18 @@
   .accesscell {
     background-color: green;
     color: white;
-    vertical-align: midd
+    vertical-align: middle;
   }
 
-  .accesscell.uniquecell {
+  .uniquecell {
     background-color: blue;
   }
 
   .disadvcell {
     background-color: red;
     color: #ddd;
+  }
+
+  .separatorcell {
+    background-color: #aaa;
   }
