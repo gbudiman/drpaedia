@@ -1,10 +1,10 @@
 %div{class: 'form-check form-check-inline'}
   %label{class: 'form-check-label'}
-    %input{class: 'form-check-input', type: 'checkbox', id: 'hide-lore', value: 'lore'} &nbsp Hide Lores
+    %input{class: 'form-check-input', type: 'checkbox', id: 'hide-lore', value: 'lore', checked: true} &nbsp Hide Lores
 
 %div{class: 'form-check form-check-inline'}
   %label{class: 'form-check-label'}
-    %input{class: 'form-check-input', type: 'checkbox', id: 'hide-psionic', value: 'psionic'} &nbsp Hide Psionics
+    %input{class: 'form-check-input', type: 'checkbox', id: 'hide-psionics', value: 'psionics', checked: true} &nbsp Hide Psionics
 
 %table{class: 'table', id: 'vis-table'}
 
@@ -79,22 +79,34 @@
   /   white-space: pre;
   / }
 
-  / .row-head {
-  /   width: 160px;
-  /   padding: 1px !important;
-  / }
+  .row-head {
+    width: 160px;
+    padding: 1px !important;
+  }
 
   #vis-table > thead > tr > th.cols-splitter {
     max-width: 4px;
     max-height: 4px;
   }
 
-  #vis-table > thead > tr > th.head-rotate {
+  #vis-table > thead > tr > th.head-rotate, th.head-rotate {
     max-width: 20px;
     height: 80px;
-    transform: translate(-27px, 27px) rotate(-90deg);
+    transform: translate(-64px, 48px) rotate(-90deg);
     //width: 24px;
     white-space: pre;
+  }
+
+  table.table-hover > thead > tr {
+    height: 128px;
+  }
+
+  thead > tr > th.head-rotate > div.th-inner {
+    overflow: unset !important;
+    text-overflow: unset !important;
+    padding: 0px !important;
+    white-space: pre !important;
+    line-height: 0px !important;
   }
 
   #vis-table > thead > tr > th > div.th-inner {
@@ -130,4 +142,5 @@
 
   .separatorcell {
     background-color: #aaa;
+    width: 8px;
   }

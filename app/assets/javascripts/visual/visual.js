@@ -18,20 +18,19 @@ var visual = function() {
 
       render();
     });
-    attach_controls();
   }
 
   var attach_controls = function() {
     var attach_control = function(x) {
-      $('#hide-' + x).on('change', function() {
+      $('#hide-' + x).off('change').on('change', function() {
         apply(x, $(this).prop('checked'));
       })
 
-      apply(x, $(this).prop('checked'));
+      apply(x, $('#hide-' + x).prop('checked'));
     }
 
     var apply = function(x, val) {
-      var w = table.find('tr[data-' + x + ']');
+      var w = table.find('tr[data-type=' + x + ']');
 
       if (val) {
         w.hide();
@@ -41,29 +40,30 @@ var visual = function() {
     }
 
     attach_control('lore');
-    attach_control('psionic');
+    attach_control('psionics');
   }
 
 
   var render = function() {
-    // render_head().then(function() {
-    //   render_body().then(function() {
-    //     render_cells();
-    //     table.bootstrapTable({
-    //       stickyHeader: false
-    //     })
-    //   })
-    // });
 
     table.bootstrapTable({
       columns: cols,
       data: rows,
       undefinedText: '',
+      rowAttributes: function(row, index) {
+        return {
+          'data-type': row.type
+        }
+      },
+      height: 720,
+      onPostBody: function() {
+        attach_controls();
+      }
     })
   }
 
   var cell_formatter = function(value, row, index, field) {
-    var a_class = [];
+    var a_class = ['cell'];
 
     if (field == 'separator') { a_class.push('separatorcell'); }
 
@@ -77,133 +77,6 @@ var visual = function() {
     }
   }
 
-  var render_head = function() {
-    return new Promise(function(resolve, reject) {
-      // var head = table.find('thead');
-      // var t = '<th></th>';
-
-      // $.each(cols, function(i, k) {
-      //   if (k.is_splitter) {
-      //     t += '<th class="cols-splitter"> &nbsp; &nbsp; </th>';
-      //   } else {
-      //     t += '<th class="head-rotate">'
-      //       //+    '<div class="head-rotate">' + k.name + '</div>'
-      //       +    k.name
-      //       +  '</th>';
-      //   }
-        
-      // })
-
-      // head.append('<tr>' + t + '</tr>');
-      resolve(true);
-    })
-    
-  }
-
-  var render_body = function() {
-    return new Promise(function(resolve, reject) {
-      var body = table.find('tbody');
-      var sorted = Object.keys(rows).sort();
-      var t = '';
-
-      $.each(sorted, function(_junk, k) {
-        var skill_code = skills.get_code(k);
-        var cs = '<td class="row-head">' + k + '</td>';
-        var mark_lore = rows[k].type == 'lore' ? 'data-lore=true' : '';
-        var mark_psi = rows[k].type == 'psionics' ? 'data-psionic=true' : '';
-
-        $.each(cols, function(j, l) {
-          cs += '<td class="cell" id="cells-' + skill_code + '-' + j + '"></td>';
-        })
-
-        t += '<tr id="cells-' + skill_code + '" ' + mark_lore + mark_psi + '>'
-          +    cs
-          +  '</tr>';
-      })
-
-      body.append(t);
-      resolve(true);
-    })
-    
-  }
-
-  var render_cells = function() {
-    var queues = {};
-    var opens = {};
-    var uniques = {};
-    var disadvs = {};
-    var tiereds = {};
-
-    var rowify = function(skill_code) {
-      return '#cells-' + skill_code;
-    }
-    var idify = function(skill_code, col_index) {
-      return '#cells-' + skill_code + '-' + col_index;
-    }
-
-    $.each(rows, function(skill_name, v) {
-      var skill_code = v.shorthand;
-
-      if (v.conditions.open) {
-        opens[rowify(skill_code)] = v.conditions.open;
-      }
-
-      if (skill_name.match(/ (II|III|IV|V)$/)) {
-        tiereds[rowify(skill_code)] = true;
-      }
-
-      $.each(v.conditions, function(k, d) {
-        var col_index = col_indexes[k];
-        if (col_index) {
-          queues[idify(skill_code, col_index)] = {
-            unique: v.unique,
-            cost: d.cost
-          }
-        }
-      });
-
-      $.each(v.conditions.innate, function(_junk, strain) {
-        var col_index = col_indexes[strain];
-        queues[idify(skill_code, col_index)] = {
-          cost: innate_cost
-        };
-      })
-
-      $.each(v.conditions.innate_disadvantage, function(_junk, strain) {
-        var col_index = col_indexes[strain];
-        disadvs[idify(skill_code, col_index)] = true
-      })
-    })
-
-    $.each(opens, function(id, val) {
-      $(id).children('.cell').each(function() {
-        $(this).text(val).addClass('opencell');
-      })
-
-      $(id + '-' + col_separator).text('');
-    })
-
-    $.each(queues, function(id, d) {
-      $(id).text(d.cost).addClass('accesscell');
-
-      if (d.unique) {
-        $(id).addClass('uniquecell');
-      }
-    })
-
-    $.each(disadvs, function(id, _junk) {
-      var that = $(id);
-      var s = parseInt(that.text());
-
-      if (!isNaN(s)) {
-        that.text((s * 2).toString()).addClass('disadvcell');
-      }
-    })
-
-    $.each(tiereds, function(id, _junk) {
-      $(id).hide();
-    })
-  }
 
   var build_rows = function() {
     var a = [];
@@ -213,6 +86,10 @@ var visual = function() {
     $.each(sorted, function(idx, k) {
       var sdata = data[k];
 
+      if (k.match(/ (II|III|IV|V)$/)) {
+        return true;
+      }
+
       if (!['conc', 'adv', 'npc'].includes(sdata.type)) {
         var h = {
           id: idx,
@@ -220,7 +97,8 @@ var visual = function() {
           uniques: {},
           disadvs: {},
           accesses: {},
-          opens: {}
+          opens: {},
+          type: sdata.type
         }
 
         if (sdata.conditions.open) {
@@ -271,7 +149,8 @@ var visual = function() {
 
     d.push({
       title: 'Skills',
-      field: 'skill_name'
+      field: 'skill_name',
+      class: 'row-head'
     })
 
     $.each(strain_keys, function(i, k) {
