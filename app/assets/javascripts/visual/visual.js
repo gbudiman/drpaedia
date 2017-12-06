@@ -5,6 +5,7 @@ var visual = function() {
   var table;
   var col_indexes;
   var prof_only_indexes;
+  var strain_only_indexes;
   var innate_cost;
   var col_separator;
   var strains_data = strains.data();
@@ -15,6 +16,7 @@ var visual = function() {
   var unhide_profession;
   var unhide_skill;
   var unhide_all;
+  var flash_state;
 
   var attach = function() {
     innate_cost = 3;
@@ -36,6 +38,21 @@ var visual = function() {
     return $(window).height() - $('#controls').height();
   }
 
+  var apply_macro_filter = function() {
+    apply('lore', $('#hide-lore').prop('checked'));
+    apply('psionics', $('#hide-psionics').prop('checked'));
+  }
+
+  var apply = function(x, val) {
+    var w = table.find('tr[data-type=' + x + ']');
+
+    if (val) {
+      w.hide();
+    } else {
+      w.show();
+    }
+  }
+
   var attach_controls = function() {
     var attach_control = function(x) {
       $('#hide-' + x).off('change').on('change', function() {
@@ -45,24 +62,17 @@ var visual = function() {
       apply(x, $('#hide-' + x).prop('checked'));
     }
 
-    var apply = function(x, val) {
-      var w = table.find('tr[data-type=' + x + ']');
-
-      if (val) {
-        w.hide();
-      } else {
-        w.show();
-      }
-    }
+    
 
     var attach_remove_column = function() {
       $('span[data-column-remove]').on('click', function() {
         var val = $(this).attr('data-column-remove');
 
-        $('.psc-class-' + dom_idify(val)).hide();
-        $('[data-field="' + val + '"]').hide();
+        hide_column(val);
+        // $('.psc-class-' + dom_idify(val)).hide();
+        // $('[data-field="' + val + '"]').hide();
 
-        monitor_hidden_column(val);
+        // monitor_hidden_column(val);
       })
     }
 
@@ -76,11 +86,41 @@ var visual = function() {
       })
     }
 
+    var attach_flash_strain = function() {
+      $('span[data-column-flash]').on('click', function() {
+        var val = $(this).attr('data-column-flash');
+
+        if (flash_state) {
+          $.each(strain_only_indexes, function(k, _junk) {
+            unhide_column(k);
+          })
+
+          flash_state = false;
+        } else {
+          $.each(strain_only_indexes, function(k, _junk) {
+            if (k != val) {
+              hide_column(k);
+            }
+          })
+
+          flash_state = true;
+        }
+      })
+    }
+
     attach_control('lore');
     attach_control('psionics');
     attach_remove_column();
     attach_remove_row();
+    attach_flash_strain();
     attach_unhide_all();
+  }
+
+  var hide_column = function(x) {
+    $('.psc-class-' + dom_idify(x)).hide();
+    $('[data-field="' + x + '"]').hide();
+
+    monitor_hidden_column(x);
   }
 
   var attach_unhide_all = function(x) {
@@ -198,7 +238,7 @@ var visual = function() {
       switch(type) {
         case 'skill': hidden_skills = {}; repopulate_hidden_skills(); break;
         case 'profession': hidden_professions = {}; repopulate_hidden_professions(); break;
-        case 'strain': hidden_strains = {}; repopulate_hidden_strains(); break;
+        case 'strain': hidden_strains = {}; flash_state = false; repopulate_hidden_strains(); break;
       }
       event.preventDefault();
     })
@@ -218,6 +258,8 @@ var visual = function() {
     repopulate(unhide_skill, [], 'skill');
     repopulate(unhide_strain, [], 'strain');
     repopulate(unhide_profession, [], 'profession');
+    apply_macro_filter();
+    flash_state = false;
   }
 
   var render = function() {
@@ -267,12 +309,21 @@ var visual = function() {
     var make_interactable_row_remove = function(k) {
       return k + '<span class="pull-right glyphicon glyphicon-remove clickable" data-row-remove="' + k + '" />';
     }
+    var make_interactable_header_flash = function(k) {
+      return '<span class="glyphicon glyphicon-flash clickable" data-column-flash="' + k + '" /> ';
+    }
 
     var control_remove = {};
     $.each(col_indexes, function(k, _junk) {
       control_remove[k] = make_interactable_header_remove(k);
     });
     a.push(control_remove);
+
+    var control_flash = {};
+    $.each(strain_only_indexes, function(k, _junk) {
+      control_flash[k] = make_interactable_header_flash(k);
+    });
+    a.push(control_flash);
 
     $.each(sorted, function(idx, k) {
       var sdata = data[k];
@@ -336,6 +387,7 @@ var visual = function() {
 
     col_indexes = {};
     prof_only_indexes = {};
+    strain_only_indexes = {};
     var idx = 0;
 
     d.push({
@@ -355,6 +407,7 @@ var visual = function() {
         //props: strain_data[k] || {}
       })
       col_indexes[k] = true;
+      strain_only_indexes[k] = true;
     })
 
     d.push({
