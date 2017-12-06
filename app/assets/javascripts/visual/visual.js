@@ -7,11 +7,23 @@ var visual = function() {
   var prof_only_indexes;
   var innate_cost;
   var col_separator;
-  var strains_data = strains.data()
+  var strains_data = strains.data();
+  var hidden_professions = {};
+  var hidden_skills = {};
+  var hidden_strains = {};
+  var unhide_strain;
+  var unhide_profession;
+  var unhide_skill;
+  var unhide_all;
 
   var attach = function() {
     innate_cost = 3;
     table = $('#vis-table');
+    unhide_strain = $('#unhide-strain');
+    unhide_profession = $('#unhide-profession');
+    unhide_skill = $('#unhide-skill');
+    unhide_all = $('#unhide-all');
+
     dynaloader.load_remote().then(function() {
       cols = build_columns();
       rows = build_rows();
@@ -49,16 +61,18 @@ var visual = function() {
 
         $('.psc-class-' + dom_idify(val)).hide();
         $('[data-field="' + val + '"]').hide();
+
+        monitor_hidden_column(val);
       })
     }
 
     var attach_remove_row = function() {
       $('span[data-row-remove]').on('click', function() {
-        var data_index = $(this).parent().parent().attr('data-index');
-        console.log(data_index);
+        //var data_index = $(this).parent().parent().attr('data-index');
 
         $(this).parent().parent().hide();
-        $('div.fixed-table-body-columns').find('[data-index=' + data_index + ']').hide();
+        //$('div.fixed-table-body-columns').find('[data-index=' + data_index + ']').hide();
+        monitor_hidden_row($(this).attr('data-row-remove'));
       })
     }
 
@@ -66,15 +80,148 @@ var visual = function() {
     attach_control('psionics');
     attach_remove_column();
     attach_remove_row();
+    attach_unhide_all();
+  }
+
+  var attach_unhide_all = function(x) {
+    unhide_all.on('click', function() {
+      clear_hiddens();
+    })
+  }
+
+  var unhide_column = function(x) {
+    $('.psc-class-' + dom_idify(x)).show();
+    $('[data-field="' + x + '"]').show();
+  }
+
+  var unhide_row = function(x) {
+    $('span[data-row-remove="' + x + '"]').parent().parent().show();
+  }
+
+  var monitor_hidden_row = function(x) {
+    hidden_skills[x] = true;
+    repopulate_hidden_skills();
+  }
+
+  var monitor_hidden_column = function(x) {
+    if (prof_only_indexes[x]) {
+      hidden_professions[x] = true;
+      repopulate_hidden_professions();
+    } else {
+      hidden_strains[x] = true;
+      repopulate_hidden_strains();
+    }
+  }
+
+  var repopulate_hidden_strains = function() {
+    repopulate(unhide_strain, Object.keys(hidden_strains).sort(), 'strain');
+  }
+
+  var repopulate_hidden_professions = function() {
+    repopulate(unhide_profession, Object.keys(hidden_professions).sort(), 'profession');
+  }
+
+  var repopulate_hidden_skills = function() {
+    repopulate(unhide_skill, Object.keys(hidden_skills).sort(), 'skill');
+  }
+
+  var unhide = function(type, target) {
+    switch(type) {
+      case 'strain': 
+        delete hidden_strains[target]; 
+        unhide_strain.find('[data-unhide-name="' + target + '"]').remove();
+        unhide_column(target);
+        break;
+      case 'profession': 
+        delete hidden_professions[target]; 
+        unhide_profession.find('[data-unhide-name="' + target + '"]').remove();
+        unhide_column(target);
+        break;
+      case 'skill': 
+        delete hidden_skills[target]; 
+        unhide_skill.find('[data-unhide-name="' + target + '"]').remove();
+        unhide_row(target);
+        break;
+    }
+  }
+
+  var repopulate = function(anchor, sorted, type) {
+    var t = '';
+
+    anchor.empty();
+    if (sorted.length == 0) {
+      t += '<li>Nothing is hidden</li>';
+    } else {
+      $.each(sorted, function(_junk, x) {
+        t += '<li '
+          +       'data-unhide-name="' + x + '" '
+          +       'data-unhide-type="' + type + '" '
+          +  '><a href="#">' + x + '</a></li>';
+      })
+
+      t += '<li role="separator" class="divider"></li>';
+      t += '<li data-omni="' + type + '"><a href="#">Unhide All</li>';
+    }
+
+    anchor.append(t);
+    reactivate(anchor);
+    
+  }
+
+  var reactivate = function(anchor) {
+    anchor.find('li[data-unhide-type]').on('click', function(event) {
+      var target = $(this).attr('data-unhide-name');
+      var type = $(this).attr('data-unhide-type');
+
+      unhide(type, target);
+      event.preventDefault();
+    })
+
+    anchor.find('li[data-omni]').on('click', function(event) {
+      var type = $(this).attr('data-omni');
+      var datalist;
+
+      switch(type) {
+        case 'skill': datalist = hidden_skills; break;
+        case 'profession': datalist = hidden_professions; break;
+        case 'strain': datalist = hidden_strains; break;
+      }
+
+      $.each(datalist, function(k, _junk) {
+        if (type == 'skill') {
+          unhide_row(k);
+        } else {
+          unhide_column(k);
+        }
+      })
+
+      switch(type) {
+        case 'skill': hidden_skills = {}; repopulate_hidden_skills(); break;
+        case 'profession': hidden_professions = {}; repopulate_hidden_professions(); break;
+        case 'strain': hidden_strains = {}; repopulate_hidden_strains(); break;
+      }
+      event.preventDefault();
+    })
   }
 
   var dom_idify = function(x) {
     return x.replace(/\s+/g, '');
   }
 
+  var clear_hiddens = function() {
+    hidden_professions = {};
+    hidden_strains = {};
+    hidden_skills = {};
+    $('.table-hover').find('tr').show();
+    $('.fixed-table-body').find('td').show();
+    $('.table-hover').find('[data-field]').show();
+    repopulate(unhide_skill, [], 'skill');
+    repopulate(unhide_strain, [], 'strain');
+    repopulate(unhide_profession, [], 'profession');
+  }
 
   var render = function() {
-
+    clear_hiddens();
     table.bootstrapTable({
       columns: cols,
       data: rows,
@@ -88,7 +235,7 @@ var visual = function() {
       onPostBody: function() {
         attach_controls();
       },
-      fixedColumns: true
+      fixedColumns: false
     })
   }
 
@@ -235,6 +382,7 @@ var visual = function() {
   }
 
   return {
-    attach: attach
+    attach: attach,
+    clear_hiddens: clear_hiddens
   }
 }()

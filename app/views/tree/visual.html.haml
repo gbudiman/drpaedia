@@ -1,11 +1,30 @@
 %div{id: 'controls'}
-  %div{class: 'form-check form-check-inline'}
+  %div{class: 'form-check form-check-inline col-xs-6 col-sm-4 col-md-3'}
     %label{class: 'form-check-label'}
       %input{class: 'form-check-input', type: 'checkbox', id: 'hide-lore', value: 'lore', checked: true} &nbsp Hide Lores
 
-  %div{class: 'form-check form-check-inline'}
+  %div{class: 'form-check form-check-inline col-xs-6 col-sm-4 col-md-3'}
     %label{class: 'form-check-label'}
       %input{class: 'form-check-input', type: 'checkbox', id: 'hide-psionics', value: 'psionics', checked: true} &nbsp Hide Psionics
+
+  %div{class: 'row'}
+  %div{class: 'col-xs-6 col-sm-4 col-md-3 btn-group'}
+    %button{class: 'btn btn-link', 'data-toggle': 'dropdown'}
+      Unhide Strain
+      %span{class: 'caret'}
+    %ul{class: 'dropdown-menu', id: 'unhide-strain'}
+  %div{class: 'col-xs-6 col-sm-4 col-md-3 btn-group'}
+    %button{class: 'btn btn-link', 'data-toggle': 'dropdown'}
+      Unhide Profession
+      %span{class: 'caret'}
+    %ul{class: 'dropdown-menu', id: 'unhide-profession'}
+  %div{class: 'col-xs-6 col-sm-4 col-md-3 btn-group'}
+    %button{class: 'btn btn-link', 'data-toggle': 'dropdown'}
+      Unhide Skill
+      %span{class: 'caret'}
+    %ul{class: 'dropdown-menu', id: 'unhide-skill'}
+  %div{class: 'col-xs-6 col-sm-4 col-md-3'}
+    %button{class: 'btn btn-link', id: 'unhide-all'} Unhide All
 
 %table{class: 'table', id: 'vis-table'}
 
