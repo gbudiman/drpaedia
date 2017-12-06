@@ -20,6 +20,10 @@ var visual = function() {
     });
   }
 
+  var get_table_space_size = function() {
+    return $(window).height() - $('#controls').height();
+  }
+
   var attach_controls = function() {
     var attach_control = function(x) {
       $('#hide-' + x).off('change').on('change', function() {
@@ -39,8 +43,33 @@ var visual = function() {
       }
     }
 
+    var attach_remove_column = function() {
+      $('span[data-column-remove]').on('click', function() {
+        var val = $(this).attr('data-column-remove');
+
+        $('.psc-class-' + dom_idify(val)).hide();
+        $('[data-field="' + val + '"]').hide();
+      })
+    }
+
+    var attach_remove_row = function() {
+      $('span[data-row-remove]').on('click', function() {
+        var data_index = $(this).parent().parent().attr('data-index');
+        console.log(data_index);
+
+        $(this).parent().parent().hide();
+        $('div.fixed-table-body-columns').find('[data-index=' + data_index + ']').hide();
+      })
+    }
+
     attach_control('lore');
     attach_control('psionics');
+    attach_remove_column();
+    attach_remove_row();
+  }
+
+  var dom_idify = function(x) {
+    return x.replace(/\s+/g, '');
   }
 
 
@@ -55,10 +84,11 @@ var visual = function() {
           'data-type': row.type
         }
       },
-      height: 720,
+      height: get_table_space_size(),
       onPostBody: function() {
         attach_controls();
-      }
+      },
+      fixedColumns: true
     })
   }
 
@@ -67,10 +97,12 @@ var visual = function() {
 
     if (field == 'separator') { a_class.push('separatorcell'); }
 
-    if (row.opens[field]) { a_class.push('opencell'); }
-    if (row.accesses[field]) { a_class.push('accesscell'); }
-    if (row.uniques[field]) { a_class.push('uniquecell'); }
-    if (row.disadvs[field]) { a_class.push('disadvcell'); }
+    if (row.opens && row.opens[field]) { a_class.push('opencell'); }
+    if (row.accesses && row.accesses[field]) { a_class.push('accesscell'); }
+    if (row.uniques && row.uniques[field]) { a_class.push('uniquecell'); }
+    if (row.disadvs && row.disadvs[field]) { a_class.push('disadvcell'); }
+
+    a_class.push('psc-class-' + dom_idify(field));
 
     return {
       classes: a_class.join(' ')
@@ -82,6 +114,18 @@ var visual = function() {
     var a = [];
     var data = skills.data();
     var sorted = Object.keys(data).sort();
+    var make_interactable_header_remove = function(k) {
+      return '<span class="glyphicon glyphicon-remove clickable" data-column-remove="' + k + '" /> ';
+    }
+    var make_interactable_row_remove = function(k) {
+      return k + '<span class="pull-right glyphicon glyphicon-remove clickable" data-row-remove="' + k + '" />';
+    }
+
+    var control_remove = {};
+    $.each(col_indexes, function(k, _junk) {
+      control_remove[k] = make_interactable_header_remove(k);
+    });
+    a.push(control_remove);
 
     $.each(sorted, function(idx, k) {
       var sdata = data[k];
@@ -93,7 +137,7 @@ var visual = function() {
       if (!['conc', 'adv', 'npc'].includes(sdata.type)) {
         var h = {
           id: idx,
-          skill_name: k,
+          skill_name: make_interactable_row_remove(k), //k,
           uniques: {},
           disadvs: {},
           accesses: {},
@@ -119,7 +163,7 @@ var visual = function() {
               h[strain] = 'X';
               h.disadvs[strain] = true;
             })
-          } else if (d.cost) {
+          } else if (d.cost != undefined) {
             h[condition] = d.cost;
             h.accesses[condition] = true;
             if (sdata.unique) {
@@ -148,9 +192,10 @@ var visual = function() {
     var idx = 0;
 
     d.push({
-      title: 'Skills',
+      title: '',
       field: 'skill_name',
-      class: 'row-head'
+      class: 'row-head',
+      width: '200px'
     })
 
     $.each(strain_keys, function(i, k) {
