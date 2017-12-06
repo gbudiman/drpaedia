@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require turbolinks
+//= require visual/bootstrap-table.min.js
 //= require_tree .

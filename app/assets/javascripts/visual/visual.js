@@ -5,6 +5,7 @@ var visual = function() {
   var table;
   var col_indexes;
   var innate_cost;
+  var col_separator;
 
   var attach = function() {
     innate_cost = 3;
@@ -43,50 +44,64 @@ var visual = function() {
 
 
   var render = function() {
-    render_head();
-    render_body();
-    render_cells();
+    render_head().then(function() {
+      render_body().then(function() {
+        render_cells();
+        table.bootstrapTable({
+          stickyHeader: false
+        })
+      })
+    });
   }
 
   var render_head = function() {
-    var head = table.find('thead');
-    var t = '<th></th>';
+    return new Promise(function(resolve, reject) {
+      var head = table.find('thead');
+      var t = '<th></th>';
 
-    $.each(cols, function(i, k) {
-      if (k.is_splitter) {
-        t += '<th class="cols-splitter"></th>';
-      } else {
-        t += '<th>'
-          +    '<div class="head-rotate">' + k.name + '</div>'
-          +  '</th>';
-      }
-      
+      $.each(cols, function(i, k) {
+        if (k.is_splitter) {
+          t += '<th class="cols-splitter"> &nbsp; &nbsp; </th>';
+        } else {
+          t += '<th class="head-rotate">'
+            //+    '<div class="head-rotate">' + k.name + '</div>'
+            +    k.name
+            +  '</th>';
+        }
+        
+      })
+
+      head.append('<tr>' + t + '</tr>');
+      resolve(true);
     })
-
-    head.append('<tr>' + t + '</tr>');
+    
   }
 
   var render_body = function() {
-    var body = table.find('tbody');
-    var sorted = Object.keys(rows).sort();
-    var t = '';
+    return new Promise(function(resolve, reject) {
+      var body = table.find('tbody');
+      var sorted = Object.keys(rows).sort();
+      var t = '';
 
-    $.each(sorted, function(_junk, k) {
-      var skill_code = skills.get_code(k);
-      var cs = '<td class="row-head">' + k + '</td>';
-      var mark_lore = rows[k].type == 'lore' ? 'data-lore=true' : '';
-      var mark_psi = rows[k].type == 'psionics' ? 'data-psionic=true' : '';
+      $.each(sorted, function(_junk, k) {
+        var skill_code = skills.get_code(k);
+        var cs = '<td class="row-head">' + k + '</td>';
+        var mark_lore = rows[k].type == 'lore' ? 'data-lore=true' : '';
+        var mark_psi = rows[k].type == 'psionics' ? 'data-psionic=true' : '';
 
-      $.each(cols, function(j, l) {
-        cs += '<td class="cell" id="cells-' + skill_code + '-' + j + '"></td>';
+        $.each(cols, function(j, l) {
+          cs += '<td class="cell" id="cells-' + skill_code + '-' + j + '"></td>';
+        })
+
+        t += '<tr id="cells-' + skill_code + '" ' + mark_lore + mark_psi + '>'
+          +    cs
+          +  '</tr>';
       })
 
-      t += '<tr id="cells-' + skill_code + '" ' + mark_lore + mark_psi + '>'
-        +    cs
-        +  '</tr>';
+      body.append(t);
+      resolve(true);
     })
-
-    body.append(t);
+    
   }
 
   var render_cells = function() {
@@ -141,6 +156,8 @@ var visual = function() {
       $(id).children('.cell').each(function() {
         $(this).text(val).addClass('opencell');
       })
+
+      $(id + '-' + col_separator).text('');
     })
 
     $.each(queues, function(id, d) {
@@ -199,7 +216,7 @@ var visual = function() {
     d.push({
       is_splitter: true
     })
-    idx++;
+    col_separator = idx++;
 
     $.each(prof_keys, function(i, k) {
       d.push({

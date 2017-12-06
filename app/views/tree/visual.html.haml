@@ -11,6 +11,8 @@
   %tbody
 = stylesheet_link_tag 'style'
 = stylesheet_link_tag 'typeaheadjs.css'
+= stylesheet_link_tag 'visual/bootstrap-table.min'
+= stylesheet_link_tag 'visual/bootstrap-table-sticky-header'
 = javascript_include_tag 'velocity.min'
 = javascript_include_tag 'typeahead.bundle.min'
 = javascript_include_tag 'js.cookie'
@@ -22,6 +24,8 @@
 = javascript_include_tag 'bootstrap-notify.min'
 = javascript_include_tag 'SParser'
 = javascript_include_tag 'AgentGirl'
+= javascript_include_tag 'visual/bootstrap-table.min'
+= javascript_include_tag 'visual/bootstrap-table-sticky-header'
 = stylesheet_link_tag 'bootstrap-editable'
 = stylesheet_link_tag 'bootstrap-select.min'
 = stylesheet_link_tag 'bootstrap-toggle.min'
@@ -71,13 +75,14 @@
   }
 
   .head-rotate {
-    transform: rotate(-90deg);
+    transform: translate(-27px, 27px) rotate(-90deg);
     //width: 24px;
     white-space: pre;
   }
 
   .row-head {
     width: 160px;
+    padding: 1px !important;
   }
 
   #vis-table > thead > tr > th.cols-splitter {
@@ -90,9 +95,15 @@
     height: 80px
   }
 
+  #vis-table > thead > tr > th > div.th-inner {
+    padding: 0 !important;
+    overflow: unset !important;
+  }
+
   .cell {
     vertical-align: middle !important;
     text-align: center;
+    padding: 1px !important;
   }
 
   .opencell {

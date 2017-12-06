@@ -66,4 +66,8 @@ Rails.application.config.assets.precompile += %w( application.css
                                                   bootstrap-toggle.min.js
                                                   bootstrap-toggle.min.css
                                                   animate.css
-                                                  visual/visual.js )
+                                                  visual/visual.js
+                                                  visual/bootstrap-table.min.js
+                                                  visual/bootstrap-table-sticky-header.js
+                                                  visual/bootstrap-table.min.css
+                                                  visual/bootstrap-table-sticky-header.css )
