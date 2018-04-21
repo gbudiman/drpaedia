@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170703092812) do
+ActiveRecord::Schema.define(version: 20180421003253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "games", id: :bigserial, force: :cascade do |t|
+    t.string   "chapter",    null: false
+    t.date     "start",      null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chapter", "start"], name: "index_games_on_chapter_and_start", using: :btree
+    t.index ["start", "chapter"], name: "index_games_on_start_and_chapter", unique: true, using: :btree
+  end
 
   create_table "multicasts", id: :bigserial, force: :cascade do |t|
     t.bigint   "profile_id",  null: false
