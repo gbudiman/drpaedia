@@ -50,6 +50,7 @@ class Game < ApplicationRecord
     oregon: ['OR', 'Oregon'],
     washington: ['WA', 'Washington'],
 
+    arkansas: ['AR', 'Arkansas'],
     colorado: ['CO', 'Colorado'],
     new_mexico: ['NM', 'New Mexico'],
     oklahoma: ['OK', 'Oklahoma'],
@@ -64,10 +65,9 @@ class Game < ApplicationRecord
     penn: ['PA', 'Pennsylvania'],
     virginia: ['VA', 'Virginia'],
     
-    arkansas: ['AR', 'Arkansas'],
     indiana: ['IN', 'Indiana'],
-    ohio: ['OH', 'Ohio'],
     kentucky: ['KY', 'Kentucky'],
+    ohio: ['OH', 'Ohio'],
     wisconsin: ['WI', 'Wisconsin'],
     
   }
