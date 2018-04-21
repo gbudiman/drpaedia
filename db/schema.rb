@@ -15,47 +15,47 @@ ActiveRecord::Schema.define(version: 20180421003253) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "games", id: :bigserial, force: :cascade do |t|
-    t.string   "chapter",    null: false
-    t.date     "start",      null: false
+  create_table "games", force: :cascade do |t|
+    t.string "chapter", null: false
+    t.date "start", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["chapter", "start"], name: "index_games_on_chapter_and_start", using: :btree
-    t.index ["start", "chapter"], name: "index_games_on_start_and_chapter", unique: true, using: :btree
+    t.index ["chapter", "start"], name: "index_games_on_chapter_and_start"
+    t.index ["start", "chapter"], name: "index_games_on_start_and_chapter", unique: true
   end
 
-  create_table "multicasts", id: :bigserial, force: :cascade do |t|
-    t.bigint   "profile_id",  null: false
-    t.bigint   "survivor_id", null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["profile_id"], name: "index_multicasts_on_profile_id", using: :btree
-    t.index ["survivor_id"], name: "index_multicasts_on_survivor_id", using: :btree
+  create_table "multicasts", force: :cascade do |t|
+    t.bigint "profile_id", null: false
+    t.bigint "survivor_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_id"], name: "index_multicasts_on_profile_id"
+    t.index ["survivor_id"], name: "index_multicasts_on_survivor_id"
   end
 
-  create_table "profiles", id: :bigserial, force: :cascade do |t|
-    t.string   "name",        null: false
-    t.text     "data",        null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.bigint   "survivor_id", null: false
-    t.index ["survivor_id", "name"], name: "index_profiles_on_survivor_id_and_name", unique: true, using: :btree
-    t.index ["survivor_id"], name: "index_profiles_on_survivor_id", using: :btree
+  create_table "profiles", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "survivor_id", null: false
+    t.index ["survivor_id", "name"], name: "index_profiles_on_survivor_id_and_name", unique: true
+    t.index ["survivor_id"], name: "index_profiles_on_survivor_id"
   end
 
-  create_table "survivors", id: :bigserial, force: :cascade do |t|
-    t.string   "provider",                         null: false
-    t.string   "uid"
-    t.string   "token"
+  create_table "survivors", force: :cascade do |t|
+    t.string "provider", null: false
+    t.string "uid"
+    t.string "token"
     t.datetime "expiration"
-    t.string   "friendly_name",                    null: false
-    t.string   "primary_profile"
+    t.string "friendly_name", null: false
+    t.string "primary_profile"
     t.datetime "profile_timestamp"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.boolean  "normally_synced",   default: true
-    t.index ["friendly_name"], name: "index_survivors_on_friendly_name", unique: true, using: :btree
-    t.index ["provider", "uid"], name: "index_survivors_on_provider_and_uid", unique: true, using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "normally_synced", default: true
+    t.index ["friendly_name"], name: "index_survivors_on_friendly_name", unique: true
+    t.index ["provider", "uid"], name: "index_survivors_on_provider_and_uid", unique: true
   end
 
   add_foreign_key "multicasts", "profiles"

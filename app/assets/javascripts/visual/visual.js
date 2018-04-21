@@ -128,14 +128,16 @@ var visual = function() {
 
   var recalculate_header_width = function() {
     var visibles = $('.fixed-table-header').find('.head-rotate:visible');
-    var vt_width = 199 + 23 * visibles.length - 32;
+    var vx_width = 200 + 23 * visibles.length;
+    var vt_width = 22 * visibles.length;
     visibles.width(20);
     $('.table-hover').find('.head-rotate').width(20);
     $('.table-hover').css('width', '');
 
-    console.log(vt_width);
+    console.log(vx_width);
     $('#vis-table').css('width', vt_width);
-    $('.fixed-table-header').css('width', vt_width);
+    $('.fixed-table-header').css('width', vx_width);
+    console.log($('.fixed-table-header'));
   }
 
   var attach_unhide_all = function(x) {

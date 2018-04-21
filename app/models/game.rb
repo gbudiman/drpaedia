@@ -1,28 +1,44 @@
 class Game < ApplicationRecord
   @@workload = {
-    #socal: :parse_socal,
-    #washington: :parse_washington,
-    #colorado: :parse_colorado,
-    #oregon: :parse_oregon,
-    #new_jersey: :parse_new_jersey,
-    #new_mexico: :parse_new_mexico,
-    #ohio: :parse_ohio,
-    #georgia: :parse_georgia,
-    #mass: :parse_mass,
-    #virginia: :parse_virginia,
-    #new_york: :parse_new_york,
-    #penn: :parse_penn,
-    #oklahoma: :parse_oklahoma,
-    #texas: :parse_texas,
+    socal: :parse_socal,
+    washington: :parse_washington,
+    colorado: :parse_colorado,
+    oregon: :parse_oregon,
+    new_jersey: :parse_new_jersey,
+    new_mexico: :parse_new_mexico,
+    ohio: :parse_ohio,
+    georgia: :parse_georgia,
+    mass: :parse_mass,
+    virginia: :parse_virginia,
+    new_york: :parse_new_york,
+    penn: :parse_penn,
+    oklahoma: :parse_oklahoma,
+    texas: :parse_texas,
     indiana: :parse_indiana,
+    kentucky: :parse_kentucky,
+    florida: :parse_florida,
+    arkansas: :parse_arkansas,
+    wisconsin: :parse_wisconsin
   }
   @@mech = Mechanize.new
+  @@mech.user_agent_alias = 'Linux Firefox'
   @@year = Time.now.year
 
   def self.parse
     @@workload.each do |chapter, func|
       Game.send(func)
     end
+  end
+
+  def self.init_national_events
+    ['April 26, 2018'].each do |d|
+      Game.find_or_initialize_by(chapter: 'national',
+                                 start: Date.parse(d)).save!
+    end
+  end
+
+  def self.get_chapters
+    return @@workload.keys
   end
 
 private
@@ -224,6 +240,84 @@ private
                                      start: date).save!
         end
 
+      end
+    end
+  end
+
+  def self.parse_kentucky
+    @@mech.get('http://www.dystopiarisingky.com/calendar/') do |page|
+      page.search('.eventlist-meta-date').each do |li|
+        r = li.text.split(/\-/)
+        date = Date.parse(r[0])
+        Game.find_or_initialize_by(chapter: 'kentucky',
+                                   start: date).save!
+      end
+    end
+  end
+
+  def self.parse_florida
+    @@mech.get('http://www.dystopiarisingflorida.com/site-schedule/') do |page|
+      page.search('p').each do |li|
+        if li.text.match(/\w+\s+\d+\w+\-/)
+          li.inner_html.split('<br>').each do |d|
+            d_match = d.match(/(\w+)\s(\d+)\w+\-(\w+\s)?\d+\w+\,\s+(\d+)/)
+            if d_match
+              date = Date.parse("#{d_match[1]} #{d_match[2]}, #{d_match[4]}")
+              Game.find_or_initialize_by(chapter: 'florida',
+                                         start: date).save!
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def self.parse_arkansas
+    @@mech.get('https://www.dystopiarisingar.com/events/') do |page|
+      
+      page.search('.sqs-block-content').each do |bct|
+        year_state = nil
+
+        h1 = bct.search('h1')
+        if h1.length > 0
+          year_state = nil
+          bct.children.each do |ch|
+            year_match = ch.text.match(/^(\d+)$/)
+            month_match = ch.text.match(/(\w+)\s(\d+)/)
+
+            if year_match
+              year_state = year_match[1].to_i
+            elsif month_match
+              date = Date.parse("#{month_match[1]} #{month_match[2]}, #{year_state}")
+              Game.find_or_initialize_by(chapter: 'arkansas',
+                                         start: date).save!
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def self.parse_wisconsin
+    @@mech.get('http://steelhorsecrossing.com/location-and-site/') do |page|
+      page.search('.sqs-block-content').each do |bct|
+        h2 = bct.search('h2')
+        if h2.length > 0
+          year_state = h2.text.to_i
+
+          bct.search('p').each do |par|
+            if par.text.match(/\w+\s+\d+/)
+              par.inner_html.split('<br>').each do |d|
+                d_match = d.match(/(\w+)\s+(\d+)\-/)
+                if d_match
+                  date = Date.parse("#{d_match[1]} #{d_match[2]}, #{year_state}")
+                  Game.find_or_initialize_by(chapter: 'wisconsin',
+                                             start: date).save!
+                end
+              end
+            end
+          end
+        end
       end
     end
   end

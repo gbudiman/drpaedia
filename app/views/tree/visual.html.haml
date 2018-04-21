@@ -95,8 +95,12 @@
   }
 
   .table-hover {
-    table-layout: fixed;
+    table-layout: fixed !important;
     //width: 5120px;
+  }
+
+  .fixed-table-header > .table-hover {
+    width: unset !important;
   }
 
   / .head-rotate {
