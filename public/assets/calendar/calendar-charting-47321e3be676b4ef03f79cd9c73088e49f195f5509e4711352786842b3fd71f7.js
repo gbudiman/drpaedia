@@ -106,4 +106,4 @@ var calendar_charting = function() {
 	return {
 		init: init
 	}
-}()
+}();
