@@ -11,4 +11,11 @@ class TreeController < ApplicationController
 
   def visual
   end
+
+  def calendar
+  end
+
+  def fetch_events
+    render json: Game.fetch_all
+  end
 end

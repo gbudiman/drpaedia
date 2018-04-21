@@ -23,6 +23,78 @@ class Game < ApplicationRecord
   @@mech = Mechanize.new
   @@mech.user_agent_alias = 'Linux Firefox'
   @@year = Time.now.year
+  @@chapters = {
+    national: ['Nat', 'National'],
+    # arkansas: ['AR', 'Arkansas'],
+    # socal: ['SoCal', 'Southern California'],
+    # colorado: ['CO', 'Colorado'],
+    # florida: ['FL', 'Florida'],
+    # georgia: ['GA', 'Georgia'],
+    # indiana: ['IN', 'Indiana'],
+    # kentucky: ['KY', 'Kentucky'],
+    # mass: ['MA', 'Massachusetts'],
+    # new_jersey: ['NJ', 'New Jersey'],
+    # new_mexico: ['NM', 'New Mexico'],
+    # new_york: ['NY', 'New York'],
+    # ohio: ['OH', 'Ohio'],
+    # oklahoma: ['OK', 'Oklahoma'],
+    # oregon: ['OR', 'Oregon'],
+    # penn: ['PA', 'Pennsylvania'],
+    # texas: ['TX', 'Texas'], 
+    # virginia: ['VA', 'Virginia'],
+    # washington: ['WA', 'Washington'],
+    # wisconsin: ['WI', 'Wisconsin'],
+
+    
+    socal: ['SoCal', 'Southern California'],
+    oregon: ['OR', 'Oregon'],
+    washington: ['WA', 'Washington'],
+
+    colorado: ['CO', 'Colorado'],
+    new_mexico: ['NM', 'New Mexico'],
+    oklahoma: ['OK', 'Oklahoma'],
+    texas: ['TX', 'Texas'], 
+
+    florida: ['FL', 'Florida'],
+    georgia: ['GA', 'Georgia'],
+    
+    mass: ['MA', 'Massachusetts'],
+    new_jersey: ['NJ', 'New Jersey'],
+    new_york: ['NY', 'New York'],
+    penn: ['PA', 'Pennsylvania'],
+    virginia: ['VA', 'Virginia'],
+    
+    arkansas: ['AR', 'Arkansas'],
+    indiana: ['IN', 'Indiana'],
+    ohio: ['OH', 'Ohio'],
+    kentucky: ['KY', 'Kentucky'],
+    wisconsin: ['WI', 'Wisconsin'],
+    
+  }
+
+  def self.fetch_all
+    res = []
+    cat = []
+    inv = {}
+
+    @@chapters.keys.reverse.each_with_index do |chapter, index|
+      inv[chapter] = index
+      cat.push(@@chapters[chapter.to_sym][0])
+    end
+
+    Game.all.select(:chapter, :start).each do |r|
+      res.push({
+        x: r.start.to_time.to_i * 1000,
+        y: inv[r.chapter.to_sym],
+        name: @@chapters[r.chapter.to_sym][1]
+      })
+      #res.push([r.start.to_time.to_i, @@chapters[r.chapter.to_sym][0]])
+      #res.push([r.start.to_time.to_i, 0])
+
+    end
+
+    return { category: cat, data: res }
+  end
 
   def self.parse
     @@workload.each do |chapter, func|

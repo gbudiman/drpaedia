@@ -66,6 +66,9 @@ Rails.application.config.assets.precompile += %w( application.css
                                                   bootstrap-toggle.min.js
                                                   bootstrap-toggle.min.css
                                                   animate.css
+                                                  calendar/highcharts.js
+                                                  calendar/highcharts-more.js
+                                                  calendar/calendar-charting.js
                                                   visual/visual.js
                                                   visual/bootstrap-table.min.js
                                                   visual/bootstrap-table-fixed-columns.js

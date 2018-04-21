@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   devise_for :survivors, controllers: { omniauth_callbacks: 'survivors/omniauth_callbacks' }
 
   root                                                   to: 'tree#index'
-  get           '/visual',                               to: 'tree#visual'
+  #get           '/visual',                               to: 'tree#visual'
+  get           '/calendar',                             to: 'tree#calendar'
+  get           '/calendar/events',                      to: 'tree#fetch_events'
   post          '/sync/upstream',                        to: 'survivor#upstream'
   post          '/sync/force_upstream',                  to: 'survivor#force_upstream'
   get           '/sync/downstream',                      to: 'survivor#downstream'

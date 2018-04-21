@@ -161,4 +161,4 @@ var configbar = (function() {
 
 $(function() {
   configbar.attach();
-})
+});
