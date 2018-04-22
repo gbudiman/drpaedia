@@ -1,8 +1,52 @@
-%div{id: 'chart'}
+%nav{class: 'navbar navbar-inverse navbar-fixed-top navbar-xs'}
+  %div{class: 'container-fluid navbar-container navbar-height-clamp'}
+    %div{class: 'row row-main navbar-height-clamp'}
+      %div{class: 'navbar-header col-xs-4 navbar-brand-main'}
+        /%a{class: 'navbar-brand navbar-brand-main'} DRpaedia
+        %a{class: 'navbar-brand navbar-brand-main dropdown-toggle navbar-height-clamp', 'data-toggle': 'dropdown', href: '#'} 
+          DRpaedia
+          %span{class: 'caret'}
+        %ul{class: 'brand dropdown-menu'}
+          %li
+            %a{href: '/'} 
+              Home
+          %li{class: 'divider'}
+          %li
+            %a{href: 'https://github.com/gbudiman/drpaedia', target: '_github'}
+              Github
+              %span{class: 'glyphicon glyphicon-new-window'}
+          %li
+            %a{href: 'https://www.patreon.com/gbudiman', target: '_patreon'} 
+              Patreon
+              %span{class: 'glyphicon glyphicon-new-window'}
+      %div{class: 'navbar-header pull-right navbar-height-clamp'}
+        %a{class: 'navbar-brand', href: '#', id: 'config-button'}
+          %span{class: 'profile-arrow'}
+          %span{class: 'profile-name'} Calendar
+%div{id: 'chart', style: 'z-index: 100; padding-top: 36px'}
 
+= stylesheet_link_tag 'style'
 = javascript_include_tag 'calendar/highcharts.js'
 = javascript_include_tag 'calendar/highcharts-more.js'
 = javascript_include_tag 'calendar/calendar-charting.js'
 
 :javascript
-	calendar_charting.init()
+  calendar_charting.init()
+
+:css
+  body {
+    max-width: 100% !important;
+  }
+
+  .navbar-container {
+    max-width: 100% !important;
+    
+  }
+
+  .highcharts-container {
+  	position: inherit! important
+  }
+
+  .highcharts-tooltip {
+  	z-index: 999998;
+  }
