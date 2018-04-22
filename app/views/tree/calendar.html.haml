@@ -25,6 +25,18 @@
           %span{class: 'profile-arrow'}
           %span{class: 'profile-name'} Calendar
 %div{id: 'chart', style: 'z-index: 100; padding-top: 36px'}
+%div{id: 'disqus_thread', class: 'col-xs-12'}
+  :javascript
+    var disqus_config = function() {
+
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = '//drcalendar.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s)
+    })();
 
 = stylesheet_link_tag 'style'
 = stylesheet_link_tag 'professions/style'
@@ -34,6 +46,7 @@
 = javascript_include_tag 'calendar/calendar-charting.js'
 
 :javascript
+  window.name = '_calendar'
   calendar_charting.init()
 
 :css

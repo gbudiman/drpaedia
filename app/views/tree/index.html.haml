@@ -105,6 +105,7 @@
 = javascript_include_tag 'printThis'
 
 :javascript
+  window.name = '_drpaedia'
   if (dynaloader.precheck_profile()) {
     layout.attach();
     dynaloader.load_remote();
