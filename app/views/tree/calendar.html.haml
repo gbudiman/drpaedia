@@ -8,8 +8,9 @@
           %span{class: 'caret'}
         %ul{class: 'brand dropdown-menu'}
           %li
-            %a{href: '/'} 
+            %a{href: '/', target: '_drpaedia'} 
               Home
+              %span{class: 'glyphicon glyphicon-new-window'}
           %li{class: 'divider'}
           %li
             %a{href: 'https://github.com/gbudiman/drpaedia', target: '_github'}
@@ -26,6 +27,8 @@
 %div{id: 'chart', style: 'z-index: 100; padding-top: 36px'}
 
 = stylesheet_link_tag 'style'
+= stylesheet_link_tag 'professions/style'
+= stylesheet_link_tag 'skills/style'
 = javascript_include_tag 'calendar/highcharts.js'
 = javascript_include_tag 'calendar/highcharts-more.js'
 = javascript_include_tag 'calendar/calendar-charting.js'
@@ -44,9 +47,9 @@
   }
 
   .highcharts-container {
-  	position: inherit! important
+    position: inherit! important
   }
 
   .highcharts-tooltip {
-  	z-index: 999998;
+    z-index: 999998;
   }
