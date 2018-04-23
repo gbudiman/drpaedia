@@ -121,4 +121,4 @@ var calendar_charting = function() {
 		init: init,
 		get_chart: function() { return chart }
 	}
-}()
+}();
