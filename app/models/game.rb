@@ -94,8 +94,9 @@ class Game < ApplicationRecord
     Game.all.select(:chapter, :start).each do |r|
       res[@@chapters[r.chapter.to_sym][2]] ||= {}
       region = res[@@chapters[r.chapter.to_sym][2]]
+      region[:data] ||= []
 
-      region.push({
+      region[:data].push({
         x: r.start.to_time.to_i * 1000,
         y: inv[r.chapter.to_sym],
         name: @@chapters[r.chapter.to_sym][1]
