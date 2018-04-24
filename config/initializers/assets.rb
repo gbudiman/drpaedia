@@ -38,6 +38,7 @@ Rails.application.config.assets.precompile += %w( application.css
                                                   strains/strain_interface.js
                                                   strains/strains.js 
                                                   strains/style.css 
+                                                  tour/tour.js
                                                   tooling/tooling.js 
                                                   tooling/style.css
                                                   professions/adv.js
