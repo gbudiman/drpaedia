@@ -23,8 +23,17 @@ class Game < ApplicationRecord
   @@mech = Mechanize.new
   @@mech.user_agent_alias = 'Linux Firefox'
   @@year = Time.now.year
+  @@region = {
+    national: { national: true },
+    west_coast: { socal: true, oregon: true, washington: true },
+    central: { arkansas: true, colorado: true, new_mexico: true, oklahoma: true, texas: true },
+    south: { florida: true, georgia: true },
+    east_coast: { mass: true, new_jersey: true, new_york: true, penn: true, virginia: true },
+    midwest: { indiana: true, kentucky: true, ohio: true },
+    north: { wisconsin: true }
+  }
   @@chapters = {
-    national: ['Nat', 'National'],
+    national: ['Nat', 'National', :national],
     # arkansas: ['AR', 'Arkansas'],
     # socal: ['SoCal', 'Southern California'],
     # colorado: ['CO', 'Colorado'],
@@ -46,34 +55,34 @@ class Game < ApplicationRecord
     # wisconsin: ['WI', 'Wisconsin'],
 
     
-    socal: ['SoCal', 'Southern California'],
-    oregon: ['OR', 'Oregon'],
-    washington: ['WA', 'Washington'],
+    socal: ['SoCal', 'Southern California', :west_coast],
+    oregon: ['OR', 'Oregon', :west_coast],
+    washington: ['WA', 'Washington', :west_coast],
 
-    arkansas: ['AR', 'Arkansas'],
-    colorado: ['CO', 'Colorado'],
-    new_mexico: ['NM', 'New Mexico'],
-    oklahoma: ['OK', 'Oklahoma'],
-    texas: ['TX', 'Texas'], 
+    arkansas: ['AR', 'Arkansas', :central],
+    colorado: ['CO', 'Colorado', :central],
+    new_mexico: ['NM', 'New Mexico', :central],
+    oklahoma: ['OK', 'Oklahoma', :central],
+    texas: ['TX', 'Texas', :central], 
 
-    florida: ['FL', 'Florida'],
-    georgia: ['GA', 'Georgia'],
+    florida: ['FL', 'Florida', :south],
+    georgia: ['GA', 'Georgia', :south],
     
-    mass: ['MA', 'Massachusetts'],
-    new_jersey: ['NJ', 'New Jersey'],
-    new_york: ['NY', 'New York'],
-    penn: ['PA', 'Pennsylvania'],
-    virginia: ['VA', 'Virginia'],
+    mass: ['MA', 'Massachusetts', :east_coast],
+    new_jersey: ['NJ', 'New Jersey', :east_coast],
+    new_york: ['NY', 'New York', :east_coast],
+    penn: ['PA', 'Pennsylvania', :east_coast],
+    virginia: ['VA', 'Virginia', :east_coast],
     
-    indiana: ['IN', 'Indiana'],
-    kentucky: ['KY', 'Kentucky'],
-    ohio: ['OH', 'Ohio'],
-    wisconsin: ['WI', 'Wisconsin'],
+    indiana: ['IN', 'Indiana', :midwest],
+    kentucky: ['KY', 'Kentucky', :midwest],
+    ohio: ['OH', 'Ohio', :midwest],
+    wisconsin: ['WI', 'Wisconsin', :north],
     
   }
 
   def self.fetch_all
-    res = []
+    res = {}
     cat = []
     inv = {}
 
@@ -83,14 +92,14 @@ class Game < ApplicationRecord
     end
 
     Game.all.select(:chapter, :start).each do |r|
-      res.push({
+      res[@@chapters[r.chapter.to_sym][2]] ||= {}
+      region = res[@@chapters[r.chapter.to_sym][2]]
+
+      region.push({
         x: r.start.to_time.to_i * 1000,
         y: inv[r.chapter.to_sym],
         name: @@chapters[r.chapter.to_sym][1]
       })
-      #res.push([r.start.to_time.to_i, @@chapters[r.chapter.to_sym][0]])
-      #res.push([r.start.to_time.to_i, 0])
-
     end
 
     return { category: cat, data: res }

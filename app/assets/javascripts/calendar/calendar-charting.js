@@ -44,18 +44,19 @@ var calendar_charting = function() {
 					}
 				},
 				title: false,
-				series: [{ 
-					data: res.data,
-					zones: [
-						{ value: 1, color: 'rgba(73, 41, 112, 0.8)'},
-						{ value: 4, color: 'rgba(26, 173, 206, 0.8)'},
-						{ value: 9, color: 'rgba(242, 143, 67, 0.8)'},
-						{ value: 11, color: 'rgba(73, 41, 112, 0.8)'},
-						{ value: 16, color: 'rgba(26, 173, 206, 0.8)'},
-						{ value: 19, color: 'rgba(139, 188, 33, 0.8)'},
-						{ value: 20, color: 'rgba(145, 0, 0, 0.8)'},
-					]
-				}],
+				// series: [{ 
+				// 	data: res.data,
+				// 	zones: [
+				// 		{ value: 1, color: 'rgba(73, 41, 112, 0.8)'},
+				// 		{ value: 4, color: 'rgba(26, 173, 206, 0.8)'},
+				// 		{ value: 9, color: 'rgba(242, 143, 67, 0.8)'},
+				// 		{ value: 11, color: 'rgba(73, 41, 112, 0.8)'},
+				// 		{ value: 16, color: 'rgba(26, 173, 206, 0.8)'},
+				// 		{ value: 19, color: 'rgba(139, 188, 33, 0.8)'},
+				// 		{ value: 20, color: 'rgba(145, 0, 0, 0.8)'},
+				// 	]
+				// }],
+				series: res.data,
 				xAxis: [{
 					type: 'datetime',
 					scrollbar: { enabled: true },
