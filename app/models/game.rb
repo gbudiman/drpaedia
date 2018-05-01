@@ -113,7 +113,7 @@ class Game < ApplicationRecord
   end
 
   def self.init_national_events
-    ['April 26, 2018'].each do |d|
+    ['April 26, 2018', 'July 6, 2018', 'September 13, 2018'].each do |d|
       Game.find_or_initialize_by(chapter: 'national',
                                  start: Date.parse(d)).save!
     end
