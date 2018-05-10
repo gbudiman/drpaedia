@@ -2,12 +2,7 @@ var calendar_charting = function() {
 	var chart
 
 	var init = function() {
-		
-
 		load_data()
-		
-
-
 	}
 
 	var resize_chart = function() {
@@ -47,11 +42,11 @@ var calendar_charting = function() {
 				series: [
 					{ data: res.data.national.data, name: 'National', marker: { symbol: 'diamond', fillColor: 'rgba(242, 143, 67, 0.8)', lineWidth: 2, lineColor: 'rgba(242, 143, 67, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(242, 143, 67, 0.8)' }}}}},
 					{ data: res.data.west_coast.data, name: 'West Coast', marker: { symbol: 'circle', fillColor: 'rgba(139, 188, 33, 0.8)'}, states: { hover: { halo: { attributes: { fill: 'rgba(139, 188, 33, 0.8)' }}}}},
-					{ data: res.data.central.data, name: 'Central', marker: { symbol: 'circle', fillColor: 'rgba(26, 173, 206, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(26, 173, 206, 0.8)' }}}}},
-					{ data: res.data.south.data, name: 'South', marker: { symbol: 'circle', fillColor: 'rgba(73, 41, 112, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(73, 41, 112, 0.8)' }}}}},
-					{ data: res.data.east_coast.data, name: 'East Coast', marker: { symbol: 'square', fillColor: 'rgba(242, 143, 67, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(242, 143, 67, 0.8)' }}}}},
+					{ data: res.data.central.data, name: 'Central', marker: { symbol: 'square', fillColor: 'rgba(26, 173, 206, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(26, 173, 206, 0.8)' }}}}},
+					{ data: res.data.south.data, name: 'South', marker: { symbol: 'diamond', fillColor: 'rgba(73, 41, 112, 0.8)', lineWidth: 2, lineColor: 'rgba(73, 41, 112, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(73, 41, 112, 0.8)' }}}}},
+					{ data: res.data.east_coast.data, name: 'East Coast', marker: { symbol: 'circle', fillColor: 'rgba(242, 143, 67, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(242, 143, 67, 0.8)' }}}}},
 					{ data: res.data.midwest.data, name: 'Midwest', marker: { symbol: 'square', fillColor: 'rgba(26, 173, 206, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(26, 173, 206, 0.8)' }}}}},
-					{ data: res.data.north.data, name: 'North', marker: { symbol: 'square', fillColor: 'rgba(73, 41, 112, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(73, 41, 112, 0.8)' }}}}},
+					{ data: res.data.north.data, name: 'North', marker: { symbol: 'diamond', fillColor: 'rgba(73, 41, 112, 0.8)', lineWidth: 2, lineColor: 'rgba(73, 41, 112, 0.8)' }, states: { hover: { halo: { attributes: { fill: 'rgba(73, 41, 112, 0.8)' }}}}},
 				],
 				xAxis: [{
 					type: 'datetime',
