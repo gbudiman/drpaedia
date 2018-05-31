@@ -1,0 +1,53 @@
+%nav{class: 'navbar navbar-inverse navbar-fixed-top navbar-xs'}
+	%div{class: 'container-fluid navbar-container navbar-height-clamp'}
+		%div{class: 'row row-main navbar-height-clamp'}
+			%div{class: 'navbar-header col-xs-4 navbar-brand-main'}
+				%a{class: 'navbar-brand navbar-brand-main dropdown-toggle navbar-height-clamp', 'data-toggle': 'dropdown', href: '#'} 
+					DRpaedia
+					%span{class: 'caret'}
+				%ul{class: 'brand dropdown-menu'}
+					%li
+						%a{href: '/', target: '_drpaedia'} 
+							Home
+							%span{class: 'glyphicon glyphicon-new-window'}
+						%a{href: '/calendar', target: '_calendar'} 
+							Calendar
+							%span{class: 'glyphicon glyphicon-new-window'}
+					%li{class: 'divider'}
+					%li
+						%a{href: 'https://github.com/gbudiman/drpaedia', target: '_github'}
+							Github
+							%span{class: 'glyphicon glyphicon-new-window'}
+					%li
+						%a{href: 'https://www.patreon.com/gbudiman', target: '_patreon'} 
+							Patreon
+							%span{class: 'glyphicon glyphicon-new-window'}
+			%div{class: 'navbar-header pull-right navbar-height-clamp'}
+				%a{class: 'navbar-brand', href: '#', id: 'config-button'}
+					%span{class: 'profile-arrow'}
+					%span{class: 'profile-name'} Privacy Policy
+
+%br
+%br
+%br
+%h3 Privacy Policy
+
+%h5 WHAT KINDS OF INFORMATION IS COLLECTED?
+%p 
+	We collect the following information for DRpaedia to function properly:
+	%ul
+		%li Your in-game characters' name
+		%li Your character's stats and skills, both acquired and planned
+
+	Additionally, if you choose to sync your account data using Facebook login, we also collect the following data:
+	%ul
+		%li Your name as it appears on your Facebook's profile
+		%li Your chosen alternate name to use on DRpaedia
+
+%div{class: 'footer'}
+	%div{class: 'credits'} 
+		DRpaedia 
+		= @version
+
+
+= stylesheet_link_tag 'style'

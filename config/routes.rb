@@ -20,5 +20,6 @@ Rails.application.routes.draw do
   get           '/skills/debug',                         to: 'skill#debug'
   get           '/skills/fetch',                         to: 'skill#fetch'
   #get          '/survivors/auth/facebook/callback',      to: 'session#create'
+  get           '/privacy',                              to: 'tree#privacy'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
