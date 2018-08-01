@@ -243,6 +243,7 @@ private
       page.search('.sqs-block-content').each do |bct|
         bct.search('li').each do |li|
           date_match = li.text.match(/(\w+)\s+(\d+)/)
+          ap date_match
           if date_match
             date = Date.parse("#{date_match[1]} #{date_match[2]}, #{@@year}")
             Game.find_or_initialize_by(chapter: 'new_mexico',

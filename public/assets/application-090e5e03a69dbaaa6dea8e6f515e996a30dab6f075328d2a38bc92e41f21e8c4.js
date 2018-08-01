@@ -14584,6 +14584,7 @@ var calendar_charting = function() {
 			url: '/calendar/events',
 			method: 'GET'
 		}).done(function(res){
+
 			chart = new Highcharts.chart('chart', {
 				chart: {
 					type: 'scatter',
@@ -14631,7 +14632,8 @@ var calendar_charting = function() {
 					plotLines: [{
 						value: Date.UTC(y.getFullYear(), y.getUTCMonth(), y.getUTCDate()),
 						width: 4,
-						color: '#c42525'
+						color: '#c42525',
+						zIndex: 999
 					}]
 				}, {
 					type: 'datetime',
