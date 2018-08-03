@@ -163,4 +163,4 @@ var configbar = (function() {
 
 $(document).ready(function() {
   configbar.attach()
-})
+});
