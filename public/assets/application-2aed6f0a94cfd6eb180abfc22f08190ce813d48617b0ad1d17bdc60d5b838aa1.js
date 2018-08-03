@@ -15224,13 +15224,16 @@ var configbar = (function() {
     })
 
 
-    console.log($('#configure-remote'))
-    $('#configure-remote').on('click', function() {
-      console.log('showing...')
-      $('#modal-remote-config').modal('show');
-      remote.check_signed_in();
-      remote.build_shared_profiles();
+    
+
+    $('#modal-remote-config').ready(function() {
+      $('#configure-remote').on('click', function() {
+        $('#modal-remote-config').modal('show');
+        remote.check_signed_in();
+        remote.build_shared_profiles();
+      })
     })
+    
 
     if ($('#remote-friendly-name').length > 0) {
       $('#remote-friendly-name').editable({

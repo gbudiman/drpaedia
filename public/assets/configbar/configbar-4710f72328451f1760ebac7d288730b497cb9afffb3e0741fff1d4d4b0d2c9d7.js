@@ -56,11 +56,16 @@ var configbar = (function() {
     })
 
 
-    $('#configure-remote').on('click', function() {
-      $('#modal-remote-config').modal('show');
-      remote.check_signed_in();
-      remote.build_shared_profiles();
+    
+
+    $('#modal-remote-config').ready(function() {
+      $('#configure-remote').on('click', function() {
+        $('#modal-remote-config').modal('show');
+        remote.check_signed_in();
+        remote.build_shared_profiles();
+      })
     })
+    
 
     if ($('#remote-friendly-name').length > 0) {
       $('#remote-friendly-name').editable({
@@ -159,6 +164,6 @@ var configbar = (function() {
   }
 })()
 
-$(function() {
-  configbar.attach();
+$(document).ready(function() {
+  configbar.attach()
 });
