@@ -88,8 +88,8 @@ var calendar_charting = function() {
 						snap: true
 					},
 					plotBands: [
-						{ from: 18.5, to: 19.5, color: 'rgba(242, 143, 67, 0.25)' },
-						{ from: 15.5, to: 18.5, color: 'rgba(139, 188, 33, 0.15)' },
+						{ from: 19.5, to: 20.5, color: 'rgba(242, 143, 67, 0.25)' },
+						{ from: 15.5, to: 19.5, color: 'rgba(139, 188, 33, 0.15)' },
 						{ from: 10.5, to: 15.5, color: 'rgba(26, 173, 206, 0.15)' },
 						{ from: 8.5, to: 10.5, color: 'rgba(73, 41, 112, 0.15)' },
 						{ from: 3.5, to: 8.5, color: 'rgba(242, 143, 67, 0.15)' },
@@ -105,14 +105,6 @@ var calendar_charting = function() {
 				},
 
 			})
-
-			// $(window).on('resize', resize_chart)
-			// resize_chart()
-			//chart.yAxis[0].setCategories(res.category)
-			//console.log(chart.yAxis[0].categories)
-			//console.log(res.data)
-			//chart.series[0].setData(res.data)
-			
 
 		})
 	}

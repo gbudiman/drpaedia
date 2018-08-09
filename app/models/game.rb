@@ -1,5 +1,6 @@
 class Game < ApplicationRecord
   @@workload = {
+    norcal: :parse_norcal,
     socal: :parse_socal,
     washington: :parse_washington,
     colorado: :parse_colorado,
@@ -25,7 +26,7 @@ class Game < ApplicationRecord
   @@year = Time.now.year
   @@region = {
     national: { national: true },
-    west_coast: { socal: true, oregon: true, washington: true },
+    west_coast: { socal: true, oregon: true, washington: true, norcal: true },
     central: { arkansas: true, colorado: true, new_mexico: true, oklahoma: true, texas: true },
     south: { florida: true, georgia: true },
     east_coast: { mass: true, new_jersey: true, new_york: true, penn: true, virginia: true },
@@ -54,7 +55,7 @@ class Game < ApplicationRecord
     # washington: ['WA', 'Washington'],
     # wisconsin: ['WI', 'Wisconsin'],
 
-    
+    norcal: ['NorCal', 'Northern California', :west_coast],
     socal: ['SoCal', 'Southern California', :west_coast],
     oregon: ['OR', 'Oregon', :west_coast],
     washington: ['WA', 'Washington', :west_coast],
@@ -124,6 +125,34 @@ class Game < ApplicationRecord
   end
 
 private
+  def self.parse_norcal
+    @@mech.get('https://www.dystopiarisingnocal.com/location-dates/') do |page|
+      page.search('div.sqs-block-content').each do |div|
+        year = nil
+
+        div.children.each do |y_obj|
+          text = y_obj.text
+
+          year_head = text.match(/(\d+) schedule/i)
+          month_head_0 = text.match(/(\w+)\s+(\d+)\s*\-\s*(\d+)/)
+
+          if year_head
+            year = year_head[1].to_i
+          end
+
+          if month_head_0
+            Game.find_or_initialize_by(chapter: 'norcal', 
+                                       start: Date.parse("#{month_head_0[1]} #{month_head_0[2]}, #{year}")).save!
+          end
+        end
+
+
+      end
+    end
+
+    return 0
+  end
+
   def self.parse_socal
     @@mech.get('http://www.dystopiarisingsocal.com/events/') do |page|
       page.search('li.eventlist-meta-item').each do |li|
