@@ -141,12 +141,13 @@ private
           end
 
           if month_head_0
-            Game.find_or_initialize_by(chapter: 'norcal', 
-                                       start: Date.parse("#{month_head_0[1]} #{month_head_0[2]}, #{year}")).save!
+            begin
+              Game.find_or_initialize_by(chapter: 'norcal', 
+                                         start: Date.parse("#{month_head_0[1]} #{month_head_0[2]}, #{year}")).save!
+            rescue ArgumentError
+            end
           end
         end
-
-
       end
     end
 
