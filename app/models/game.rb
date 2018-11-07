@@ -134,7 +134,7 @@ private
           text = y_obj.text
 
           year_head = text.match(/(\d+) schedule/i)
-          month_head_0 = text.match(/(\w+)\s+(\d+)\s*\-\s*(\d+)/)
+          month_head_0 = text.match(/(\w+)\s+(\d+)/)
 
           if year_head
             year = year_head[1].to_i
