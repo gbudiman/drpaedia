@@ -37,7 +37,7 @@ var calendar_charting = function() {
 						var d = new Date(this.x)
 						return this.key + '<br />' + (d.getUTCMonth() + 1) + '/' + d.getUTCDate()
 					},
-					borderColor: '#aaa',
+					borderColor: '#aaa'
 				},
 				title: false,
 				series: [
@@ -54,7 +54,8 @@ var calendar_charting = function() {
 					scrollbar: { enabled: true },
 					minorTicks: true,
 					minRange: 24 * 60 * 60 * 7 * 1000,
-					min: Date.UTC(y.getFullYear(), 0, 1),
+					min: moment().add(-3, 'months').unix() * 1000,
+					max: moment().add(9, 'months').unix() * 1000,
 					gridLineWidth: 4,
 					opposite: true,
 					crosshair: {
@@ -65,7 +66,7 @@ var calendar_charting = function() {
 						value: Date.UTC(y.getFullYear(), y.getUTCMonth(), y.getUTCDate()),
 						width: 4,
 						color: '#c42525',
-						zIndex: 999
+						zIndex: 2
 					}]
 				}, {
 					type: 'datetime',

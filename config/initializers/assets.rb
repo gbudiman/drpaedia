@@ -24,6 +24,7 @@ Rails.application.config.assets.precompile += %w( application.css
                                                   dynaloader/dynaloader.js 
                                                   dynaloader/manager.js
                                                   layout/layout.js
+                                                  moment.js
                                                   notifier/notifier.js
                                                   notifier/style.css
                                                   skills/calc.js
