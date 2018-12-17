@@ -114,7 +114,7 @@ class Game < ApplicationRecord
   end
 
   def self.init_national_events
-    ['April 26, 2018', 'July 6, 2018', 'September 13, 2018'].each do |d|
+    ['April 26, 2018', 'July 6, 2018', 'September 13, 2018', 'April 11, 2019'].each do |d|
       Game.find_or_initialize_by(chapter: 'national',
                                  start: Date.parse(d)).save!
     end
@@ -134,7 +134,8 @@ private
           text = y_obj.text
 
           year_head = text.match(/(\d+) schedule/i)
-          month_head_0 = text.match(/(\w+)\s+(\d+)/)
+          month_head_0 = text.match(/((\w+)\s+(\d+)|(\w+)\s+\-\s+(\d+))/)
+          
 
           if year_head
             year = year_head[1].to_i
@@ -143,7 +144,7 @@ private
           if month_head_0
             begin
               Game.find_or_initialize_by(chapter: 'norcal', 
-                                         start: Date.parse("#{month_head_0[1]} #{month_head_0[2]}, #{year}")).save!
+                                         start: Date.parse("#{month_head_0[2] || month_head_0[4]} #{month_head_0[3] || month_head_0[5]}, #{year}")).save!
             rescue ArgumentError
             end
           end
