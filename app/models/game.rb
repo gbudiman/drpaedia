@@ -274,7 +274,6 @@ private
       page.search('.sqs-block-content').each do |bct|
         bct.search('li').each do |li|
           date_match = li.text.match(/(\w+)\s+(\d+)/)
-          ap date_match
           if date_match
             date = Date.parse("#{date_match[1]} #{date_match[2]}, #{@@year}")
             Game.find_or_initialize_by(chapter: 'new_mexico',
@@ -305,10 +304,12 @@ private
       page.search('p').each do |ps|
         text = ps.text
         if text.match(/\w+\.?\s+\d+/)
+          yearmatch = text.match(/schedule (\d+)/i)
+          year = yearmatch[1].to_i
           text.split(/\,/).each do |e|
             e_match = e.match(/(\w+)\.?\s+(\d+)\-/)
             if e_match
-              date = Date.parse("#{e_match[1]} #{e_match[2]}, #{@@year}")
+              date = Date.parse("#{e_match[1]} #{e_match[2]}, #{year}")
               Game.find_or_initialize_by(chapter: 'oregon',
                                          start: date).save!
             end
