@@ -271,11 +271,22 @@ private
 
   def self.parse_new_mexico
     @@mech.get('https://www.dystopiarisingnm.com/upcoming-events/') do |page|
+      year = @@year
+      latched = nil
       page.search('.sqs-block-content').each do |bct|
         bct.search('li').each do |li|
           date_match = li.text.match(/(\w+)\s+(\d+)/)
           if date_match
-            date = Date.parse("#{date_match[1]} #{date_match[2]}, #{@@year}")
+
+            date = Date.parse("#{date_match[1]} #{date_match[2]}, #{year}")
+            latched ||= date
+
+            if date < latched
+              year += 1
+              date = Date.parse("#{date_match[1]} #{date_match[2]}, #{year}")
+              latched = date
+            end
+
             Game.find_or_initialize_by(chapter: 'new_mexico',
                                        start: date).save!
           end
