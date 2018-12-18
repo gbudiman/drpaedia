@@ -414,23 +414,16 @@ private
 
   def self.parse_wisconsin
     @@mech.get('http://steelhorsecrossing.com/location-and-site/') do |page|
-      page.search('.sqs-block-content').each do |bct|
-        h2 = bct.search('h2')
-        if h2.length > 0
-          year_state = h2.text.to_i
+      state = nil
+      page.search('.sqs-block-content').children.each do |bct|
+        yearmatch = bct.text.match(/(\d+)\s+dates/i)
+        if yearmatch
+          state = yearmatch[1].to_i
+        end
 
-          bct.search('p').each do |par|
-            if par.text.match(/\w+\s+\d+/)
-              par.inner_html.split('<br>').each do |d|
-                d_match = d.match(/(\w+)\s+(\d+)\-/)
-                if d_match
-                  date = Date.parse("#{d_match[1]} #{d_match[2]}, #{year_state}")
-                  Game.find_or_initialize_by(chapter: 'wisconsin',
-                                             start: date).save!
-                end
-              end
-            end
-          end
+        if state and (mstate = bct.text.match(/(\w+)\s+(\d+)/))
+          date = Date.parse("#{mstate[1]} #{mstate[2]}, #{state}")
+          Game.find_or_initialize_by(chapter: 'wisconsin', start: date).save!
         end
       end
     end
