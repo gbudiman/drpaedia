@@ -344,17 +344,21 @@ private
       year_state = nil
 
       page.search('p').each do |h|
-        year_match = h.text.match(/^(\d+)$/i)
-        month_match = h.text.match(/(\w+)\s+(\d+)\-/)
-
-        if year_match
-          year_state = year_match[1].to_i
-        elsif month_match and year_state != nil
-          date = Date.parse("#{month_match[1]} #{month_match[2]}, #{year_state}")
-          Game.find_or_initialize_by(chapter: 'indiana',
-                                     start: date).save!
+        h.search('strong').each do |b|
+          year_match = b.text.match(/^(\d+)/i)
+          if year_match
+            year_state = year_match[1].to_i
+          end
         end
-
+        
+        if year_state != nil
+          h.inner_html.split('<br>').each do |ht|
+            if (dm = ht.match(/(\w+)\s+(\d+)\-/))
+              date = Date.parse("#{dm[1]} #{dm[2]}, #{year_state}")
+              Game.find_or_initialize_by(chapter: 'indiana', start: date).save!
+            end
+          end
+        end
       end
     end
   end
