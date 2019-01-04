@@ -54,8 +54,8 @@ var calendar_charting = function() {
 					scrollbar: { enabled: true },
 					minorTicks: true,
 					minRange: 24 * 60 * 60 * 7 * 1000,
-					min: moment().add(-3, 'months').unix() * 1000,
-					max: moment().add(9, 'months').unix() * 1000,
+					min: Math.min(moment().add(-3, 'months').unix() * 1000, Date.UTC(y.getFullYear(), 0, 1)),
+					max: Date.UTC(y.getFullYear(), 11, 31),
 					gridLineWidth: 4,
 					opposite: true,
 					crosshair: {
