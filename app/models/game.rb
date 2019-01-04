@@ -387,14 +387,22 @@ private
 
   def self.parse_florida
     @@mech.get('http://www.dystopiarisingflorida.com/site-schedule/') do |page|
-      page.search('p').each do |li|
-        if li.text.match(/\w+\s+\d+\w+\-/)
-          li.inner_html.split('<br>').each do |d|
-            d_match = d.match(/(\w+)\s(\d+)\w+\-(\w+\s)?\d+\w+\,\s+(\d+)/)
-            if d_match
-              date = Date.parse("#{d_match[1]} #{d_match[2]}, #{d_match[4]}")
-              Game.find_or_initialize_by(chapter: 'florida',
-                                         start: date).save!
+      page.search('div.sqs-block-content').each do |div|
+        div.search('h2').each do |h2|
+          if (ymatch = h2.text.match(/(\d+) events/i))
+            year = ymatch[1].to_i
+            ap year
+
+            div.search('p').each do |hp|
+              if (sp = hp.inner_html.split(/\<br\s?\/?>/)).length > 6
+                sp.each do |event|
+                  if (em = event.match(/(\w+)\s+(\d+)/))
+                    date = Date.parse("#{em[1]} #{em[2]}, #{year}")
+                    Game.find_or_initialize_by(chapter: 'florida',
+                                               start: date).save!
+                  end
+                end
+              end
             end
           end
         end
